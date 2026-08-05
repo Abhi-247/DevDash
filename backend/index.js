@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const UserAuthRouter = require("./routes/UserAuthRouter");
 const ProfileRouter = require("./routes/ProfileRouter");
+const OutreachRouter = require("./routes/OutreachRouter");
 const { dbConnect } = require("./lib/dbConnect");
 
 const app = express();
@@ -14,7 +15,8 @@ app.use(cors({
     credentials: true // Crucial because your login sets a JWT cookie!
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ limit: '15mb', extended: true }));
 app.use(cookieParser());
 
 // Connect to MongoDB
@@ -22,6 +24,7 @@ dbConnect();
 
 app.use("/user", UserAuthRouter);
 app.use("/api/profile", ProfileRouter);
+app.use("/api/outreach", OutreachRouter);
 
 app.listen(4000, () => {
     console.log("Server Successfully Running at port 4000")

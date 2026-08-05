@@ -19,6 +19,7 @@ import Projects from './pages/Projects';
 import Portfolio from './pages/Portfolio';
 import Analytics from './pages/Analytics';
 import Goals from './pages/Goals';
+import HROutreach from './pages/HROutreach';
 
 // Layout for authenticated pages
 const ProtectedLayout = () => {
@@ -68,6 +69,7 @@ const App = () => {
 
               <Route path="/projects" element={<Projects />} />
               <Route path="/resume" element={<Resume />} />
+              <Route path="/hr-outreach" element={<HROutreach />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/goals" element={<Goals />} />

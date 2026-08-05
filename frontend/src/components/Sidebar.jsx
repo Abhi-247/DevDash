@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, User, FileText, Settings, LogOut, Code2, FolderKanban, Briefcase, BarChart3, Target, Link as LinkIcon } from 'lucide-react';
+import { LayoutDashboard, User, FileText, Settings, LogOut, Code2, FolderKanban, Briefcase, BarChart3, Target, Link as LinkIcon, Mail } from 'lucide-react';
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -26,7 +26,8 @@ const Sidebar = () => {
 
         { icon: FolderKanban, label: 'Projects', path: '/projects' },
         { icon: FileText, label: 'Resume', path: '/resume' },
-        { icon: Briefcase, label: 'Portfolio', path: '/portfolio' },
+        { icon: Mail, label: 'HR Outreach', path: '/hr-outreach' },
+        { icon: Briefcase, label: 'Public Showcase', path: '/u/me' },
         { icon: BarChart3, label: 'Analytics', path: '/analytics' },
         { icon: Target, label: 'Goals', path: '/goals' },
         { icon: Settings, label: 'Settings', path: '/settings' },

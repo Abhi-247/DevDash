@@ -46,23 +46,36 @@ const Dashboard = () => {
     const connectedCount = Object.values(connectedProfiles).filter(p => p.connected).length;
     const completedGoals = goals.filter(g => g.status === 'completed').length;
     const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+    const devScore = profile?.devScore || 1450;
 
     const quickActions = [
-        { icon: LinkIcon, label: 'Connect GFG', path: '/coding-profiles', color: 'bg-green-700' },
-        { icon: FolderKanban, label: 'Add Project', path: '/projects', color: 'bg-indigo-600' },
-        { icon: Target, label: 'Set Goal', path: '/goals', color: 'bg-purple-600' },
-        { icon: User, label: 'Edit Profile', path: '/profile', color: 'bg-pink-600' }
+        { icon: ExternalLink, label: 'Public Portfolio', path: `/u/${profile?.username || 'me'}`, color: 'bg-indigo-600' },
+        { icon: LinkIcon, label: 'Sync Profiles', path: '/coding-profiles', color: 'bg-emerald-600' },
+        { icon: FolderKanban, label: 'Add Project', path: '/projects', color: 'bg-purple-600' },
+        { icon: Target, label: 'Set Goal', path: '/goals', color: 'bg-pink-600' }
     ];
 
     return (
         <div className="p-8 max-w-7xl mx-auto">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-                    Welcome back, {profile?.fullName || profile?.username || 'Developer'}!
-                </h1>
-                <p className="text-slate-600 dark:text-slate-400 mt-2">
-                    Here's what's happening with your developer portfolio today.
-                </p>
+            <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                        Welcome back, {profile?.fullName || profile?.username || 'Developer'}!
+                    </h1>
+                    <p className="text-slate-600 dark:text-slate-400 mt-1">
+                        Here's what's happening with your developer portfolio today.
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => navigate(`/u/${profile?.username || 'me'}`)}
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold shadow-md flex items-center gap-2 transition-all"
+                    >
+                        <ExternalLink size={16} />
+                        <span>View Public Portfolio</span>
+                    </button>
+                </div>
             </div>
 
             {/* Stats Cards */}
@@ -70,11 +83,22 @@ const Dashboard = () => {
                 <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
                     <div className="flex items-center justify-between mb-3 sm:mb-4">
                         <div className="w-9 h-9 sm:w-12 sm:h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
-                            <LinkIcon className="text-indigo-600 dark:text-indigo-400" size={18} />
+                            <TrendingUp className="text-indigo-600 dark:text-indigo-400" size={18} />
+                        </div>
+                        <span className="text-xs sm:text-sm font-bold text-indigo-500">Rank Score</span>
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{devScore}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">DevScore™</p>
+                </div>
+
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                        <div className="w-9 h-9 sm:w-12 sm:h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                            <LinkIcon className="text-emerald-600 dark:text-emerald-400" size={18} />
                         </div>
                         <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Connected</span>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{connectedCount}/4</h3>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{connectedCount}/5</h3>
                     <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Coding Profiles</p>
                 </div>
 
@@ -98,17 +122,6 @@ const Dashboard = () => {
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{completedGoals}</h3>
                     <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Goals</p>
-                </div>
-
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
-                    <div className="flex items-center justify-between mb-3 sm:mb-4">
-                        <div className="w-9 h-9 sm:w-12 sm:h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
-                            <TrendingUp className="text-orange-600 dark:text-orange-400" size={18} />
-                        </div>
-                        <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Total</span>
-                    </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{analytics.totalCommits || 0}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Commits</p>
                 </div>
             </div>
 
