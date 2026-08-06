@@ -91,12 +91,13 @@ exports.login = async (req, res) => {
         },
             process.env.JWT_KEY
         );
+        const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER;
         res.cookie("token", jwtToken, {
-            path:"/",
+            path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: "lax"
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax"
         });
         return res.status(200).send({ user, jwtToken });
     } catch (error) {

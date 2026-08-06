@@ -10,9 +10,23 @@ const { dbConnect } = require("./lib/dbConnect");
 const app = express();
 
 // Tell the backend to allow requests from your frontend React app
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://dev-dash-abhi.vercel.app",
+    "https://dev-dash-kappa.vercel.app",
+    process.env.CLIENT_URL
+].filter(Boolean);
+
 app.use(cors({
-    origin: ["http://localhost:5173", "https://dev-dash-kappa.vercel.app"],
-    credentials: true // Crucial because your login sets a JWT cookie!
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+            return callback(null, true);
+        }
+        return callback(new Error("Not allowed by CORS policy"));
+    },
+    credentials: true
 }));
 
 app.use(express.json({ limit: '15mb' }));
