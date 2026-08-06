@@ -19,6 +19,7 @@ import {
     Terminal,
     Sparkles
 } from 'lucide-react';
+import logoImg from '../assets/logodevdash.png';
 
 const PublicProfile = () => {
     const { username } = useParams();
@@ -104,9 +105,7 @@ const PublicProfile = () => {
                 {/* Navbar Header for Public View */}
                 <header className="flex justify-between items-center mb-10 pb-6 border-b border-slate-800/80">
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                            <Code2 className="text-white" size={22} />
-                        </div>
+                        <img src={logoImg} alt="DevDash Logo" className="h-9 w-auto object-contain group-hover:scale-105 transition-transform" />
                         <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
                             DevDash
                         </span>

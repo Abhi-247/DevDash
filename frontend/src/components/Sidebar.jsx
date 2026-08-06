@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, User, FileText, Settings, LogOut, Code2, FolderKanban, Briefcase, BarChart3, Target, Link as LinkIcon, Mail } from 'lucide-react';
+import logoImg from '../assets/logodevdash.png';
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -35,10 +36,8 @@ const Sidebar = () => {
 
     return (
         <aside className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col transition-colors">
-            <div className="p-6 flex items-center gap-2">
-                <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
-                    <Code2 size={20} />
-                </div>
+            <div className="p-6 flex items-center gap-2.5">
+                <img src={logoImg} alt="DevDash Logo" className="h-8 w-auto object-contain" />
                 <span className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">DevDash</span>
             </div>
 

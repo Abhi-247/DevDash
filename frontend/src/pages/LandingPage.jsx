@@ -5,6 +5,7 @@ import Login from './Login';
 import Signup from './Signup';
 import PublicNavbar from '../components/PublicNavbar';
 import PublicFooter from '../components/PublicFooter';
+import boyHeroImg from '../assets/boyhero.png';
 import {
     ArrowRight,
     Code2,
@@ -38,7 +39,15 @@ import {
     TrendingUp,
     Calendar,
     Flame,
-    Quote
+    Quote,
+    Sparkles,
+    Folder,
+    Wand2,
+    Copy,
+    Check,
+    RefreshCw,
+    Send,
+    Paperclip
 } from 'lucide-react';
 
 /* ─── Platform Chip ─── */
@@ -87,110 +96,284 @@ const LandingPage = () => {
     const navigate = useNavigate();
     const [authModal, setAuthModal] = useState(null);
 
+    // 🤖 No-Login AI Bullet Transformer State
+    const [bulletInput, setBulletInput] = useState('Built a React dashboard with Node.js backend for job tracking');
+    const [transformedBullet, setTransformedBullet] = useState('Architected & deployed a high-performance React & Node.js candidate tracking platform, boosting recruiter response rates by 42% and processing 10k+ live syncs.');
+    const [isTransforming, setIsTransforming] = useState(false);
+    const [copiedBullet, setCopiedBullet] = useState(false);
+
+    // 🎛️ Interactive Feature Tabs State
+    const [activeFeatureTab, setActiveFeatureTab] = useState('sync');
+
+    const presetBullets = [
+        'Built a React dashboard with Node.js backend for job tracking',
+        'Wrote SQL queries and authentication middleware in Express',
+        'Solved 300+ LeetCode DSA questions in Data Structures'
+    ];
+
+    const sampleTransformations = {
+        'Built a React dashboard with Node.js backend for job tracking': 'Architected & deployed a high-performance React & Node.js candidate tracking platform, boosting recruiter response rates by 42% and processing 10k+ live syncs.',
+        'Wrote SQL queries and authentication middleware in Express': 'Engineered secure JWT & bcrypt authentication middleware with optimized SQL query indexing, reducing authentication latency by 35%.',
+        'Solved 300+ LeetCode DSA questions in Data Structures': 'Mastered 300+ algorithmic problems across Graphs, Dynamic Programming, and Trees, achieving top 12% global rating in LeetCode Weekly Contests.'
+    };
+
+    const handleTransformBullet = (promptText) => {
+        const inputToUse = promptText || bulletInput;
+        if (!inputToUse.trim()) return;
+        setIsTransforming(true);
+        setTimeout(() => {
+            const enhanced = sampleTransformations[inputToUse] || `Designed, engineered, and optimized "${inputToUse}" using modern industry best practices, resulting in a 40% performance improvement and 99.9% reliability.`;
+            setTransformedBullet(enhanced);
+            setIsTransforming(false);
+        }, 700);
+    };
+
+    const handleCopyBullet = () => {
+        navigator.clipboard.writeText(transformedBullet);
+        setCopiedBullet(true);
+        setTimeout(() => setCopiedBullet(false), 2000);
+    };
+
     return (
         <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-650 selection:text-white overflow-x-hidden transition-colors duration-300">
             {/* Navbar */}
             <PublicNavbar onOpenAuth={setAuthModal} />
 
             {/* Hero Section */}
-            <section className="relative min-h-[85vh] flex flex-col items-center justify-center pt-32 pb-12 px-6 text-center overflow-hidden">
-                {/* Decorative Doodle Elements - Responsive adjusted */}
-                <div className="absolute inset-0 pointer-events-none z-0">
-                    {/* Top Left Face */}
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="absolute top-[12%] left-[-5%] md:left-[10%] w-32 h-32 md:w-48 md:h-48 opacity-30 md:opacity-60 dark:opacity-20 text-slate-900 dark:text-white"
-                    >
-                        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M150 50C150 100 100 150 50 150" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
-                            <circle cx="160" cy="80" r="8" fill="currentColor"/>
-                            <path d="M40 70C60 40 100 40 120 70" fill="#FFEBB7" fillOpacity="0.4"/>
-                        </svg>
-                    </motion.div>
-
-                    {/* Top Right Smile */}
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="absolute top-[10%] right-[-5%] md:right-[15%] w-32 h-32 md:w-48 md:h-48 opacity-30 md:opacity-60 dark:opacity-20 text-slate-900 dark:text-white"
-                    >
-                        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M60 80C60 120 100 140 140 120" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
-                            <circle cx="150" cy="100" r="4" fill="currentColor"/>
-                            <path d="M60 80C60 50 100 50 140 80" fill="#FFB070" fillOpacity="0.4" stroke="#FFB070" strokeWidth="6"/>
-                        </svg>
-                    </motion.div>
-
-                    {/* Green Blob - Pushed lower on mobile */}
-                    <motion.div 
-                        animate={{ y: [0, 15, 0] }}
-                        transition={{ duration: 5, repeat: Infinity }}
-                        className="absolute bottom-[30%] left-[-10%] md:left-[5%] w-24 h-24 md:w-32 md:h-32 opacity-30 md:opacity-60 dark:opacity-20 text-slate-900 dark:text-white"
-                    >
-                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 50C10 70 30 90 50 90C70 90 90 70 90 50C90 30 70 10 50 10" stroke="#00E68A" strokeWidth="6" strokeLinecap="round"/>
-                            <circle cx="65" cy="55" r="5" fill="currentColor"/>
-                            <circle cx="50" cy="50" r="40" fill="#00E68A" fillOpacity="0.4"/>
-                        </svg>
-                    </motion.div>
-
-                    {/* Yellow Smiley - Pushed lower on mobile */}
-                    <motion.div 
-                         animate={{ y: [0, -15, 0] }}
-                         transition={{ duration: 4, repeat: Infinity }}
-                         className="absolute bottom-[25%] right-[-10%] md:right-[8%] w-24 h-24 md:w-32 md:h-32 opacity-30 md:opacity-60 dark:opacity-20 text-slate-900 dark:text-white"
-                    >
-                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M30 60C40 75 60 75 70 60" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
-                            <circle cx="75" cy="50" r="4" fill="currentColor"/>
-                            <path d="M20 50C20 30 40 20 60 20C80 20 90 40 90 60" fill="#FFDC40" fillOpacity="0.4" stroke="#FFDC40" strokeWidth="4"/>
-                        </svg>
-                    </motion.div>
+            <section className="relative pt-32 sm:pt-36 pb-16 sm:pb-24 px-6 sm:px-12 max-w-7xl mx-auto overflow-hidden">
+                {/* Animated background mesh blobs */}
+                <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+                    <motion.div
+                        animate={{ x: [0, 30, -20, 0], y: [0, -20, 10, 0], scale: [1, 1.1, 0.95, 1] }}
+                        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/10 via-indigo-400/8 to-transparent rounded-full blur-3xl"
+                    />
+                    <motion.div
+                        animate={{ x: [0, -25, 15, 0], y: [0, 15, -25, 0], scale: [1, 0.9, 1.1, 1] }}
+                        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -top-10 -right-40 w-[450px] h-[450px] bg-gradient-to-bl from-pink-400/8 via-indigo-400/6 to-transparent rounded-full blur-3xl"
+                    />
+                    <motion.div
+                        animate={{ x: [0, 20, -10, 0], y: [0, -15, 20, 0] }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute bottom-0 left-1/4 w-[350px] h-[350px] bg-gradient-to-tr from-indigo-400/6 via-purple-400/5 to-transparent rounded-full blur-3xl"
+                    />
                 </div>
 
-                <div className="max-w-6xl mx-auto relative z-10 w-full">
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-[36px] sm:text-[48px] md:text-[72px] lg:text-[84px] font-[900] text-slate-800 dark:text-white leading-[1.1] sm:leading-[1.05] tracking-tight mb-6 sm:mb-8"
-                    >
-                        All your <span className="font-[950]">coding profiles</span> <br className="hidden sm:block" /> 
-                        in one unified developer <br className="hidden sm:block" />
-                        <span className="relative inline-block text-indigo-600 dark:text-indigo-400">
-                            dashboard
-                            <motion.div 
-                                initial={{ width: 0 }}
-                                whileInView={{ width: "100%" }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 1, delay: 0.5 }}
-                                className="absolute bottom-1 left-0 h-2 sm:h-4 bg-indigo-500/10 dark:bg-indigo-500/25 -z-10"
-                            />
-                        </span>
-                    </motion.h1>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                    {/* Left Column: Text & CTAs */}
+                    <div className="lg:col-span-7 text-left z-10">
+                        {/* Pill Badge */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50/80 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/40 text-purple-700 dark:text-purple-300 text-xs sm:text-sm font-bold shadow-sm backdrop-blur-sm mb-5"
+                        >
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-600 dark:bg-purple-400"></span>
+                            </span>
+                            <span>All-in-one developer dashboard</span>
+                        </motion.div>
 
-                    <p className="text-[18px] sm:text-[20px] md:text-[22px] text-slate-500 dark:text-slate-400 max-w-3xl mx-auto mb-10 sm:mb-12 font-semibold leading-relaxed px-4">
-                        Connect GitHub, LeetCode, Codeforces, and more. Track your growth and showcase your skills with a single professional link.
-                    </p>
+                        {/* Title - Staggered word animation */}
+                        <motion.h1
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3, delay: 0.2 }}
+                            className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-[900] text-slate-900 dark:text-white leading-[1.12] tracking-tight mb-5"
+                        >
+                            <motion.span
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.25 }}
+                                className="inline-block"
+                            >
+                                All your coding profiles{' '}
+                            </motion.span>
+                            <br className="hidden sm:inline" />
+                            <motion.span
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.4 }}
+                                className="inline-block"
+                            >
+                                in one unified{' '}
+                            </motion.span>
+                            <br className="hidden sm:inline" />
+                            <motion.span
+                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                transition={{ duration: 0.6, delay: 0.55 }}
+                                className="inline-block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_4s_ease-in-out_infinite]"
+                            >
+                                developer dashboard
+                            </motion.span>
+                        </motion.h1>
 
-                    <motion.div 
+                        {/* Subtitle */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.65 }}
+                            className="text-slate-600 dark:text-slate-400 text-sm sm:text-base lg:text-lg font-medium leading-relaxed max-w-lg mb-6"
+                        >
+                            Connect GitHub, LeetCode, Codeforces, and more. Track your growth and showcase your skills with a single professional link.
+                        </motion.p>
+
+                        {/* Buttons */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.75 }}
+                            className="flex flex-wrap items-center gap-3.5 mb-8"
+                        >
+                            <motion.button
+                                onClick={() => setAuthModal('signup')}
+                                className="group relative flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-purple-600/25 transition-all duration-300 active:scale-95 cursor-pointer overflow-hidden"
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite] rounded-xl" />
+                                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 blur-xl -z-10 scale-110" />
+                                <span className="relative z-10">Get Started Free</span>
+                                <ArrowRight size={17} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                            </motion.button>
+                            <motion.button
+                                onClick={() => navigate('/u/alexdev_demo')}
+                                className="group bg-white hover:bg-slate-50 dark:bg-slate-900/80 dark:hover:bg-slate-800/80 text-slate-800 dark:text-slate-200 px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base border border-slate-200/80 dark:border-slate-700/60 transition-all duration-300 active:scale-95 cursor-pointer shadow-sm backdrop-blur-sm flex items-center gap-2"
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                            >
+                                <Play size={15} className="text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
+                                View Demo
+                            </motion.button>
+                        </motion.div>
+
+                        {/* Social proof micro-strip */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.6, delay: 0.9 }}
+                            className="flex items-center gap-4 flex-wrap"
+                        >
+                            {/* Stacked avatars */}
+                            <div className="flex -space-x-2.5">
+                                {['bg-gradient-to-br from-indigo-500 to-purple-600', 'bg-gradient-to-br from-pink-500 to-rose-600', 'bg-gradient-to-br from-emerald-500 to-teal-600', 'bg-gradient-to-br from-amber-500 to-orange-600'].map((bg, i) => (
+                                    <div
+                                        key={i}
+                                        className={`w-8 h-8 rounded-full ${bg} border-2 border-white dark:border-slate-950 flex items-center justify-center text-white text-[10px] font-bold`}
+                                    >
+                                        {['AV', 'KR', 'PM', 'SJ'][i]}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                                <span className="font-bold text-slate-700 dark:text-slate-300">2,400+</span> developers already on board
+                            </div>
+                            <div className="hidden sm:flex items-center gap-1 text-amber-500">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star key={i} size={12} fill="currentColor" strokeWidth={0} />
+                                ))}
+                                <span className="text-[11px] text-slate-400 dark:text-slate-500 font-bold ml-1">4.9</span>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* Right Column: Hero Boy Illustration & Floating Badges */}
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4"
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+                        className="lg:col-span-5 relative flex justify-center items-center mt-4 lg:mt-0"
                     >
-                         <button 
-                            onClick={() => setAuthModal('signup')}
-                            className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-10 py-4 rounded-[12px] font-[900] text-lg lg:text-xl shadow-lg shadow-indigo-600/10 transition-all active:scale-95 cursor-pointer"
-                        >
-                            Get Started
-                        </button>
-                        <button 
-                            className="w-full sm:w-auto bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-805 text-slate-700 dark:text-slate-200 px-10 py-4 rounded-[12px] font-[900] text-lg lg:text-xl border-2 border-slate-200 dark:border-slate-800 transition-all active:scale-95 cursor-pointer"
-                        >
-                            View Demo
-                        </button>
+                        {/* Multi-layer Glowing Aura */}
+                        <div className="absolute w-[300px] h-[300px] sm:w-[420px] sm:h-[420px] bg-gradient-to-tr from-purple-500/12 via-indigo-500/12 to-pink-500/8 rounded-full blur-3xl -z-10 pointer-events-none" />
+                        <motion.div
+                            animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.7, 0.4] }}
+                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                            className="absolute w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] bg-gradient-to-bl from-purple-600/10 to-indigo-600/10 rounded-full blur-2xl -z-10 pointer-events-none"
+                        />
+
+                        {/* Main Hero Image & Badges Container */}
+                        <div className="relative w-full max-w-md flex justify-center items-center">
+                            <motion.img
+                                src={boyHeroImg}
+                                alt="Developer Working on Laptop"
+                                className="w-full h-auto object-contain max-h-[440px] drop-shadow-2xl"
+                                whileHover={{ scale: 1.03 }}
+                                transition={{ duration: 0.5, ease: "easeOut" }}
+                            />
+
+                            {/* Floating Badge 1: GitHub (Top Left) — Glassmorphism */}
+                            <motion.div
+                                animate={{ y: [0, -10, 0], rotate: [0, 2, -2, 0] }}
+                                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute -top-2 left-0 sm:left-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-slate-900/5 dark:shadow-black/20 border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
+                            >
+                                <Github className="w-5 h-5 sm:w-7 sm:h-7 text-slate-900 dark:text-white" />
+                            </motion.div>
+
+                            {/* Floating Badge 2: Code </> (Middle Left) */}
+                            <motion.div
+                                animate={{ y: [0, 10, 0], x: [0, -3, 0] }}
+                                transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute top-1/3 -left-3 sm:-left-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-purple-500/5 dark:shadow-purple-500/10 border border-purple-200/30 dark:border-purple-800/30 flex items-center justify-center"
+                            >
+                                <Code2 className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
+                            </motion.div>
+
+                            {/* Floating Badge 3: Folder (Top Right) */}
+                            <motion.div
+                                animate={{ y: [0, -8, 0], rotate: [0, -3, 3, 0] }}
+                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute top-4 right-0 sm:right-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-indigo-500/5 dark:shadow-indigo-500/10 border border-indigo-200/30 dark:border-indigo-800/30 flex items-center justify-center"
+                            >
+                                <Folder className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
+                            </motion.div>
+
+                            {/* Floating Badge 4: Verified (Middle Right) */}
+                            <motion.div
+                                animate={{ y: [0, 12, 0], x: [0, 3, 0] }}
+                                transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute top-1/2 -right-3 sm:-right-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-emerald-500/5 dark:shadow-emerald-500/10 border border-emerald-200/30 dark:border-emerald-800/30 flex items-center justify-center"
+                            >
+                                <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-500" />
+                            </motion.div>
+
+                            {/* NEW: Floating mini stat badge (Bottom Left) */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
+                                transition={{ opacity: { delay: 1, duration: 0.5 }, scale: { delay: 1, duration: 0.5 }, y: { duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 } }}
+                                className="absolute bottom-8 -left-2 sm:left-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 flex items-center gap-2"
+                            >
+                                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+                                    <Flame className="w-4 h-4 text-white" />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider leading-none">Streak</p>
+                                    <p className="text-sm font-[900] text-slate-800 dark:text-white leading-tight">67 Days 🔥</p>
+                                </div>
+                            </motion.div>
+
+                            {/* NEW: Floating rating badge (Bottom Right) */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }}
+                                transition={{ opacity: { delay: 1.3, duration: 0.5 }, scale: { delay: 1.3, duration: 0.5 }, y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.5 } }}
+                                className="absolute bottom-16 -right-2 sm:right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 flex items-center gap-2"
+                            >
+                                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                                    <TrendingUp className="w-4 h-4 text-white" />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider leading-none">Rating</p>
+                                    <p className="text-sm font-[900] text-slate-800 dark:text-white leading-tight">1,842 ↑</p>
+                                </div>
+                            </motion.div>
+                        </div>
                     </motion.div>
                 </div>
             </section>
@@ -226,39 +409,295 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* ═══════ STEP 5 — Advanced Features ═══════ */}
-            <section id="features" className="py-16 px-6 bg-white dark:bg-slate-950 transition-colors duration-300">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-10">
-                        <p className="text-indigo-650 dark:text-indigo-400 font-black uppercase tracking-widest text-xs mb-3">Features</p>
-                        <h2 className="text-4xl md:text-[48px] font-[900] text-slate-800 dark:text-white tracking-tight leading-tight">
-                            Everything you need to <span className="text-indigo-600 dark:text-indigo-400">stand out</span>
-                        </h2>
+            {/* 🤖 NO-LOGIN TOOL: Instant AI Resume Bullet Transformer */}
+            <section className="py-16 px-6 bg-slate-50 dark:bg-slate-900/40 border-y border-slate-200/60 dark:border-slate-800/80 transition-colors duration-300">
+                <div className="max-w-5xl mx-auto text-center">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/40 text-indigo-700 dark:text-indigo-300 text-xs font-bold mb-4">
+                        <Wand2 size={15} className="text-indigo-600 dark:text-indigo-400 animate-spin-slow" />
+                        <span>Try Instant No-Login Tool</span>
                     </div>
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[
-                            { icon: Link2, title: "Connect All Profiles", desc: "One-click OAuth with GitHub, LeetCode, Codeforces, and 10+ platforms.", color: "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/20" },
-                            { icon: Brain, title: "AI Profile Summary", desc: "Auto-generated developer bio based on your actual coding activity.", color: "text-purple-650 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/20" },
-                            { icon: FileText, title: "Resume Generator", desc: "Create a polished resume directly from your connected profile data.", color: "text-orange-500 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/20" },
-                            { icon: Globe, title: "Shareable Dev Link", desc: "One clean URL for your entire coding identity. Perfect for CVs.", color: "text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/20" },
-                            { icon: TrendingUp, title: "Weekly Progress", desc: "Track problems solved, commits pushed, and ratings gained every week.", color: "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/20" },
-                            { icon: Calendar, title: "Contribution Heatmap", desc: "A beautiful cross-platform heatmap of your entire coding year.", color: "text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/20" },
-                        ].map(({ icon: Icon, title, desc, color }, i) => (
-                            <motion.div
-                                key={title}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.06 }}
-                                className="group bg-white dark:bg-slate-900 p-7 rounded-2xl border border-slate-100 dark:border-slate-800/80 hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default"
+
+                    <h2 className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white tracking-tight mb-3">
+                        AI Resume Bullet <span className="text-purple-600 dark:text-purple-400">Transformer</span>
+                    </h2>
+                    <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base max-w-xl mx-auto mb-8">
+                        Type any rough resume draft or click a sample preset below to watch DevDash transform it into a high-impact, quantified ATS bullet live!
+                    </p>
+
+                    {/* Presets */}
+                    <div className="flex flex-wrap justify-center gap-2 mb-6">
+                        {presetBullets.map((preset, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => {
+                                    setBulletInput(preset);
+                                    handleTransformBullet(preset);
+                                }}
+                                className="text-xs font-bold px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-purple-500 dark:hover:border-purple-500 transition-all active:scale-95 cursor-pointer shadow-sm"
                             >
-                                <div className={`p-3 rounded-xl w-fit mb-5 ${color} group-hover:scale-110 transition-transform`}>
-                                    <Icon size={22} strokeWidth={2.5} />
-                                </div>
-                                <h3 className="text-[19px] font-[900] text-slate-800 dark:text-white mb-2.5">{title}</h3>
-                                <p className="text-[15px] text-slate-500 dark:text-slate-400 font-semibold leading-relaxed">{desc}</p>
-                            </motion.div>
+                                💡 Preset {idx + 1}
+                            </button>
                         ))}
+                    </div>
+
+                    {/* Transformer Card */}
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xl text-left space-y-6">
+                        <div>
+                            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Your Draft Bullet Point</label>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <input
+                                    type="text"
+                                    value={bulletInput}
+                                    onChange={(e) => setBulletInput(e.target.value)}
+                                    placeholder="e.g. Worked on React frontend and database queries"
+                                    className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                />
+                                <button
+                                    onClick={() => handleTransformBullet()}
+                                    disabled={isTransforming}
+                                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-purple-600/20 active:scale-95 disabled:opacity-50 cursor-pointer"
+                                >
+                                    {isTransforming ? <RefreshCw size={16} className="animate-spin" /> : <Wand2 size={16} />}
+                                    <span>{isTransforming ? 'Enhancing...' : 'Transform ✨'}</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Result Container */}
+                        <div className="p-5 rounded-xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-200/50 dark:border-purple-900/40 relative">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+                                    <Sparkles size={14} /> Enhanced High-Impact Bullet
+                                </span>
+                                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold">
+                                    +38% ATS Impact
+                                </span>
+                            </div>
+
+                            <p className="text-slate-800 dark:text-slate-100 font-bold text-sm sm:text-base leading-relaxed pr-10">
+                                "{transformedBullet}"
+                            </p>
+
+                            <button
+                                onClick={handleCopyBullet}
+                                className="absolute right-4 bottom-4 p-2 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
+                                title="Copy bullet point"
+                            >
+                                {copiedBullet ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 🎛️ INTERACTIVE FEATURE EXPLAINER TABS */}
+            <section id="features" className="py-20 px-6 bg-white dark:bg-slate-950 transition-colors duration-300">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-purple-600 dark:text-purple-400 font-black uppercase tracking-widest text-xs mb-3">Interactive Showcase</p>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-[900] text-slate-900 dark:text-white tracking-tight leading-tight">
+                            Explore DevDash <span className="text-purple-600 dark:text-purple-400">in Action</span>
+                        </h2>
+                        <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base max-w-xl mx-auto mt-3">
+                            Click through the tabs below to interactively test our live developer tools!
+                        </p>
+                    </div>
+
+                    {/* Tab Selection Bar */}
+                    <div className="flex justify-center mb-10 overflow-x-auto pb-2 scrollbar-none">
+                        <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            {[
+                                { id: 'sync', label: '🔄 Live Profile Sync' },
+                                { id: 'outreach', label: '✉️ Cold HR Outreach' },
+                                { id: 'analytics', label: '📊 Developer Analytics' },
+                                { id: 'showcase', label: '💼 Public Showcase' }
+                            ].map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveFeatureTab(tab.id)}
+                                    className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap cursor-pointer ${
+                                        activeFeatureTab === tab.id
+                                            ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-md'
+                                            : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+                                    }`}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Interactive Tab Body */}
+                    <div className="bg-slate-50 dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800/80 p-6 sm:p-10 shadow-2xl transition-colors">
+                        {activeFeatureTab === 'sync' && (
+                            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                <div className="lg:col-span-6 space-y-4 text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold">
+                                        <span>Multi-Platform OAuth</span>
+                                    </div>
+                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">Auto-Sync Your Coding Achievements</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                        DevDash connects seamlessly with LeetCode, GitHub, Codeforces, HackerRank, and GeeksforGeeks. Every solved DSA problem and committed line of code updates your live DevScore automatically.
+                                    </p>
+                                    <div className="space-y-3 pt-2">
+                                        <div className="flex items-center gap-3 font-bold text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={18} className="text-emerald-500" />
+                                            <span>Real-Time LeetCode & Codeforces Rating Fetcher</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 font-bold text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={18} className="text-emerald-500" />
+                                            <span>Automated DevScore Algorithm (500 ➔ 2000+)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="lg:col-span-6 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-left">
+                                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                                        <span className="font-bold text-sm text-slate-800 dark:text-slate-200">Connected Coding Platforms</span>
+                                        <span className="text-xs font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-md">Live Synced</span>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                            <span className="font-bold text-sm text-amber-500">🔥 LeetCode</span>
+                                            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">345 Solved (Top 12%)</span>
+                                        </div>
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                            <span className="font-bold text-sm text-slate-900 dark:text-white">🐙 GitHub</span>
+                                            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">28 Public Repos · 64 Followers</span>
+                                        </div>
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                            <span className="font-bold text-sm text-cyan-500">🏆 Codeforces</span>
+                                            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">1540 Rating (Specialist)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {activeFeatureTab === 'outreach' && (
+                            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                <div className="lg:col-span-6 space-y-4 text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-xs font-bold">
+                                        <span>Automated Cold Emails</span>
+                                    </div>
+                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">Target HRs & Deliver Resumes Directly</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                        Send customized, recruiter-tailored cold emails directly through Gmail SMTP. DevDash attaches your verified PDF resume from the Resume Vault and logs responses in real-time.
+                                    </p>
+                                    <button 
+                                        onClick={() => setAuthModal('signup')}
+                                        className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-purple-600/20 active:scale-95 cursor-pointer"
+                                    >
+                                        <span>Try HR Outreach</span>
+                                        <ArrowRight size={16} />
+                                    </button>
+                                </div>
+                                <div className="lg:col-span-6 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-3 text-left">
+                                    <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                                        <Mail size={18} className="text-purple-600" />
+                                        <span className="font-bold text-sm text-slate-800 dark:text-slate-200">HR Outreach Mailer Mockup</span>
+                                    </div>
+                                    <div className="space-y-2.5 text-left text-xs">
+                                        <div className="p-2.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-slate-700 dark:text-slate-300">
+                                            <strong>To:</strong> tech.recruiter@stripe.com
+                                        </div>
+                                        <div className="p-2.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-slate-700 dark:text-slate-300">
+                                            <strong>Subject:</strong> Full Stack Developer Application — Alex Developer
+                                        </div>
+                                        <div className="p-3 bg-purple-50/50 dark:bg-purple-950/30 rounded-lg border border-purple-100 dark:border-purple-900/30 text-slate-700 dark:text-slate-300 leading-relaxed">
+                                            "Hi Tech Recruiting Team! I am a Full-Stack Engineer with 345+ solved LeetCode DSA problems and 28 public GitHub repositories..."
+                                        </div>
+                                        <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold">
+                                            <Paperclip size={14} />
+                                            <span>Attached: Alex_Developer_Resume.pdf (150 KB)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {activeFeatureTab === 'analytics' && (
+                            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                <div className="lg:col-span-6 space-y-4 text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
+                                        <span>Unified Analytics</span>
+                                    </div>
+                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">Visualize Your Developer DNA</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                        Track your commit streaks, DSA difficulty breakdown (Easy / Medium / Hard), and coding activity heatmaps all in one unified dashboard.
+                                    </p>
+                                </div>
+                                <div className="lg:col-span-6 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-left">
+                                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                                        <span className="font-bold text-sm text-slate-800 dark:text-slate-200">DSA Problem Difficulty Breakdown</span>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <div className="flex justify-between text-xs font-bold mb-1">
+                                                <span className="text-emerald-500">Easy (140 Solved)</span>
+                                                <span className="text-slate-400">40%</span>
+                                            </div>
+                                            <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
+                                                <div className="h-full bg-emerald-500 w-[40%]" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="flex justify-between text-xs font-bold mb-1">
+                                                <span className="text-amber-500">Medium (165 Solved)</span>
+                                                <span className="text-slate-400">48%</span>
+                                            </div>
+                                            <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
+                                                <div className="h-full bg-amber-500 w-[48%]" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="flex justify-between text-xs font-bold mb-1">
+                                                <span className="text-rose-500">Hard (40 Solved)</span>
+                                                <span className="text-slate-400">12%</span>
+                                            </div>
+                                            <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
+                                                <div className="h-full bg-rose-500 w-[12%]" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {activeFeatureTab === 'showcase' && (
+                            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                <div className="lg:col-span-6 space-y-4 text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-bold">
+                                        <span>Shareable Portfolio Link</span>
+                                    </div>
+                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">One Single Link for CVs & LinkedIn</h3>
+                                    <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                        Share your clean public URL (`devdash.me/u/alexdev_demo`) with recruiters. No login required for tech leads to inspect your verified coding stats!
+                                    </p>
+                                    <button 
+                                        onClick={() => navigate('/u/alexdev_demo')}
+                                        className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+                                    >
+                                        <span>View Public Showcase Demo</span>
+                                        <ExternalLink size={16} />
+                                    </button>
+                                </div>
+                                <div className="lg:col-span-6 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl text-left space-y-3">
+                                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                                        <span className="font-bold text-xs text-amber-500">🌐 devdash.me/u/alexdev_demo</span>
+                                        <span className="text-xs font-bold text-slate-400">Public Portfolio</span>
+                                    </div>
+                                    <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-sm">AD</div>
+                                            <div>
+                                                <h4 className="font-bold text-sm text-slate-900 dark:text-white">Alex Developer (Demo)</h4>
+                                                <p className="text-xs text-slate-400">DevScore: 1850 · Senior Master</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
                     </div>
                 </div>
             </section>

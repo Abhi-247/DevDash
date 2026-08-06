@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Twitter, Github, Linkedin, Mail, Send, Code2, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import logoImg from '../assets/logodevdash.png';
 
 const PublicFooter = () => {
     const navigate = useNavigate();
@@ -67,9 +68,7 @@ const PublicFooter = () => {
                             onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); navigate('/'); }}
                             className="flex items-center gap-2.5 cursor-pointer group w-fit"
                         >
-                            <div className="h-9 w-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-600/10 group-hover:scale-105 transition-transform duration-300">
-                                <Code2 size={20} strokeWidth={2.5} />
-                            </div>
+                            <img src={logoImg} alt="DevDash Logo" className="h-9 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
                             <span className="text-2xl font-[900] tracking-tight text-slate-800 dark:text-white">
                                 Dev<span className="text-indigo-600 dark:text-indigo-400">Dash</span>
                             </span>

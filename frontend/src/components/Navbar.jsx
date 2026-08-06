@@ -8,6 +8,7 @@ import {
     Briefcase, BarChart3, Target, Link as LinkIcon, CheckCircle2, AlertCircle, Award
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import logoImg from '../assets/logodevdash.png';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -108,10 +109,8 @@ const Navbar = () => {
                 >
                     <Menu size={22} />
                 </button>
-                <div className="flex items-center gap-1.5 cursor-pointer" onClick={() => navigate('/dashboard')}>
-                    <div className="h-7 w-7 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
-                        <Code2 size={16} />
-                    </div>
+                <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
+                    <img src={logoImg} alt="DevDash Logo" className="h-7 w-auto object-contain" />
                     <span className="font-black text-slate-800 dark:text-slate-100 text-lg tracking-tight">DevDash</span>
                 </div>
             </div>
@@ -333,9 +332,7 @@ const Navbar = () => {
                         {/* Drawer Header */}
                         <div className="flex items-center justify-between pb-5 border-b border-slate-100 dark:border-slate-900 mb-6">
                             <div className="flex items-center gap-2">
-                                <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
-                                    <Code2 size={18} />
-                                </div>
+                                <img src={logoImg} alt="DevDash Logo" className="h-8 w-auto object-contain" />
                                 <span className="text-xl font-black text-slate-800 dark:text-slate-100 tracking-tight">DevDash</span>
                             </div>
                             <button 

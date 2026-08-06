@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, Code2, X, ArrowRight, Sparkles } from 'lucide-react';
+import logoImg from '../assets/logodevdash.png';
 import Loader from '../components/Loader';
 import PublicNavbar from '../components/PublicNavbar';
 import PublicFooter from '../components/PublicFooter';
@@ -81,9 +82,7 @@ const Login = ({ isModal = false, onClose, onSwitchToSignup }) => {
             )}
 
             <div className="flex justify-center mb-6">
-                <div className="h-14 w-14 bg-indigo-50 dark:bg-indigo-950/50 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm border border-indigo-100 dark:border-indigo-800/30">
-                    <Code2 size={28} strokeWidth={2.5} />
-                </div>
+                <img src={logoImg} alt="DevDash Logo" className="h-12 w-auto object-contain" />
             </div>
 
             <h2 className="text-2xl font-[900] text-center text-slate-800 dark:text-white tracking-tight mb-1.5">Welcome Back</h2>
