@@ -230,7 +230,7 @@ const LandingPage = () => {
                             className="flex flex-wrap items-center gap-3.5 mb-8"
                         >
                             <motion.button
-                                onClick={() => setAuthModal('signup')}
+                                onClick={() => navigate('/signup')}
                                 className="group relative flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-purple-600/25 transition-all duration-300 active:scale-95 cursor-pointer overflow-hidden"
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.97 }}

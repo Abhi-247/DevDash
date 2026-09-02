@@ -5,14 +5,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Search, Bell, Menu, X, Sun, Moon, ChevronDown, LogOut, Settings, 
     User, ExternalLink, LayoutDashboard, FileText, Code2, FolderKanban, 
-    Briefcase, BarChart3, Target, Link as LinkIcon, CheckCircle2, AlertCircle, Award
+    Briefcase, BarChart3, Target, Link as LinkIcon, CheckCircle2, AlertCircle, Award,
+    Network, Terminal
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useRecruiter } from '../context/RecruiterContext';
 import logoImg from '../assets/logodevdash.png';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
+    const { 
+        isRecruiterMode, 
+        toggleRecruiterMode, 
+        setIsArchModalOpen, 
+        setIsTerminalOpen, 
+        setIsCommandPaletteOpen 
+    } = useRecruiter();
     
     // Auth User
     const userStr = localStorage.getItem('user');
@@ -115,56 +124,60 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Search Input with Dropdown (Desktop) */}
-            <div ref={searchRef} className="hidden md:block flex-1 max-w-md relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 h-4 w-4" />
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setSearchFocused(true)}
-                    placeholder="Quick search links, profiles..."
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 py-2 pl-10 pr-4 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-indigo-500 dark:focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
-                />
-                
-                {/* Search Results / Quick Actions popover */}
-                <AnimatePresence>
-                    {searchFocused && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.15 }}
-                            className="absolute top-full left-0 mt-2 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-4 overflow-hidden z-40"
-                        >
-                            <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">Quick Navigation</p>
-                            {filteredQuickLinks.length > 0 ? (
-                                <div className="space-y-1">
-                                    {filteredQuickLinks.map((link, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => {
-                                                navigate(link.path);
-                                                setSearchFocused(false);
-                                                setSearchQuery('');
-                                            }}
-                                            className="flex items-center gap-3 w-full px-3 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-all text-left"
-                                        >
-                                            <link.icon size={15} className="text-slate-400 group-hover:text-indigo-600" />
-                                            {link.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-xs text-slate-400 py-2">No matching links found.</p>
-                            )}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+            {/* Search / Command Palette Trigger (Desktop) */}
+            <div className="hidden md:flex items-center gap-2 flex-1 max-w-md">
+                <button
+                    onClick={() => setIsCommandPaletteOpen(true)}
+                    className="flex items-center justify-between w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/60 py-2 px-3.5 text-xs text-slate-500 dark:text-slate-400 hover:border-indigo-400 dark:hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-900 transition-all cursor-pointer shadow-sm group"
+                >
+                    <span className="flex items-center gap-2">
+                        <Search size={15} className="text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                        <span>Search commands, pages, projects...</span>
+                    </span>
+                    <kbd className="px-2 py-0.5 text-[10px] font-mono bg-slate-200/70 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-600 dark:text-slate-300 font-semibold shadow-xs">
+                        Ctrl+K
+                    </kbd>
+                </button>
             </div>
 
-            {/* Desktop Actions */}
-            <div className="flex items-center gap-3">
+            {/* Desktop Actions & Recruiter Mode Switch */}
+            <div className="flex items-center gap-2.5">
+                {/* ⚡ Recruiter Demo Mode Pill Toggle */}
+                <button
+                    onClick={toggleRecruiterMode}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-sm ${
+                        isRecruiterMode
+                            ? 'bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-indigo-500/15 border-indigo-500/50 text-indigo-600 dark:text-indigo-300 hover:border-indigo-400 shadow-indigo-500/10'
+                            : 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400'
+                    }`}
+                    title="Toggle Recruiter Demo Mode to view full simulated engineering metrics"
+                >
+                    <span className="relative flex h-2 w-2">
+                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isRecruiterMode ? 'bg-indigo-400' : 'bg-slate-400'}`}></span>
+                        <span className={`relative inline-flex rounded-full h-2 w-2 ${isRecruiterMode ? 'bg-indigo-500' : 'bg-slate-500'}`}></span>
+                    </span>
+                    <span className="hidden lg:inline">{isRecruiterMode ? '⚡ Recruiter Mode: ON' : 'Recruiter Mode: OFF'}</span>
+                    <span className="lg:hidden">{isRecruiterMode ? '⚡ Demo' : 'Live'}</span>
+                </button>
+
+                {/* System Architecture Quick Button */}
+                <button
+                    onClick={() => setIsArchModalOpen(true)}
+                    className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                    title="System Architecture Visualizer"
+                >
+                    <Network size={18} />
+                </button>
+
+                {/* Developer Terminal Quick Button */}
+                <button
+                    onClick={() => setIsTerminalOpen(true)}
+                    className="p-2 rounded-xl text-slate-500 hover:text-emerald-500 dark:text-slate-400 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                    title="Developer Terminal (~)"
+                >
+                    <Terminal size={18} />
+                </button>
+
                 {/* Theme Toggle */}
                 <button 
                     onClick={toggleTheme}

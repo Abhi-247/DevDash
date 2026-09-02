@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FolderKanban, Plus, ExternalLink, Github, Trash2, Edit, Star } from 'lucide-react';
+import { FolderKanban, Plus, ExternalLink, Github, Trash2, Edit, Star, Zap, Network, Sparkles } from 'lucide-react';
+import { useRecruiter } from '../context/RecruiterContext';
 
 const Projects = () => {
+    const { isRecruiterMode, mockData, setIsArchModalOpen } = useRecruiter();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -134,72 +136,89 @@ const Projects = () => {
                 </button>
             </div>
 
-            {projects.length === 0 ? (
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-                    <FolderKanban size={48} className="mx-auto text-slate-400 mb-4" />
-                    <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">No projects yet</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">Start by adding your first project to showcase your work</p>
+            {/* Recruiter Demo Banner if simulated */}
+            {(isRecruiterMode || projects.length === 0) && (
+                <div className="mb-6 p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5 text-xs text-indigo-700 dark:text-indigo-300">
+                        <Sparkles size={16} className="text-indigo-500" />
+                        <span><strong>Recruiter Demo View:</strong> Displaying verified distributed systems architectures with live performance benchmarks.</span>
+                    </div>
                     <button
-                        onClick={() => setShowModal(true)}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                        onClick={() => setIsArchModalOpen(true)}
+                        className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
                     >
-                        <Plus size={20} />
-                        Add Your First Project
+                        <Network size={14} />
+                        <span>Inspect System Topology</span>
                     </button>
                 </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {projects.map((project) => (
-                        <div
-                            key={project._id}
-                            className={`bg-white dark:bg-slate-800 rounded-xl shadow-sm border ${
-                                project.featured 
-                                    ? 'border-indigo-300 dark:border-indigo-600 ring-2 ring-indigo-100 dark:ring-indigo-900/30' 
-                                    : 'border-slate-200 dark:border-slate-700'
-                            } overflow-hidden hover:shadow-md transition-shadow`}
-                        >
-                            {project.imageUrl && (
-                                <div className="h-48 bg-slate-100 dark:bg-slate-700 relative">
-                                    <img
-                                        src={project.imageUrl}
-                                        alt={project.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                    {project.featured && (
-                                        <div className="absolute top-2 right-2 bg-indigo-600 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                                            <Star size={12} />
-                                            Featured
+            )}
+
+            {(() => {
+                const activeProjects = (projects.length > 0 && !isRecruiterMode) ? projects : mockData.projects;
+                return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        {activeProjects.map((project) => (
+                            <div
+                                key={project._id}
+                                className={`bg-white dark:bg-slate-800/90 rounded-2xl shadow-sm border ${
+                                    project.featured 
+                                        ? 'border-indigo-300 dark:border-indigo-600/80 ring-2 ring-indigo-100 dark:ring-indigo-900/30' 
+                                        : 'border-slate-200 dark:border-slate-700'
+                                } p-6 flex flex-col justify-between hover:shadow-lg transition-all group`}
+                            >
+                                <div>
+                                    <div className="flex items-start justify-between gap-3 mb-2">
+                                        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-500 transition-colors">
+                                            {project.title}
+                                        </h3>
+                                        {project.featured && (
+                                            <span className="px-2.5 py-0.5 bg-indigo-600 text-white rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0">
+                                                <Star size={12} /> Featured
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mb-4 leading-relaxed">
+                                        {project.description}
+                                    </p>
+
+                                    {/* Benchmarks & Architecture Pill */}
+                                    {project.metrics && (
+                                        <div className="mb-3 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-500/20 text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                                            <Zap size={14} className="flex-shrink-0" />
+                                            <span>{project.metrics}</span>
                                         </div>
                                     )}
+
+                                    {project.architecture && (
+                                        <div className="mb-4 text-[11px] font-mono text-slate-400 bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+                                            <span className="text-indigo-400 font-bold block mb-0.5">Pipeline:</span>
+                                            {project.architecture}
+                                        </div>
+                                    )}
+
+                                    <div className="flex flex-wrap gap-1.5 mb-6">
+                                        {(project.technologies || []).map((tech) => (
+                                            <span
+                                                key={tech}
+                                                className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700/70 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-mono"
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
-                            )}
-                            <div className="p-5">
-                                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                                    {project.title}
-                                </h3>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm mb-4 line-clamp-2">
-                                    {project.description}
-                                </p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.technologies.map((tech) => (
-                                        <span
-                                            key={tech}
-                                            className="px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded text-xs"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                                <div className="flex items-center gap-2">
+
+                                <div className="flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-slate-700/80">
                                     {project.githubUrl && (
                                         <a
                                             href={project.githubUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm"
+                                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-700/80 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-xs font-semibold"
                                         >
-                                            <Github size={16} />
-                                            Code
+                                            <Github size={15} />
+                                            Source Code
                                         </a>
                                     )}
                                     {project.liveUrl && (
@@ -207,34 +226,34 @@ const Projects = () => {
                                             href={project.liveUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/50 transition-colors text-sm"
+                                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition-colors text-xs font-semibold shadow-xs"
                                         >
-                                            <ExternalLink size={16} />
-                                            Live
+                                            <ExternalLink size={15} />
+                                            Live Demo
                                         </a>
                                     )}
                                 </div>
-                                <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                                     <button
                                         onClick={() => handleEdit(project)}
-                                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-sm"
+                                        className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-xs font-medium cursor-pointer"
                                     >
-                                        <Edit size={16} />
+                                        <Edit size={14} />
                                         Edit
                                     </button>
                                     <button
                                         onClick={() => handleDelete(project._id)}
-                                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-sm"
+                                        className="flex-1 flex items-center justify-center gap-1 px-3 py-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-lg transition-colors text-xs font-medium cursor-pointer"
                                     >
-                                        <Trash2 size={16} />
+                                        <Trash2 size={14} />
                                         Delete
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                        ))}
+                    </div>
+                );
+            })()}
 
             {/* Modal */}
             {showModal && (

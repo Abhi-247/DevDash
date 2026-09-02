@@ -45,6 +45,16 @@ const outreachRecordSchema = new mongoose.Schema({
     followUpDate: {
         type: Date
     },
+    gmailMessageId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    source: {
+        type: String,
+        enum: ['app_email', 'gmail_sync', 'manual'],
+        default: 'app_email'
+    },
     sentAt: {
         type: Date,
         default: Date.now

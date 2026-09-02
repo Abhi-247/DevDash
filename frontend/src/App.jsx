@@ -1,6 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { RecruiterProvider } from './context/RecruiterContext';
+import CommandPalette from './components/CommandPalette';
+import DevTerminal from './components/DevTerminal';
+import SystemArchitectureModal from './components/SystemArchitectureModal';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
@@ -53,7 +57,11 @@ const RootRoute = () => {
 const App = () => {
   return (
     <ThemeProvider>
+      <RecruiterProvider>
         <BrowserRouter>
+          <CommandPalette />
+          <DevTerminal />
+          <SystemArchitectureModal />
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<RootRoute />} />
@@ -84,6 +92,7 @@ const App = () => {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
+      </RecruiterProvider>
     </ThemeProvider>
   );
 };

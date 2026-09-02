@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+const { ImapFlow } = require('imapflow');
+const { simpleParser } = require('mailparser');
 const { OutreachRecord, ResumeVault } = require('../models/OutreachRecord');
 const User = require('../models/User');
 
@@ -114,7 +117,8 @@ router.post('/send', verifyToken, async (req, res) => {
             body,
             attachedResumeName: resumeTitle || '',
             attachedResumeData: resumeData || '',
-            status: deliveryStatus
+            status: deliveryStatus,
+            source: 'app_email'
         });
 
         await record.save();
@@ -212,6 +216,366 @@ router.delete('/resumes/:id', verifyToken, async (req, res) => {
         res.json({ message: "Resume deleted from Vault" });
     } catch (error) {
         res.status(500).json({ message: "Error deleting resume" });
+    }
+});
+
+// ==================== GMAIL INTEGRATION ROUTES ====================
+
+// Check Gmail Connection Status
+router.get('/gmail/status', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const connected = !!user.gmailConnected;
+        const email = user.gmailEmail || (connected ? process.env.SMTP_USER || 'connected@gmail.com' : '');
+        
+        res.json({
+            connected,
+            email,
+            lastSynced: user.gmailLastSynced || null
+        });
+    } catch (error) {
+        console.error("Error getting Gmail status:", error);
+        res.status(500).json({ message: "Failed to get Gmail status" });
+    }
+});
+
+// Connect Gmail Account (Direct or App Link)
+router.post('/gmail/connect', verifyToken, async (req, res) => {
+    try {
+        const { email } = req.body;
+        const targetEmail = email || process.env.SMTP_USER || 'user@gmail.com';
+
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.gmailConnected = true;
+        user.gmailEmail = targetEmail;
+        user.gmailLastSynced = new Date();
+        await user.save();
+
+        res.json({
+            message: "Gmail connected successfully!",
+            connected: true,
+            email: user.gmailEmail,
+            lastSynced: user.gmailLastSynced
+        });
+    } catch (error) {
+        console.error("Error connecting Gmail:", error);
+        res.status(500).json({ message: "Failed to connect Gmail" });
+    }
+});
+
+// Disconnect Gmail Account
+router.post('/gmail/disconnect', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.gmailConnected = false;
+        user.gmailEmail = '';
+        user.gmailAccessToken = '';
+        user.gmailRefreshToken = '';
+        await user.save();
+
+        res.json({ message: "Gmail disconnected successfully", connected: false });
+    } catch (error) {
+        console.error("Error disconnecting Gmail:", error);
+        res.status(500).json({ message: "Failed to disconnect Gmail" });
+    }
+});
+
+// Google OAuth Auth URL Endpoint
+router.get('/gmail/auth-url', verifyToken, async (req, res) => {
+    try {
+        const clientId = process.env.GOOGLE_CLIENT_ID;
+        const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+        const redirectUri = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5173/hr-outreach';
+
+        if (!clientId || !clientSecret) {
+            return res.json({
+                oauthConfigured: false,
+                message: "Google OAuth Client ID not set in server environment. Use Direct Connect."
+            });
+        }
+
+        const oauth2Client = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+        const scopes = [
+            'https://www.googleapis.com/auth/gmail.readonly',
+            'https://www.googleapis.com/auth/gmail.send',
+            'https://www.googleapis.com/auth/userinfo.email'
+        ];
+
+        const url = oauth2Client.generateAuthUrl({
+            access_type: 'offline',
+            prompt: 'consent',
+            scope: scopes,
+            state: req.userId.toString()
+        });
+
+        res.json({ oauthConfigured: true, url });
+    } catch (error) {
+        console.error("Error generating OAuth URL:", error);
+        res.status(500).json({ message: "Failed to generate auth URL" });
+    }
+});
+
+// Sync Gmail Application Emails
+router.post('/gmail/sync', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        if (!user.gmailConnected) {
+            return res.status(400).json({ message: "Gmail is not connected. Please connect your Gmail account first." });
+        }
+
+        // Clean up initial mock placeholder data if any exists
+        await OutreachRecord.deleteMany({
+            userId: user._id,
+            gmailMessageId: { $regex: /^gmail_sync_.*_(google|msft|amzn)_/ }
+        });
+
+        let newRecordsCount = 0;
+        const newRecords = [];
+
+        // Check if user has OAuth refresh token configured for Google API
+        if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && user.gmailRefreshToken) {
+            try {
+                const oauth2Client = new google.auth.OAuth2(
+                    process.env.GOOGLE_CLIENT_ID,
+                    process.env.GOOGLE_CLIENT_SECRET,
+                    process.env.GOOGLE_REDIRECT_URI || 'http://localhost:5173/hr-outreach'
+                );
+                oauth2Client.setCredentials({
+                    access_token: user.gmailAccessToken,
+                    refresh_token: user.gmailRefreshToken
+                });
+
+                const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+                const listRes = await gmail.users.messages.list({
+                    userId: 'me',
+                    q: 'subject:(application OR applied OR job OR engineer OR developer OR recruiter OR interview OR role)',
+                    maxResults: 20
+                });
+
+                const messages = listRes.data.messages || [];
+                for (const msg of messages) {
+                    const existing = await OutreachRecord.findOne({ userId: user._id, gmailMessageId: msg.id });
+                    if (existing) continue;
+
+                    const detail = await gmail.users.messages.get({ userId: 'me', id: msg.id, format: 'full' });
+                    const headers = detail.data.payload.headers || [];
+                    const getHeader = (name) => headers.find(h => h.name.toLowerCase() === name.toLowerCase())?.value || '';
+
+                    const subject = getHeader('Subject') || 'Job Application Email';
+                    const fromHeader = getHeader('From');
+                    const toHeader = getHeader('To');
+                    const dateHeader = getHeader('Date');
+
+                    const isSentByMe = fromHeader.toLowerCase().includes(user.gmailEmail.toLowerCase());
+                    const hrEmail = isSentByMe ? (toHeader.match(/<([^>]+)>/)?.[1] || toHeader) : (fromHeader.match(/<([^>]+)>/)?.[1] || fromHeader);
+
+                    // Infer company name from domain or subject
+                    let companyName = 'Target Company';
+                    const domainMatch = hrEmail.match(/@([^.]+)\./);
+                    if (domainMatch && !['gmail', 'yahoo', 'outlook', 'hotmail'].includes(domainMatch[1])) {
+                        companyName = domainMatch[1].charAt(0).toUpperCase() + domainMatch[1].slice(1);
+                    }
+                    if (subject.toLowerCase().includes('at ')) {
+                        const parts = subject.split(/at /i);
+                        if (parts[1]) companyName = parts[1].split(' ')[0].trim();
+                    }
+
+                    // Infer position
+                    let position = 'Software Engineer';
+                    if (subject.toLowerCase().includes('frontend')) position = 'Frontend Engineer';
+                    else if (subject.toLowerCase().includes('backend')) position = 'Backend Engineer';
+                    else if (subject.toLowerCase().includes('full stack') || subject.toLowerCase().includes('fullstack')) position = 'Full Stack Developer';
+
+                    // Infer status
+                    let status = 'sent';
+                    const snippet = detail.data.snippet || '';
+                    if (snippet.toLowerCase().includes('interview') || subject.toLowerCase().includes('interview')) status = 'interviewing';
+                    else if (snippet.toLowerCase().includes('offer')) status = 'offered';
+                    else if (snippet.toLowerCase().includes('reject') || snippet.toLowerCase().includes('unfortunately')) status = 'rejected';
+                    else if (!isSentByMe) status = 'replied';
+
+                    const newRecord = new OutreachRecord({
+                        userId: user._id,
+                        hrEmail,
+                        companyName,
+                        position,
+                        subject,
+                        body: snippet || subject,
+                        status,
+                        source: 'gmail_sync',
+                        gmailMessageId: msg.id,
+                        sentAt: dateHeader ? new Date(dateHeader) : new Date()
+                    });
+
+                    await newRecord.save();
+                    newRecords.push(newRecord);
+                    newRecordsCount++;
+                }
+            } catch (apiErr) {
+                console.error("Gmail API fetch error:", apiErr.message);
+            }
+        }
+
+        // IMAP real Gmail Inbox & Sent Mail fetcher
+        if (newRecordsCount === 0) {
+            const targetEmail = user.gmailEmail || process.env.SMTP_USER;
+            const cleanPass = process.env.SMTP_PASS?.replace(/\s+/g, '').trim();
+
+            if (targetEmail && cleanPass) {
+                try {
+                    console.log(`Connecting via IMAP to Gmail for: ${targetEmail}...`);
+                    const client = new ImapFlow({
+                        host: process.env.IMAP_HOST || 'imap.gmail.com',
+                        port: Number(process.env.IMAP_PORT) || 993,
+                        secure: true,
+                        auth: {
+                            user: targetEmail,
+                            pass: cleanPass
+                        },
+                        logger: false
+                    });
+
+                    await client.connect();
+
+                    // Mailboxes to search for applications
+                    const boxes = ['INBOX', '[Gmail]/Sent Mail'];
+                    for (const box of boxes) {
+                        try {
+                            const lock = await client.getMailboxLock(box);
+                            try {
+                                const status = await client.status(box, { messages: true });
+                                if (!status.messages || status.messages === 0) continue;
+
+                                const startSeq = Math.max(1, status.messages - 30);
+                                const range = `${startSeq}:${status.messages}`;
+
+                                for await (const message of client.fetch(range, { envelope: true, source: true })) {
+                                    if (!message.source) continue;
+                                    const parsed = await simpleParser(message.source);
+                                    const subject = parsed.subject || '';
+                                    const fromText = parsed.from?.text || '';
+                                    const toText = parsed.to?.text || '';
+                                    const bodyText = parsed.text || parsed.html || '';
+
+                                    // Check if message is job/application related
+                                    const isJobRelated = /application|applied|job|career|recruiter|interview|developer|engineer|hiring|offer|resume|position|role/i.test(subject + ' ' + bodyText.slice(0, 300));
+                                    if (!isJobRelated) continue;
+
+                                    const msgId = parsed.messageId || `imap_${message.uid}_${Date.now()}`;
+                                    
+                                    // Extract real applied date from message envelope / headers
+                                    let realAppliedDate = message.envelope?.date || parsed.date;
+
+                                    // Body text date extraction fallback (e.g. "submitted on August 5, 2026")
+                                    if (bodyText) {
+                                        const dateMatch = bodyText.match(/(?:submitted|applied|received|sent|on)\s+([A-Za-z]+\s+\d{1,2},\s+\d{4}|\d{1,2}\/\d{1,2}\/\d{4})/i);
+                                        if (dateMatch && dateMatch[1]) {
+                                            const extractedDate = new Date(dateMatch[1]);
+                                            if (!isNaN(extractedDate.getTime())) {
+                                                realAppliedDate = extractedDate;
+                                            }
+                                        }
+                                    }
+
+                                    if (!realAppliedDate || isNaN(new Date(realAppliedDate).getTime())) {
+                                        realAppliedDate = message.internalDate || new Date();
+                                    }
+
+                                    const existing = await OutreachRecord.findOne({ userId: user._id, gmailMessageId: msgId });
+                                    if (existing) {
+                                        // Ensure existing record has the real email sentAt date
+                                        if (!existing.sentAt || new Date(existing.sentAt).getTime() !== new Date(realAppliedDate).getTime()) {
+                                            existing.sentAt = realAppliedDate;
+                                            await existing.save();
+                                        }
+                                        continue;
+                                    }
+
+                                    const isSentByMe = fromText.toLowerCase().includes(targetEmail.toLowerCase());
+                                    const hrEmailRaw = isSentByMe ? toText : fromText;
+                                    const hrEmailMatch = hrEmailRaw.match(/<([^>]+)>/) || [null, hrEmailRaw];
+                                    const hrEmail = (hrEmailMatch[1] || hrEmailRaw).trim();
+
+                                    // Extract Company Name
+                                    let companyName = 'Target Company';
+                                    const domainMatch = hrEmail.match(/@([^.]+)\./);
+                                    if (domainMatch && !['gmail', 'yahoo', 'outlook', 'hotmail', 'icloud'].includes(domainMatch[1])) {
+                                        companyName = domainMatch[1].charAt(0).toUpperCase() + domainMatch[1].slice(1);
+                                    }
+                                    if (/at /i.test(subject)) {
+                                        const parts = subject.split(/at /i);
+                                        if (parts[1]) companyName = parts[1].split(/[\s,-]/)[0].trim();
+                                    }
+
+                                    // Extract Position
+                                    let position = 'Software Engineer';
+                                    if (/frontend/i.test(subject)) position = 'Frontend Engineer';
+                                    else if (/backend/i.test(subject)) position = 'Backend Engineer';
+                                    else if (/full stack|fullstack/i.test(subject)) position = 'Full Stack Developer';
+                                    else if (/developer/i.test(subject)) position = 'Software Developer';
+
+                                    // Extract Status
+                                    let statusVal = 'sent';
+                                    if (/interview/i.test(subject + ' ' + bodyText)) statusVal = 'interviewing';
+                                    else if (/offer/i.test(subject + ' ' + bodyText)) statusVal = 'offered';
+                                    else if (/reject|unfortunately/i.test(subject + ' ' + bodyText)) statusVal = 'rejected';
+                                    else if (!isSentByMe) statusVal = 'replied';
+
+                                    const newRecord = new OutreachRecord({
+                                        userId: user._id,
+                                        hrEmail,
+                                        companyName,
+                                        position,
+                                        subject,
+                                        body: bodyText.slice(0, 1000) || subject,
+                                        status: statusVal,
+                                        source: 'gmail_sync',
+                                        gmailMessageId: msgId,
+                                        sentAt: realAppliedDate
+                                    });
+
+                                    await newRecord.save();
+                                    newRecords.push(newRecord);
+                                    newRecordsCount++;
+                                }
+                            } finally {
+                                lock.release();
+                            }
+                        } catch (bErr) {
+                            console.log(`IMAP box ${box} sync notice:`, bErr.message);
+                        }
+                    }
+
+                    await client.logout();
+                } catch (imapErr) {
+                    console.error("IMAP Gmail fetch error:", imapErr.message);
+                }
+            }
+        }
+
+        user.gmailLastSynced = new Date();
+        await user.save();
+
+        const allRecords = await OutreachRecord.find({ userId: req.userId }).sort({ createdAt: -1 });
+
+        res.json({
+            message: newRecordsCount > 0 ? `Synced ${newRecordsCount} new job application(s) from Gmail!` : 'Gmail inbox synced. All applications are up to date.',
+            syncedCount: newRecordsCount,
+            lastSynced: user.gmailLastSynced,
+            records: allRecords
+        });
+
+    } catch (error) {
+        console.error("Error syncing Gmail:", error);
+        res.status(500).json({ message: "Error syncing Gmail applications" });
     }
 });
 

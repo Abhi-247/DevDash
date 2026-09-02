@@ -113,10 +113,32 @@ const userSchema=new mongoose.Schema({
             commits: Number,
             contributions: Number
         }]
+    },
+    // Gmail Integration
+    gmailConnected: {
+        type: Boolean,
+        default: false
+    },
+    gmailEmail: {
+        type: String,
+        default: ''
+    },
+    gmailAccessToken: {
+        type: String,
+        default: ''
+    },
+    gmailRefreshToken: {
+        type: String,
+        default: ''
+    },
+    gmailTokenExpiry: {
+        type: Date
+    },
+    gmailLastSynced: {
+        type: Date
     }
 },
 {timestamps:true}
-
 )
 
 const User=mongoose.model("User",userSchema);
