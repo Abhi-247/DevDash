@@ -137,9 +137,32 @@ function calculateDevScore(stats = {}) {
     return Math.min(2500, Math.round(score));
 }
 
+/**
+ * Fetch GeeksforGeeks user public stats
+ */
+async function fetchGFGStats(username) {
+    if (!username) return null;
+    try {
+        const response = await axios.get(`https://geeks-for-geeks-api.vercel.app/api/user/${username}`, { timeout: 6000 });
+        if (response.data && response.data.info) {
+            return {
+                username,
+                connected: true,
+                codingScore: Number(response.data.info.codingScore) || 0,
+                totalSolved: Number(response.data.info.totalProblemsSolved) || 0,
+                lastSynced: new Date()
+            };
+        }
+        return { connected: true, username, lastSynced: new Date() };
+    } catch (e) {
+        return { connected: true, username, lastSynced: new Date() };
+    }
+}
+
 module.exports = {
     fetchLeetCodeStats,
     fetchCodeforcesStats,
     fetchGitHubStats,
+    fetchGFGStats,
     calculateDevScore
 };

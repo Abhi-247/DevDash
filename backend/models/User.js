@@ -15,8 +15,20 @@ const userSchema=new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true,
+        required:false,
         trim:true
+    },
+    googleId: {
+        type: String,
+        sparse: true
+    },
+    avatar: {
+        type: String,
+        default: ''
+    },
+    authProvider: {
+        type: String,
+        default: 'local'
     },
     // Profile information
     fullName: {
@@ -133,6 +145,10 @@ const userSchema=new mongoose.Schema({
     },
     gmailTokenExpiry: {
         type: Date
+    },
+    gmailAppPassword: {
+        type: String,
+        default: ''
     },
     gmailLastSynced: {
         type: Date

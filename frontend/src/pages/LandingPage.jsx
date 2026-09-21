@@ -47,7 +47,9 @@ import {
     Check,
     RefreshCw,
     Send,
-    Paperclip
+    Paperclip,
+    Plus,
+    Search
 } from 'lucide-react';
 
 /* ─── Platform Chip ─── */
@@ -139,273 +141,471 @@ const LandingPage = () => {
             {/* Navbar */}
             <PublicNavbar onOpenAuth={setAuthModal} />
 
-            {/* Hero Section */}
-            <section className="relative pt-32 sm:pt-36 pb-16 sm:pb-24 px-6 sm:px-12 max-w-7xl mx-auto overflow-hidden">
-                {/* Animated background mesh blobs */}
-                <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+            {/* Hero Section — Centered minimal layout */}
+            <section className="relative pt-36 sm:pt-44 pb-16 sm:pb-24 px-6 sm:px-12 overflow-hidden">
+                {/* Soft gradient background */}
+                <div className="absolute inset-0 -z-10 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-b from-purple-50/60 via-white to-white dark:from-purple-950/20 dark:via-slate-950 dark:to-slate-950 transition-colors duration-300" />
                     <motion.div
                         animate={{ x: [0, 30, -20, 0], y: [0, -20, 10, 0], scale: [1, 1.1, 0.95, 1] }}
                         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/10 via-indigo-400/8 to-transparent rounded-full blur-3xl"
+                        className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/8 via-indigo-400/5 to-transparent rounded-full blur-3xl"
                     />
                     <motion.div
                         animate={{ x: [0, -25, 15, 0], y: [0, 15, -25, 0], scale: [1, 0.9, 1.1, 1] }}
                         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -top-10 -right-40 w-[450px] h-[450px] bg-gradient-to-bl from-pink-400/8 via-indigo-400/6 to-transparent rounded-full blur-3xl"
-                    />
-                    <motion.div
-                        animate={{ x: [0, 20, -10, 0], y: [0, -15, 20, 0] }}
-                        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute bottom-0 left-1/4 w-[350px] h-[350px] bg-gradient-to-tr from-indigo-400/6 via-purple-400/5 to-transparent rounded-full blur-3xl"
+                        className="absolute -top-10 right-1/4 w-[450px] h-[450px] bg-gradient-to-bl from-pink-400/6 via-indigo-400/4 to-transparent rounded-full blur-3xl"
                     />
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-                    {/* Left Column: Text & CTAs */}
-                    <div className="lg:col-span-7 text-left z-10">
-                        {/* Pill Badge */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50/80 dark:bg-purple-950/40 border border-purple-200/60 dark:border-purple-800/40 text-purple-700 dark:text-purple-300 text-xs sm:text-sm font-bold shadow-sm backdrop-blur-sm mb-5"
-                        >
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-600 dark:bg-purple-400"></span>
-                            </span>
-                            <span>All-in-one developer dashboard</span>
-                        </motion.div>
-
-                        {/* Title - Staggered word animation */}
-                        <motion.h1
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.3, delay: 0.2 }}
-                            className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-[900] text-slate-900 dark:text-white leading-[1.12] tracking-tight mb-5"
-                        >
-                            <motion.span
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.25 }}
-                                className="inline-block"
-                            >
-                                All your coding profiles{' '}
-                            </motion.span>
-                            <br className="hidden sm:inline" />
-                            <motion.span
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.4 }}
-                                className="inline-block"
-                            >
-                                in one unified{' '}
-                            </motion.span>
-                            <br className="hidden sm:inline" />
-                            <motion.span
-                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                transition={{ duration: 0.6, delay: 0.55 }}
-                                className="inline-block bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_4s_ease-in-out_infinite]"
-                            >
-                                developer dashboard
-                            </motion.span>
-                        </motion.h1>
-
-                        {/* Subtitle */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.65 }}
-                            className="text-slate-600 dark:text-slate-400 text-sm sm:text-base lg:text-lg font-medium leading-relaxed max-w-lg mb-6"
-                        >
-                            Connect GitHub, LeetCode, Codeforces, and more. Track your growth and showcase your skills with a single professional link.
-                        </motion.p>
-
-                        {/* Buttons */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.75 }}
-                            className="flex flex-wrap items-center gap-3.5 mb-8"
-                        >
-                            <motion.button
-                                onClick={() => navigate('/signup')}
-                                className="group relative flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base shadow-lg shadow-purple-600/25 transition-all duration-300 active:scale-95 cursor-pointer overflow-hidden"
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite] rounded-xl" />
-                                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 blur-xl -z-10 scale-110" />
-                                <span className="relative z-10">Get Started Free</span>
-                                <ArrowRight size={17} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                            </motion.button>
-                            <motion.button
-                                onClick={() => navigate('/u/alexdev_demo')}
-                                className="group bg-white hover:bg-slate-50 dark:bg-slate-900/80 dark:hover:bg-slate-800/80 text-slate-800 dark:text-slate-200 px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base border border-slate-200/80 dark:border-slate-700/60 transition-all duration-300 active:scale-95 cursor-pointer shadow-sm backdrop-blur-sm flex items-center gap-2"
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
-                            >
-                                <Play size={15} className="text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
-                                View Demo
-                            </motion.button>
-                        </motion.div>
-
-                        {/* Social proof micro-strip */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.6, delay: 0.9 }}
-                            className="flex items-center gap-4 flex-wrap"
-                        >
-                            {/* Stacked avatars */}
-                            <div className="flex -space-x-2.5">
-                                {['bg-gradient-to-br from-indigo-500 to-purple-600', 'bg-gradient-to-br from-pink-500 to-rose-600', 'bg-gradient-to-br from-emerald-500 to-teal-600', 'bg-gradient-to-br from-amber-500 to-orange-600'].map((bg, i) => (
-                                    <div
-                                        key={i}
-                                        className={`w-8 h-8 rounded-full ${bg} border-2 border-white dark:border-slate-950 flex items-center justify-center text-white text-[10px] font-bold`}
-                                    >
-                                        {['AV', 'KR', 'PM', 'SJ'][i]}
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                                <span className="font-bold text-slate-700 dark:text-slate-300">2,400+</span> developers already on board
-                            </div>
-                            <div className="hidden sm:flex items-center gap-1 text-amber-500">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} size={12} fill="currentColor" strokeWidth={0} />
-                                ))}
-                                <span className="text-[11px] text-slate-400 dark:text-slate-500 font-bold ml-1">4.9</span>
-                            </div>
-                        </motion.div>
-                    </div>
-
-                    {/* Right Column: Hero Boy Illustration & Floating Badges */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-                        className="lg:col-span-5 relative flex justify-center items-center mt-4 lg:mt-0"
+                <div className="max-w-4xl mx-auto text-center">
+                    {/* Headline */}
+                    <motion.h1
+                        initial={{ opacity: 0, y: 25 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.15 }}
+                        className="text-2xl sm:text-3xl md:text-[2.7rem] lg:text-[3.2rem] font-[800] text-slate-900 dark:text-white leading-[1.18] tracking-tight mb-6"
                     >
-                        {/* Multi-layer Glowing Aura */}
-                        <div className="absolute w-[300px] h-[300px] sm:w-[420px] sm:h-[420px] bg-gradient-to-tr from-purple-500/12 via-indigo-500/12 to-pink-500/8 rounded-full blur-3xl -z-10 pointer-events-none" />
-                        <motion.div
-                            animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.7, 0.4] }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] bg-gradient-to-bl from-purple-600/10 to-indigo-600/10 rounded-full blur-2xl -z-10 pointer-events-none"
-                        />
+                        <span>All your </span>
+                        <span
+                            className="relative inline"
+                            style={{
+                                background: 'linear-gradient(180deg, transparent 55%, rgba(250,204,21,0.35) 55%)',
+                            }}
+                        >
+                            coding profiles
+                        </span>
+                        <span> in one unified</span>
+                        <br />
+                        <span
+                            className="relative inline"
+                            style={{
+                                background: 'linear-gradient(180deg, transparent 55%, rgba(250,204,21,0.35) 55%)',
+                            }}
+                        >
+                            developer dashboard
+                        </span>
+                    </motion.h1>
 
-                        {/* Main Hero Image & Badges Container */}
-                        <div className="relative w-full max-w-md flex justify-center items-center">
-                            <motion.img
-                                src={boyHeroImg}
-                                alt="Developer Working on Laptop"
-                                className="w-full h-auto object-contain max-h-[440px] drop-shadow-2xl"
-                                whileHover={{ scale: 1.03 }}
-                                transition={{ duration: 0.5, ease: "easeOut" }}
-                            />
+                    {/* Subtitle */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.35 }}
+                        className="text-slate-500 dark:text-slate-400 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-2xl mx-auto mb-10"
+                    >
+                        Connect GitHub, LeetCode, Codeforces, and more, with one click. Sync your coding profiles, generate AI-powered resumes, automate HR outreach, and showcase your developer portfolio — all from a single unified dashboard.
+                    </motion.p>
 
-                            {/* Floating Badge 1: GitHub (Top Left) — Glassmorphism */}
-                            <motion.div
-                                animate={{ y: [0, -10, 0], rotate: [0, 2, -2, 0] }}
-                                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -top-2 left-0 sm:left-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-slate-900/5 dark:shadow-black/20 border border-slate-200/50 dark:border-slate-700/50 flex items-center justify-center"
-                            >
-                                <Github className="w-5 h-5 sm:w-7 sm:h-7 text-slate-900 dark:text-white" />
-                            </motion.div>
-
-                            {/* Floating Badge 2: Code </> (Middle Left) */}
-                            <motion.div
-                                animate={{ y: [0, 10, 0], x: [0, -3, 0] }}
-                                transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute top-1/3 -left-3 sm:-left-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-purple-500/5 dark:shadow-purple-500/10 border border-purple-200/30 dark:border-purple-800/30 flex items-center justify-center"
-                            >
-                                <Code2 className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
-                            </motion.div>
-
-                            {/* Floating Badge 3: Folder (Top Right) */}
-                            <motion.div
-                                animate={{ y: [0, -8, 0], rotate: [0, -3, 3, 0] }}
-                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute top-4 right-0 sm:right-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-indigo-500/5 dark:shadow-indigo-500/10 border border-indigo-200/30 dark:border-indigo-800/30 flex items-center justify-center"
-                            >
-                                <Folder className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
-                            </motion.div>
-
-                            {/* Floating Badge 4: Verified (Middle Right) */}
-                            <motion.div
-                                animate={{ y: [0, 12, 0], x: [0, 3, 0] }}
-                                transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute top-1/2 -right-3 sm:-right-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl shadow-xl shadow-emerald-500/5 dark:shadow-emerald-500/10 border border-emerald-200/30 dark:border-emerald-800/30 flex items-center justify-center"
-                            >
-                                <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-500" />
-                            </motion.div>
-
-                            {/* NEW: Floating mini stat badge (Bottom Left) */}
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1, y: [0, -6, 0] }}
-                                transition={{ opacity: { delay: 1, duration: 0.5 }, scale: { delay: 1, duration: 0.5 }, y: { duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 } }}
-                                className="absolute bottom-8 -left-2 sm:left-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 flex items-center gap-2"
-                            >
-                                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-                                    <Flame className="w-4 h-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider leading-none">Streak</p>
-                                    <p className="text-sm font-[900] text-slate-800 dark:text-white leading-tight">67 Days 🔥</p>
-                                </div>
-                            </motion.div>
-
-                            {/* NEW: Floating rating badge (Bottom Right) */}
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1, y: [0, 8, 0] }}
-                                transition={{ opacity: { delay: 1.3, duration: 0.5 }, scale: { delay: 1.3, duration: 0.5 }, y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.5 } }}
-                                className="absolute bottom-16 -right-2 sm:right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 flex items-center gap-2"
-                            >
-                                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                                    <TrendingUp className="w-4 h-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider leading-none">Rating</p>
-                                    <p className="text-sm font-[900] text-slate-800 dark:text-white leading-tight">1,842 ↑</p>
-                                </div>
-                            </motion.div>
-                        </div>
+                    {/* Single CTA Button */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="flex justify-center"
+                    >
+                        <motion.button
+                            onClick={() => navigate('/signup')}
+                            className="group relative flex items-center justify-center gap-2 text-white px-9 py-4 rounded-full font-bold text-base shadow-lg shadow-purple-600/25 transition-all duration-300 cursor-pointer overflow-hidden"
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.97 }}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite] rounded-full" />
+                            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 blur-xl -z-10 scale-110" />
+                            <span className="relative z-10">Get Started Free Now!</span>
+                            <ArrowRight size={17} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
                     </motion.div>
                 </div>
             </section>
 
-            {/* Platform Integration — Infinite Scroll */}
-            <section className="py-12 bg-white dark:bg-slate-950 overflow-hidden transition-colors duration-300">
-                <div className="text-center mb-8 px-6">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-[900] text-slate-800 dark:text-white tracking-tight"
-                    >
-                        Connect all your <span className="text-indigo-650 dark:text-indigo-400">favorite platforms</span>
-                    </motion.h2>
-                    <p className="text-slate-400 dark:text-slate-500 font-bold mt-3 text-sm tracking-wide">
-                        Coding · Development · Deployment · Professional
-                    </p>
+            {/* Platform Integration Showcase — 2-Column Section matching reference */}
+            <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 border-y border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300 relative overflow-hidden">
+                {/* Decorative ambient background glows */}
+                <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-purple-500/8 rounded-full blur-3xl pointer-events-none -z-10" />
+                <div className="absolute top-1/2 right-10 -translate-y-1/2 w-96 h-96 bg-indigo-500/8 rounded-full blur-3xl pointer-events-none -z-10" />
+
+                {/* Top-right sparkle accent rays */}
+                <div className="absolute top-8 right-12 sm:right-24 text-purple-400/50 pointer-events-none hidden sm:block">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                        <line x1="8" y1="28" x2="2" y2="34" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <line x1="18" y1="20" x2="18" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <line x1="26" y1="24" x2="34" y2="28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
                 </div>
 
-                <div>
-                    <ScrollStrip speed={30} direction="left" platforms={[
-                        { name: "LeetCode", color: "text-[#FFA116]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg> },
-                        { name: "GitHub", color: "text-slate-900 dark:text-white", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> },
-                        { name: "Codeforces", color: "text-[#1F8ACB]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M4.5 7.5C5.328 7.5 6 8.172 6 9v10.5c0 .828-.672 1.5-1.5 1.5h-3C.672 21 0 20.328 0 19.5V9c0-.828.672-1.5 1.5-1.5h3zm9.75-4.5c.828 0 1.5.672 1.5 1.5V19.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V4.5c0-.828.672-1.5 1.5-1.5h3zm9.75 7.5c.828 0 1.5.672 1.5 1.5V19.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V12c0-.828.672-1.5 1.5-1.5h3z"/></svg> },
-                        { name: "Vercel", color: "text-slate-900 dark:text-white", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M24 22.525H0l12-21.05 12 21.05z"/></svg> },
-                        { name: "CodeChef", color: "text-[#5B4638] dark:text-[#cbb09d]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M11.257.004C5.37-.114.568 4.5.568 10.357c0 3.118 1.316 5.936 3.43 7.934L2.567 19.72a.756.756 0 0 0 .535 1.29h.232l1.842-1.848c1.688 1.104 3.7 1.745 5.86 1.745.308 0 .613-.013.914-.038l1.297 1.3h.232a.756.756 0 0 0 .535-1.29l-1.243-1.248c3.61-1.395 6.183-4.846 6.183-8.904 0-4.624-3.293-8.49-7.697-9.523zm-.258 1.668c.149 0 .296.006.443.014a10.08 10.08 0 0 1 3.01 7.54 10.08 10.08 0 0 1-3.01 7.54 10.08 10.08 0 0 1-3.007-7.54 10.08 10.08 0 0 1 3.007-7.54c.187-.008.375-.014.557-.014z"/></svg> },
-                        { name: "LinkedIn", color: "text-[#0A66C2]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
-                        { name: "HackerRank", color: "text-[#2EC866]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 0c1.285 0 9.75 4.886 10.392 6 .645 1.115.645 11.885 0 13-.642 1.114-9.107 6-10.392 6-1.284 0-9.75-4.886-10.392-6C1 17.885 1 7.115 1.6 6 2.25 4.886 10.715 0 12 0zm2.295 6.799c-.141 0-.258.115-.258.258v3.875H9.963V6.908h.701c.141 0 .258-.116.258-.258a.253.253 0 0 0-.062-.166L9.346 4.807a.26.26 0 0 0-.393 0L7.469 6.484a.253.253 0 0 0-.062.166c0 .141.115.258.258.258h.701v10.184h-.701a.256.256 0 0 0-.258.258c0 .061.023.12.062.166l1.484 1.677a.26.26 0 0 0 .393 0l1.484-1.677a.253.253 0 0 0 .062-.166.256.256 0 0 0-.258-.258h-.701v-3.875h4.074v3.875h-.701a.256.256 0 0 0-.258.258c0 .061.023.12.062.166l1.484 1.677a.26.26 0 0 0 .393 0l1.484-1.677a.253.253 0 0 0 .062-.166.256.256 0 0 0-.258-.258h-.701V6.908h.701c.141 0 .258-.116.258-.258a.253.253 0 0 0-.062-.166L15.4 4.807a.26.26 0 0 0-.393 0l-1.484 1.677a.253.253 0 0 0-.062.166c0 .141.116.149.834.149z"/></svg> },
-                        { name: "GitLab", color: "text-[#FC6D26]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M4.845.904c-.435 0-.82.28-.955.692C2.639 5.449 1.246 9.728.07 13.335a1.437 1.437 0 0 0 .522 1.607l11.071 8.045c.2.145.472.144.67-.004L23.408 14.9a1.436 1.436 0 0 0 .522-1.607c-1.176-3.607-2.569-7.886-3.82-11.739a1.003 1.003 0 0 0-.955-.692c-.437 0-.82.28-.956.692l-2.572 7.906H8.372L5.8 1.596A1.003 1.003 0 0 0 4.845.904z"/></svg> },
-                        { name: "Netlify", color: "text-[#00C7B7]", svg: <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M16.934 8.519a1.044 1.044 0 0 1 .303.23l2.349-1.045-2.192-2.171-.491 2.954zM12.06 6.546a1.305 1.305 0 0 1 .209.574l3.497 1.482a1.044 1.044 0 0 1 .355-.177l.574-3.55-1.313-1.256-3.322 2.927z"/></svg> },
-                    ]} />
+                <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+                        
+                        {/* ---------- LEFT COLUMN: Headline, Text, Platform Pills & CTA ---------- */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                            className="lg:col-span-5 space-y-6 text-left"
+                        >
+                            {/* Connect & Sync Pill Badge */}
+                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100/70 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 text-xs sm:text-sm font-bold shadow-xs">
+                                <Link2 size={15} className="text-purple-600 dark:text-purple-400 -rotate-45" />
+                                <span>Connect & Sync</span>
+                            </div>
+
+                            {/* Headline */}
+                            <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-[800] text-slate-900 dark:text-white tracking-tight leading-[1.14]">
+                                Connect all your <br />
+                                <span className="text-[#6D28D9] dark:text-[#A78BFA]">
+                                    developer platforms
+                                </span>
+                            </h2>
+
+                            {/* Subtext */}
+                            <p className="text-slate-500 dark:text-slate-400 font-normal text-sm sm:text-base leading-relaxed max-w-lg">
+                                Link your coding, development, and professional profiles in seconds. Keep everything in sync and let DevDash build your unified developer identity automatically.
+                            </p>
+
+                            {/* 8 Platform Pills (2 rows of 4) */}
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 pb-2">
+                                {[
+                                    {
+                                        name: "GitHub",
+                                        color: "text-slate-900 dark:text-white",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "LeetCode",
+                                        color: "text-[#FFA116]",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "Codeforces",
+                                        color: "text-[#1F8ACB]",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M4.5 7.5C5.328 7.5 6 8.172 6 9v10.5c0 .828-.672 1.5-1.5 1.5h-3C.672 21 0 20.328 0 19.5V9c0-.828.672-1.5 1.5-1.5h3zm9.75-4.5c.828 0 1.5.672 1.5 1.5V19.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V4.5c0-.828.672-1.5 1.5-1.5h3zm9.75 7.5c.828 0 1.5.672 1.5 1.5V19.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V12c0-.828.672-1.5 1.5-1.5h3z" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "Vercel",
+                                        color: "text-slate-900 dark:text-white",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                                <path d="M24 22.525H0l12-21.05 12 21.05z" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "CodeChef",
+                                        color: "text-[#5B4638] dark:text-[#cbb09d]",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M11.257.004C5.37-.114.568 4.5.568 10.357c0 3.118 1.316 5.936 3.43 7.934L2.567 19.72a.756.756 0 0 0 .535 1.29h.232l1.842-1.848c1.688 1.104 3.7 1.745 5.86 1.745.308 0 .613-.013.914-.038l1.297 1.3h.232a.756.756 0 0 0 .535-1.29l-1.243-1.248c3.61-1.395 6.183-4.846 6.183-8.904 0-4.624-3.293-8.49-7.697-9.523zm-.258 1.668c.149 0 .296.006.443.014a10.08 10.08 0 0 1 3.01 7.54 10.08 10.08 0 0 1-3.01 7.54 10.08 10.08 0 0 1-3.007-7.54 10.08 10.08 0 0 1 3.007-7.54c.187-.008.375-.014.557-.014z" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "LinkedIn",
+                                        color: "text-[#0A66C2]",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "Netlify",
+                                        color: "text-[#00C7B7]",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M16.934 8.519a1.044 1.044 0 0 1 .303.23l2.349-1.045-2.192-2.171-.491 2.954zM12.06 6.546a1.305 1.305 0 0 1 .209.574l3.497 1.482a1.044 1.044 0 0 1 .355-.177l.574-3.55-1.313-1.256-3.322 2.927z" />
+                                            </svg>
+                                        )
+                                    },
+                                    {
+                                        name: "GitLab",
+                                        color: "text-[#FC6D26]",
+                                        svg: (
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                                <path d="M4.845.904c-.435 0-.82.28-.955.692C2.639 5.449 1.246 9.728.07 13.335a1.437 1.437 0 0 0 .522 1.607l11.071 8.045c.2.145.472.144.67-.004L23.408 14.9a1.436 1.436 0 0 0 .522-1.607c-1.176-3.607-2.569-7.886-3.82-11.739a1.003 1.003 0 0 0-.955-.692c-.437 0-.82.28-.956.692l-2.572 7.906H8.372L5.8 1.596A1.003 1.003 0 0 0 4.845.904z" />
+                                            </svg>
+                                        )
+                                    }
+                                ].map((plat, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="flex items-center gap-2.5 px-3.5 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xs hover:border-purple-300 dark:hover:border-purple-600 hover:shadow transition-all cursor-default"
+                                    >
+                                        <span className={`${plat.color} flex items-center justify-center shrink-0`}>
+                                            {plat.svg}
+                                        </span>
+                                        <span className="font-bold text-slate-800 dark:text-slate-100 text-xs sm:text-sm tracking-tight truncate">
+                                            {plat.name}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* CTA Action Buttons */}
+                            <div className="flex flex-wrap items-center gap-4 pt-2">
+                                <button
+                                    onClick={() => navigate('/signup')}
+                                    className="group flex items-center justify-center gap-2 text-white px-7 py-3.5 rounded-2xl font-bold text-sm sm:text-base shadow-lg shadow-purple-600/25 bg-gradient-to-r from-[#6366F1] to-[#7C3AED] hover:from-[#4F46E5] hover:to-[#6D28D9] transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                                >
+                                    <span>+ Connect Your Accounts</span>
+                                    <ArrowRight size={17} className="group-hover:translate-x-1 transition-transform" />
+                                </button>
+
+                                <button
+                                    onClick={() => navigate('/about')}
+                                    className="flex items-center gap-2 text-[#6D28D9] dark:text-purple-400 font-bold text-sm sm:text-base px-3 py-3.5 hover:opacity-80 transition-opacity cursor-pointer"
+                                >
+                                    <Play size={13} className="fill-[#6D28D9] dark:fill-purple-400 text-[#6D28D9] dark:text-purple-400" />
+                                    <span>See how it works</span>
+                                </button>
+                            </div>
+                        </motion.div>
+
+                        {/* ---------- RIGHT COLUMN: Dashboard Accounts Mockup with Floating Tooltips ---------- */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="lg:col-span-7 relative pt-8 sm:pt-6"
+                        >
+                            {/* Floating GitHub Badge at top */}
+                            <div className="absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 sm:left-[58%] z-20 flex items-center gap-2 pointer-events-none">
+                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl flex items-center justify-center text-slate-900 dark:text-white">
+                                    <Github size={22} />
+                                </div>
+                                <div className="bg-[#7C3AED] text-white text-xs font-bold px-3.5 py-1.5 sm:py-2 rounded-xl shadow-lg relative flex items-center gap-1 whitespace-nowrap">
+                                    <span>Sync your repositories</span>
+                                    {/* Tooltip triangle tail pointing left towards GitHub */}
+                                    <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-r-[6px] border-r-[#7C3AED]" />
+                                </div>
+                            </div>
+
+                            {/* Floating LinkedIn Badge on right */}
+                            <div className="absolute -right-2 sm:-right-6 top-[22%] z-20 hidden sm:flex items-center gap-2 pointer-events-none">
+                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl flex items-center justify-center text-[#0A66C2]">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                    </svg>
+                                </div>
+                                <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-slate-800 dark:text-slate-100 text-xs font-bold px-3.5 py-2 rounded-xl shadow-xl whitespace-nowrap">
+                                    Build your professional profile
+                                </div>
+                            </div>
+
+                            {/* Floating LeetCode Badge at bottom left */}
+                            <div className="absolute -bottom-5 left-4 sm:left-8 z-20 flex items-center gap-2 pointer-events-none">
+                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl flex items-center justify-center text-[#FFA116]">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                                        <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+                                    </svg>
+                                </div>
+                                <div className="bg-[#EEF2FF] dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-[#4338CA] dark:text-indigo-300 text-xs font-bold px-3.5 py-2 rounded-xl shadow-md whitespace-nowrap">
+                                    Track your progress
+                                </div>
+                            </div>
+
+                            {/* Hand-drawn celebration annotation on bottom right */}
+                            <div className="absolute -bottom-8 right-2 sm:right-6 z-20 text-[#6D28D9] dark:text-purple-400 font-sans hidden sm:block pointer-events-none select-none">
+                                <div className="flex items-center gap-2">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" className="text-[#7C3AED] rotate-6">
+                                        <path d="M4 20 C 8 20, 16 16, 18 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="3 3"/>
+                                        <polygon points="12,5 19,4 20,11" fill="currentColor"/>
+                                    </svg>
+                                    <div>
+                                        <div className="text-xs font-black tracking-tight">One Login ✦</div>
+                                        <div className="text-[10px] font-bold opacity-80">Everything You Do</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* The Dashboard Accounts Mockup Card */}
+                            <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-[28px] p-5 sm:p-6 shadow-2xl shadow-purple-500/10 text-left">
+                                {/* Mockup Top Controls */}
+                                <div className="flex items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800 text-xs">
+                                    <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800">
+                                        <span className="px-3.5 py-1 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold shadow-xs">
+                                            Accounts
+                                        </span>
+                                        <span className="px-3.5 py-1 text-slate-500 font-semibold">
+                                            Groups
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-400 text-[11px]">
+                                            <Search size={12} />
+                                            <span>Search accounts</span>
+                                        </div>
+                                        <span className="px-2.5 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-400 font-bold text-[11px] flex items-center gap-1">
+                                            <RefreshCw size={11} />
+                                            <span>Sync All</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Mockup 2-Column Inside Layout */}
+                                <div className="grid grid-cols-12 gap-4 pt-4 items-start">
+                                    {/* Mini Platform Sidebar with ALL 11 items & official colored SVGs */}
+                                    <div className="col-span-4 space-y-1 pr-2 border-r border-slate-100 dark:border-slate-800 text-xs">
+                                        {/* All (Active) */}
+                                        <div className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 font-bold">
+                                            <div className="flex items-center gap-1.5">
+                                                <Layers size={13} className="text-purple-600 dark:text-purple-400" />
+                                                <span>All</span>
+                                            </div>
+                                            <span className="text-[10px] px-1.5 py-0.2 bg-white dark:bg-slate-900 rounded-full font-semibold">1/10</span>
+                                        </div>
+
+                                        {/* LeetCode with green dot */}
+                                        <div className="flex items-center justify-between px-2.5 py-1 rounded-xl text-slate-800 dark:text-slate-200 font-semibold">
+                                            <span className="flex items-center gap-1.5 truncate">
+                                                <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#FFA116] shrink-0">
+                                                    <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+                                                </svg>
+                                                <span className="truncate">LeetCode</span>
+                                            </span>
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                                        </div>
+
+                                        {/* GitHub */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="shrink-0 text-slate-800 dark:text-slate-200">
+                                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                            </svg>
+                                            <span className="truncate">GitHub</span>
+                                        </div>
+
+                                        {/* Codeforces */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#1F8ACB] shrink-0">
+                                                <path d="M4.5 7.5C5.328 7.5 6 8.172 6 9v10.5c0 .828-.672 1.5-1.5 1.5h-3C.672 21 0 20.328 0 19.5V9c0-.828.672-1.5 1.5-1.5h3zm9.75-4.5c.828 0 1.5.672 1.5 1.5V19.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V4.5c0-.828.672-1.5 1.5-1.5h3zm9.75 7.5c.828 0 1.5.672 1.5 1.5V19.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V12c0-.828.672-1.5 1.5-1.5h3z" />
+                                            </svg>
+                                            <span className="truncate">Codeforces</span>
+                                        </div>
+
+                                        {/* GeeksforGeeks */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#2F8D46] shrink-0">
+                                                <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm-1.12 7.02c1.78 0 3.06.96 3.66 2.37l-1.89.87c-.36-.84-1.02-1.32-1.77-1.32-1.29 0-2.22 1.05-2.22 2.76 0 1.74.93 2.79 2.22 2.79.84 0 1.53-.51 1.86-1.38h-2.1v-1.77h4.08v3.66c-.96 1.47-2.31 2.1-3.84 2.1-2.61 0-4.47-1.92-4.47-4.8s1.86-4.8 4.47-4.8zm6.48 4.02h2.04v1.89h-2.04v2.04h-1.89v-2.04h-2.04v-1.89h2.04V9.03h1.89v2.01z" />
+                                            </svg>
+                                            <span className="truncate">GeeksforGeeks</span>
+                                        </div>
+
+                                        {/* HackerRank */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#2EC866] shrink-0">
+                                                <path d="M12 0c1.285 0 9.75 4.886 10.392 6 .645 1.115.645 11.885 0 13-.642 1.114-9.107 6-10.392 6-1.284 0-9.75-4.886-10.392-6C1 17.885 1 7.115 1.6 6 2.25 4.886 10.715 0 12 0zm2.295 6.799c-.141 0-.258.115-.258.258v3.875H9.963V6.908h.701c.141 0 .258-.116.258-.258a.253.253 0 0 0-.062-.166L9.346 4.807a.26.26 0 0 0-.393 0L7.469 6.484a.253.253 0 0 0-.062.166c0 .141.115.258.258.258h.701v10.184h-.701a.256.256 0 0 0-.258.258c0 .061.023.12.062.166l1.484 1.677a.26.26 0 0 0 .393 0l1.484-1.677a.253.253 0 0 0 .062-.166.256.256 0 0 0-.258-.258h-.701v-3.875h4.074v3.875h-.701a.256.256 0 0 0-.258.258c0 .061.023.12.062.166l1.484 1.677a.26.26 0 0 0 .393 0l1.484-1.677a.253.253 0 0 0 .062-.166.256.256 0 0 0-.258-.258h-.701V6.908h.701c.141 0 .258-.116.258-.258a.253.253 0 0 0-.062-.166L15.4 4.807a.26.26 0 0 0-.393 0l-1.484 1.677a.253.253 0 0 0-.062.166c0 .141.116.149.834.149z" />
+                                            </svg>
+                                            <span className="truncate">HackerRank</span>
+                                        </div>
+
+                                        {/* CodeChef */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#5B4638] dark:text-[#cbb09d] shrink-0">
+                                                <path d="M11.257.004C5.37-.114.568 4.5.568 10.357c0 3.118 1.316 5.936 3.43 7.934L2.567 19.72a.756.756 0 0 0 .535 1.29h.232l1.842-1.848c1.688 1.104 3.7 1.745 5.86 1.745.308 0 .613-.013.914-.038l1.297 1.3h.232a.756.756 0 0 0 .535-1.29l-1.243-1.248c3.61-1.395 6.183-4.846 6.183-8.904 0-4.624-3.293-8.49-7.697-9.523zm-.258 1.668c.149 0 .296.006.443.014a10.08 10.08 0 0 1 3.01 7.54 10.08 10.08 0 0 1-3.01 7.54 10.08 10.08 0 0 1-3.007-7.54 10.08 10.08 0 0 1 3.007-7.54c.187-.008.375-.014.557-.014z" />
+                                            </svg>
+                                            <span className="truncate">CodeChef</span>
+                                        </div>
+
+                                        {/* LinkedIn */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#0A66C2] shrink-0">
+                                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                            </svg>
+                                            <span className="truncate">LinkedIn</span>
+                                        </div>
+
+                                        {/* Vercel */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12" className="text-slate-900 dark:text-white shrink-0">
+                                                <path d="M24 22.525H0l12-21.05 12 21.05z" />
+                                            </svg>
+                                            <span className="truncate">Vercel</span>
+                                        </div>
+
+                                        {/* Netlify */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#00C7B7] shrink-0">
+                                                <path d="M16.934 8.519a1.044 1.044 0 0 1 .303.23l2.349-1.045-2.192-2.171-.491 2.954zM12.06 6.546a1.305 1.305 0 0 1 .209.574l3.497 1.482a1.044 1.044 0 0 1 .355-.177l.574-3.55-1.313-1.256-3.322 2.927z" />
+                                            </svg>
+                                            <span className="truncate">Netlify</span>
+                                        </div>
+
+                                        {/* GitLab */}
+                                        <div className="flex items-center gap-1.5 px-2.5 py-1 text-slate-600 dark:text-slate-400 truncate">
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" className="text-[#FC6D26] shrink-0">
+                                                <path d="M4.845.904c-.435 0-.82.28-.955.692C2.639 5.449 1.246 9.728.07 13.335a1.437 1.437 0 0 0 .522 1.607l11.071 8.045c.2.145.472.144.67-.004L23.408 14.9a1.436 1.436 0 0 0 .522-1.607c-1.176-3.607-2.569-7.886-3.82-11.739a1.003 1.003 0 0 0-.955-.692c-.437 0-.82.28-.956.692l-2.572 7.906H8.372L5.8 1.596A1.003 1.003 0 0 0 4.845.904z" />
+                                            </svg>
+                                            <span className="truncate">GitLab</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Mini Main Area matching reference */}
+                                    <div className="col-span-8 space-y-3">
+                                        {/* Connect Account Button */}
+                                        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border-2 border-[#7C3AED] text-[#7C3AED] dark:text-purple-300 text-xs font-bold bg-purple-50/50 dark:bg-purple-950/30">
+                                            <Plus size={13} className="stroke-[2.5]" />
+                                            <span>Connect Account</span>
+                                        </div>
+
+                                        {/* Curved Pointer Arrow */}
+                                        <div className="text-slate-400 dark:text-slate-500 pl-4 py-0.5 pointer-events-none">
+                                            <svg width="40" height="20" viewBox="0 0 40 20" fill="none">
+                                                <path d="M 10 2 C 10 12, 22 15, 32 17" stroke="currentColor" strokeWidth="1.8" strokeDasharray="3 3" fill="none" />
+                                                <polygon points="28,14 34,17 30,20" fill="currentColor" />
+                                            </svg>
+                                        </div>
+
+                                        {/* Mockup Instruction Callout Box */}
+                                        <div className="p-3.5 rounded-2xl border-2 border-indigo-200/80 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-slate-950/40 text-[11px] space-y-2 text-slate-600 dark:text-slate-300 leading-snug">
+                                            <p className="text-slate-800 dark:text-white leading-tight">
+                                                To connect your developer accounts, click <strong className="font-extrabold text-slate-900 dark:text-white">"Connect Account"</strong>. There are two methods available:
+                                            </p>
+                                            <div className="space-y-1">
+                                                <p className="text-[10.5px]">
+                                                    <strong className="text-slate-900 dark:text-white font-bold">Connect:</strong> It will automatically connect your developer account using your public username/handle without any credentials.
+                                                </p>
+                                                <p className="text-[10.5px]">
+                                                    <strong className="text-slate-900 dark:text-white font-bold">Custom App:</strong> It will show you a form to input app credentials or personal access tokens to create your own app and connect your developer account.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Mockup DevScore Ingestion Engine Bar */}
+                                        <div className="p-3 rounded-2xl bg-[#0E0620] dark:bg-black text-white flex items-center justify-between border border-purple-950/60 shadow-md">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-8 h-8 rounded-lg bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 shrink-0">
+                                                    <Sparkles size={15} />
+                                                </div>
+                                                <div>
+                                                    <div className="text-xs font-bold tracking-tight">DevScore™ Ingestion Engine</div>
+                                                    <div className="text-[9.5px] text-slate-400">Syncs submissions, contest rating & repos directly into your portfolio score.</div>
+                                                </div>
+                                            </div>
+                                            <div className="text-right shrink-0 pl-2">
+                                                <span className="text-base sm:text-lg font-black text-white">500</span>
+                                                <span className="text-[10px] text-purple-300 ml-1 font-semibold">/ 2500</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                    </div>
                 </div>
             </section>
 
@@ -417,7 +617,7 @@ const LandingPage = () => {
                         <span>Try Instant No-Login Tool</span>
                     </div>
 
-                    <h2 className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white tracking-tight mb-3">
+                    <h2 className="text-3xl sm:text-4xl font-[800] text-slate-900 dark:text-white tracking-tight mb-3">
                         AI Resume Bullet <span className="text-purple-600 dark:text-purple-400">Transformer</span>
                     </h2>
                     <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base max-w-xl mx-auto mb-8">
@@ -495,7 +695,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <p className="text-purple-600 dark:text-purple-400 font-black uppercase tracking-widest text-xs mb-3">Interactive Showcase</p>
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-[900] text-slate-900 dark:text-white tracking-tight leading-tight">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-[800] text-slate-900 dark:text-white tracking-tight leading-tight">
                             Explore DevDash <span className="text-purple-600 dark:text-purple-400">in Action</span>
                         </h2>
                         <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base max-w-xl mx-auto mt-3">
@@ -515,11 +715,10 @@ const LandingPage = () => {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveFeatureTab(tab.id)}
-                                    className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap cursor-pointer ${
-                                        activeFeatureTab === tab.id
+                                    className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap cursor-pointer ${activeFeatureTab === tab.id
                                             ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-md'
                                             : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
-                                    }`}
+                                        }`}
                                 >
                                     {tab.label}
                                 </button>
@@ -535,7 +734,7 @@ const LandingPage = () => {
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold">
                                         <span>Multi-Platform OAuth</span>
                                     </div>
-                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">Auto-Sync Your Coding Achievements</h3>
+                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white">Auto-Sync Your Coding Achievements</h3>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
                                         DevDash connects seamlessly with LeetCode, GitHub, Codeforces, HackerRank, and GeeksforGeeks. Every solved DSA problem and committed line of code updates your live DevScore automatically.
                                     </p>
@@ -579,11 +778,11 @@ const LandingPage = () => {
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-xs font-bold">
                                         <span>Automated Cold Emails</span>
                                     </div>
-                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">Target HRs & Deliver Resumes Directly</h3>
+                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white">Target HRs & Deliver Resumes Directly</h3>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
                                         Send customized, recruiter-tailored cold emails directly through Gmail SMTP. DevDash attaches your verified PDF resume from the Resume Vault and logs responses in real-time.
                                     </p>
-                                    <button 
+                                    <button
                                         onClick={() => setAuthModal('signup')}
                                         className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-purple-600/20 active:scale-95 cursor-pointer"
                                     >
@@ -621,7 +820,7 @@ const LandingPage = () => {
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
                                         <span>Unified Analytics</span>
                                     </div>
-                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">Visualize Your Developer DNA</h3>
+                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white">Visualize Your Developer DNA</h3>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
                                         Track your commit streaks, DSA difficulty breakdown (Easy / Medium / Hard), and coding activity heatmaps all in one unified dashboard.
                                     </p>
@@ -669,11 +868,11 @@ const LandingPage = () => {
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-bold">
                                         <span>Shareable Portfolio Link</span>
                                     </div>
-                                    <h3 className="text-2xl sm:text-3xl font-[900] text-slate-900 dark:text-white">One Single Link for CVs & LinkedIn</h3>
+                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white">One Single Link for CVs & LinkedIn</h3>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
                                         Share your clean public URL (`devdash.me/u/alexdev_demo`) with recruiters. No login required for tech leads to inspect your verified coding stats!
                                     </p>
-                                    <button 
+                                    <button
                                         onClick={() => navigate('/u/alexdev_demo')}
                                         className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
                                     >
@@ -707,7 +906,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-10">
                         <p className="text-emerald-500 dark:text-emerald-450 font-black uppercase tracking-widest text-xs mb-3">Analytics</p>
-                        <h2 className="text-4xl md:text-[48px] font-[900] text-slate-800 dark:text-white tracking-tight">
+                        <h2 className="text-4xl md:text-[48px] font-[800] text-slate-800 dark:text-white tracking-tight">
                             Track your growth with <span className="text-indigo-600 dark:text-indigo-400">real data</span>
                         </h2>
                     </div>
@@ -731,7 +930,7 @@ const LandingPage = () => {
                                 <div className={`mx-auto mb-3 ${color} group-hover:scale-110 transition-transform`}>
                                     <Icon size={26} strokeWidth={2} />
                                 </div>
-                                <p className={`text-3xl md:text-4xl font-[900] ${color} mb-1`}>{value}</p>
+                                <p className={`text-3xl md:text-4xl font-[800] ${color} mb-1`}>{value}</p>
                                 <p className="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">{label}</p>
                             </motion.div>
                         ))}
@@ -749,7 +948,7 @@ const LandingPage = () => {
                         className="flex-1"
                     >
                         <p className="text-indigo-600 dark:text-indigo-400 font-black uppercase tracking-widest text-xs mb-4">Dashboard</p>
-                        <h2 className="text-4xl md:text-[48px] font-[900] text-slate-800 dark:text-white leading-tight tracking-tight mb-6">
+                        <h2 className="text-4xl md:text-[48px] font-[800] text-slate-800 dark:text-white leading-tight tracking-tight mb-6">
                             See everything<br />at a <span className="relative inline-block text-indigo-600 dark:text-indigo-400">glance
                                 <motion.div initial={{ width: 0 }} whileInView={{ width: '100%' }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.3 }} className="absolute bottom-1 left-0 h-3 bg-indigo-500/10 dark:bg-indigo-500/20 -z-10" />
                             </span>
@@ -782,7 +981,7 @@ const LandingPage = () => {
                         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl p-4 space-y-3 transition-colors">
                             {/* Header */}
                             <div className="flex items-center justify-between px-1">
-                                <p className="text-xs font-[900] text-slate-805 dark:text-slate-200">Developer Overview</p>
+                                <p className="text-xs font-[800] text-slate-805 dark:text-slate-200">Developer Overview</p>
                                 <div className="flex gap-1.5">
                                     <div className="w-2.5 h-2.5 rounded-full bg-red-300 dark:bg-red-950/40"></div>
                                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-300 dark:bg-yellow-950/40"></div>
@@ -802,15 +1001,15 @@ const LandingPage = () => {
                             {/* Stats row */}
                             <div className="grid grid-cols-3 gap-2">
                                 <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-2 text-center transition-colors">
-                                    <p className="text-lg font-[900] text-slate-800 dark:text-white">34</p>
+                                    <p className="text-lg font-[800] text-slate-800 dark:text-white">34</p>
                                     <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Repos</p>
                                 </div>
                                 <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-2 text-center transition-colors">
-                                    <p className="text-lg font-[900] text-[#FFA116]">847</p>
+                                    <p className="text-lg font-[800] text-[#FFA116]">847</p>
                                     <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Solved</p>
                                 </div>
                                 <div className="bg-slate-50 dark:bg-slate-950 rounded-lg p-2 text-center transition-colors">
-                                    <p className="text-lg font-[900] text-[#1F8ACB] dark:text-[#38bdf8]">1842</p>
+                                    <p className="text-lg font-[800] text-[#1F8ACB] dark:text-[#38bdf8]">1842</p>
                                     <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Rating</p>
                                 </div>
                             </div>
@@ -842,7 +1041,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10">
                     <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="flex-1">
                         <p className="text-indigo-650 dark:text-indigo-400 font-black uppercase tracking-widest text-xs mb-4">Why DevDash</p>
-                        <h2 className="text-3xl md:text-[42px] font-[900] text-slate-850 dark:text-white leading-tight tracking-tight mb-10">
+                        <h2 className="text-3xl md:text-[42px] font-[800] text-slate-850 dark:text-white leading-tight tracking-tight mb-10">
                             Built for developers.<br /><span className="text-indigo-600 dark:text-indigo-400">Loved by recruiters.</span>
                         </h2>
                         <div className="space-y-6">
@@ -875,7 +1074,7 @@ const LandingPage = () => {
                                 {[{ label: 'Problems', value: '847', accent: 'text-[#FFA116]' }, { label: 'Repos', value: '34', accent: 'text-slate-700 dark:text-slate-300' }, { label: 'Deploys', value: '12', accent: 'text-[#00C7B7]' }].map(({ label, value, accent }) => (
                                     <div key={label} className="bg-slate-50 dark:bg-slate-950 rounded-2xl p-4 text-center transition-colors">
                                         <p className="text-[10px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500 mb-1">{label}</p>
-                                        <p className={`text-2xl font-[900] ${accent}`}>{value}</p>
+                                        <p className={`text-2xl font-[800] ${accent}`}>{value}</p>
                                     </div>
                                 ))}
                             </div>
@@ -885,7 +1084,7 @@ const LandingPage = () => {
                                     <p className="text-xs font-bold text-green-500">+24% this month</p>
                                 </div>
                                 <div className="flex items-end gap-1.5 h-16">
-                                    {[35,50,40,65,55,80,70,90,60,75,85,95,70,80].map((h, i) => (
+                                    {[35, 50, 40, 65, 55, 80, 70, 90, 60, 75, 85, 95, 70, 80].map((h, i) => (
                                         <motion.div key={i} initial={{ height: 0 }} whileInView={{ height: `${h}%` }} viewport={{ once: true }} transition={{ delay: i * 0.04, duration: 0.4 }} className="flex-1 bg-indigo-650 rounded-sm opacity-70 hover:opacity-100 transition-opacity" />
                                     ))}
                                 </div>
@@ -905,7 +1104,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-10">
                         <p className="text-indigo-600 dark:text-indigo-400 font-black uppercase tracking-widest text-xs mb-3">Testimonials</p>
-                        <h2 className="text-4xl md:text-[48px] font-[900] text-slate-800 dark:text-white tracking-tight">
+                        <h2 className="text-4xl md:text-[48px] font-[800] text-slate-800 dark:text-white tracking-tight">
                             Loved by the <span className="text-indigo-600 dark:text-indigo-400">community</span>
                         </h2>
                     </div>
@@ -943,7 +1142,7 @@ const LandingPage = () => {
                                 <div className="flex items-center gap-3">
                                     <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(' ', '')}`} alt={name} className="w-11 h-11 rounded-full bg-indigo-50 dark:bg-indigo-900/20" />
                                     <div>
-                                        <p className="text-sm font-[900] text-slate-800 dark:text-white">{name}</p>
+                                        <p className="text-sm font-[800] text-slate-800 dark:text-white">{name}</p>
                                         <p className="text-xs font-bold text-slate-400 dark:text-slate-500">{role}</p>
                                     </div>
                                 </div>

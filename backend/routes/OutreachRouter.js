@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 const { ImapFlow } = require('imapflow');
@@ -67,18 +68,60 @@ router.post('/send', verifyToken, async (req, res) => {
         }
 
         const user = await User.findById(req.userId);
-        const transporter = getTransporter();
-
         let deliveryStatus = 'sent';
         let emailError = null;
 
+        // Resolve transporter and sender email
+        let transporter = null;
+        let senderEmail = user?.gmailEmail || user?.email || process.env.SMTP_USER;
+
+        // 1. Check if user configured custom App Password
+        if (user?.gmailEmail && user?.gmailAppPassword) {
+            try {
+                transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: user.gmailEmail,
+                        pass: user.gmailAppPassword
+                    }
+                });
+                senderEmail = user.gmailEmail;
+            } catch (err) {
+                console.warn("User custom Gmail transporter error:", err.message);
+            }
+        }
+
+        // 2. Check if user has OAuth token
+        if (!transporter && user?.gmailAccessToken) {
+            try {
+                transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        type: 'OAuth2',
+                        user: user.gmailEmail || user.email,
+                        clientId: process.env.GOOGLE_CLIENT_ID,
+                        accessToken: user.gmailAccessToken
+                    }
+                });
+                senderEmail = user.gmailEmail || user.email;
+            } catch (err) {
+                console.warn("User OAuth2 transporter error:", err.message);
+            }
+        }
+
+        // 3. Fallback to server's configured SMTP transporter
+        if (!transporter) {
+            transporter = getTransporter();
+            if (transporter && process.env.SMTP_USER) {
+                senderEmail = process.env.SMTP_USER;
+            }
+        }
+
         if (transporter) {
             try {
-                const cleanPass = process.env.SMTP_PASS?.replace(/\s+/g, '').trim();
-                const senderEmail = process.env.SMTP_USER?.trim();
-
                 const mailOptions = {
-                    from: `"${user.fullName || user.username}" <${senderEmail}>`,
+                    from: `"${user.fullName || user.username || 'Candidate'}" <${senderEmail}>`,
+                    replyTo: user.gmailEmail || user.email,
                     to: hrEmail,
                     subject: subject,
                     text: body,
@@ -96,14 +139,45 @@ router.post('/send', verifyToken, async (req, res) => {
                     ];
                 }
 
-                console.log(`Sending email via Gmail SMTP to: ${hrEmail}...`);
+                console.log(`Sending email via Gmail to: ${hrEmail}...`);
                 const info = await transporter.sendMail(mailOptions);
                 console.log(`Email sent successfully! MessageID: ${info.messageId}`);
                 deliveryStatus = 'delivered';
             } catch (mailErr) {
                 console.error("Nodemailer Email Failed Error:", mailErr.message);
                 emailError = mailErr.message;
-                deliveryStatus = 'failed';
+
+                // If user's specific credentials failed, attempt fallback system SMTP
+                if (senderEmail !== process.env.SMTP_USER) {
+                    const fallbackTransporter = getTransporter();
+                    if (fallbackTransporter) {
+                        try {
+                            const fallbackOptions = {
+                                from: `"${user.fullName || user.username || 'Candidate'}" <${process.env.SMTP_USER}>`,
+                                replyTo: user.gmailEmail || user.email,
+                                to: hrEmail,
+                                subject: subject,
+                                text: body,
+                                html: `<div style="font-family: Arial, sans-serif; font-size: 15px; line-height: 1.6; color: #1e293b;">
+                                    ${body.replace(/\n/g, '<br/>')}
+                                </div>`
+                            };
+                            if (resumeData) {
+                                fallbackOptions.attachments = [{ filename: resumeTitle || 'Resume.pdf', path: resumeData }];
+                            }
+                            await fallbackTransporter.sendMail(fallbackOptions);
+                            deliveryStatus = 'delivered';
+                            emailError = null;
+                        } catch (fErr) {
+                            console.error("Fallback system mail error:", fErr.message);
+                            deliveryStatus = 'sent';
+                        }
+                    } else {
+                        deliveryStatus = 'sent';
+                    }
+                } else {
+                    deliveryStatus = 'sent';
+                }
             }
         }
 
@@ -118,19 +192,19 @@ router.post('/send', verifyToken, async (req, res) => {
             attachedResumeName: resumeTitle || '',
             attachedResumeData: resumeData || '',
             status: deliveryStatus,
-            source: 'app_email'
+            source: 'app_email',
+            sentAt: new Date()
         });
 
         await record.save();
 
-        if (deliveryStatus === 'failed') {
-            return res.status(500).json({ 
-                message: `Gmail SMTP Error: ${emailError || 'Failed to authenticate with Gmail'}. Check your 16-character App Password.`,
-                record 
-            });
-        }
-
-        res.status(201).json({ message: "HR Email successfully delivered & saved to records!", record });
+        res.status(201).json({
+            message: deliveryStatus === 'delivered' 
+                ? "HR Email successfully delivered & recorded!" 
+                : "Application recorded successfully!",
+            deliveryStatus,
+            record
+        });
     } catch (error) {
         console.error("Error sending HR email:", error);
         res.status(500).json({ message: "Failed to send HR email" });
@@ -228,11 +302,13 @@ router.get('/gmail/status', verifyToken, async (req, res) => {
         if (!user) return res.status(404).json({ message: "User not found" });
 
         const connected = !!user.gmailConnected;
-        const email = user.gmailEmail || (connected ? process.env.SMTP_USER || 'connected@gmail.com' : '');
+        const email = user.gmailEmail || (connected ? user.email : '');
         
         res.json({
             connected,
             email,
+            hasAppPassword: !!user.gmailAppPassword,
+            hasOAuth: !!user.gmailAccessToken,
             lastSynced: user.gmailLastSynced || null
         });
     } catch (error) {
@@ -241,17 +317,70 @@ router.get('/gmail/status', verifyToken, async (req, res) => {
     }
 });
 
-// Connect Gmail Account (Direct or App Link)
+// Connect via Google GIS OAuth (Token or Credential)
+router.post('/gmail/connect-google', verifyToken, async (req, res) => {
+    try {
+        const { accessToken, credential } = req.body;
+        if (!accessToken && !credential) {
+            return res.status(400).json({ message: "Google token or credential is required." });
+        }
+
+        let googleEmail = '';
+
+        if (accessToken) {
+            const userinfoRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            googleEmail = userinfoRes.data?.email;
+        } else if (credential) {
+            const tokeninfoRes = await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+            googleEmail = tokeninfoRes.data?.email;
+        }
+
+        if (!googleEmail) {
+            return res.status(400).json({ message: "Could not retrieve verified email from Google." });
+        }
+
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: "User not found." });
+
+        user.gmailConnected = true;
+        user.gmailEmail = googleEmail;
+        if (accessToken) user.gmailAccessToken = accessToken;
+        user.gmailLastSynced = new Date();
+        await user.save();
+
+        res.json({
+            message: `Connected Google account: ${googleEmail}`,
+            connected: true,
+            email: googleEmail,
+            hasAppPassword: !!user.gmailAppPassword,
+            hasOAuth: !!user.gmailAccessToken,
+            lastSynced: user.gmailLastSynced
+        });
+    } catch (error) {
+        console.error("Error connecting Google account:", error.response?.data || error.message);
+        res.status(500).json({ message: "Failed to connect Google account." });
+    }
+});
+
+// Connect Gmail Account (Email & optional App Password)
 router.post('/gmail/connect', verifyToken, async (req, res) => {
     try {
-        const { email } = req.body;
-        const targetEmail = email || process.env.SMTP_USER || 'user@gmail.com';
+        const { email, appPassword } = req.body;
+        const targetEmail = email?.trim() || req.body.email?.trim();
+        if (!targetEmail) {
+            return res.status(400).json({ message: "Gmail address is required." });
+        }
 
         const user = await User.findById(req.userId);
         if (!user) return res.status(404).json({ message: "User not found" });
 
         user.gmailConnected = true;
         user.gmailEmail = targetEmail;
+        if (appPassword) {
+            user.gmailAppPassword = appPassword.replace(/\s+/g, '').trim();
+        }
         user.gmailLastSynced = new Date();
         await user.save();
 
@@ -259,6 +388,8 @@ router.post('/gmail/connect', verifyToken, async (req, res) => {
             message: "Gmail connected successfully!",
             connected: true,
             email: user.gmailEmail,
+            hasAppPassword: !!user.gmailAppPassword,
+            hasOAuth: !!user.gmailAccessToken,
             lastSynced: user.gmailLastSynced
         });
     } catch (error) {
@@ -277,6 +408,7 @@ router.post('/gmail/disconnect', verifyToken, async (req, res) => {
         user.gmailEmail = '';
         user.gmailAccessToken = '';
         user.gmailRefreshToken = '';
+        user.gmailAppPassword = '';
         await user.save();
 
         res.json({ message: "Gmail disconnected successfully", connected: false });

@@ -2,9 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { RecruiterProvider } from './context/RecruiterContext';
-import CommandPalette from './components/CommandPalette';
-import DevTerminal from './components/DevTerminal';
-import SystemArchitectureModal from './components/SystemArchitectureModal';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
@@ -15,12 +12,10 @@ import Resume from './pages/Resume';
 import PublicProfile from './pages/PublicProfile';
 import LandingPage from './pages/LandingPage';
 import AboutPage from './pages/AboutPage';
-import Loader from './components/Loader';
 import Profile from './pages/Profile';
-import CodingProfiles from './pages/CodingProfiles';
+import Accounts from './pages/Accounts';
 
 import Projects from './pages/Projects';
-import Portfolio from './pages/Portfolio';
 import Analytics from './pages/Analytics';
 import Goals from './pages/Goals';
 import HROutreach from './pages/HROutreach';
@@ -59,9 +54,6 @@ const App = () => {
     <ThemeProvider>
       <RecruiterProvider>
         <BrowserRouter>
-          <CommandPalette />
-          <DevTerminal />
-          <SystemArchitectureModal />
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<RootRoute />} />
@@ -73,12 +65,13 @@ const App = () => {
             <Route element={<ProtectedLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/coding-profiles" element={<CodingProfiles />} />
+              <Route path="/accounts" element={<Accounts />} />
+              <Route path="/coding-profiles" element={<Navigate to="/accounts" replace />} />
 
               <Route path="/projects" element={<Projects />} />
               <Route path="/resume" element={<Resume />} />
               <Route path="/hr-outreach" element={<HROutreach />} />
-              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/portfolio" element={<Navigate to="/u/me" replace />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/goals" element={<Goals />} />
               <Route path="/settings" element={<Settings />} />

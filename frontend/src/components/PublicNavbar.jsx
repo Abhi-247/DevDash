@@ -1,9 +1,72 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight, Sun, Moon, Sparkles, ChevronRight } from 'lucide-react';
+import { 
+    Menu, X, ArrowRight, Sun, Moon, Sparkles, ChevronRight, ChevronDown,
+    Link2, BarChart3, FileText, Mail, FolderKanban, Target, Globe, Zap
+} from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import logoImg from '../assets/logodevdash.png';
+
+/* ── Feature items for the mega dropdown ── */
+const featureItems = [
+    {
+        icon: Link2,
+        label: 'Coding Profile Sync',
+        desc: 'Connect LeetCode, GitHub, Codeforces & more in one click',
+        color: '#6366f1',
+        bg: 'rgba(99,102,241,0.08)',
+    },
+    {
+        icon: Zap,
+        label: 'DevScore™ Algorithm',
+        desc: 'Auto-calculated developer ranking out of 2,000',
+        color: '#f59e0b',
+        bg: 'rgba(245,158,11,0.08)',
+    },
+    {
+        icon: FileText,
+        label: 'AI Resume & ATS Builder',
+        desc: 'Generate optimized, recruiter-ready resumes instantly',
+        color: '#8b5cf6',
+        bg: 'rgba(139,92,246,0.08)',
+    },
+    {
+        icon: Mail,
+        label: 'HR Outreach CRM',
+        desc: 'Automate cold emails with Gmail SMTP & track responses',
+        color: '#ec4899',
+        bg: 'rgba(236,72,153,0.08)',
+    },
+    {
+        icon: FolderKanban,
+        label: 'Projects & Systems',
+        desc: 'Showcase repositories with live tech stack detection',
+        color: '#14b8a6',
+        bg: 'rgba(20,184,166,0.08)',
+    },
+    {
+        icon: BarChart3,
+        label: 'Developer Analytics',
+        desc: 'Track growth, contributions & coding activity over time',
+        color: '#3b82f6',
+        bg: 'rgba(59,130,246,0.08)',
+    },
+    {
+        icon: Globe,
+        label: 'Public Portfolio',
+        desc: 'Shareable developer profile with a single link',
+        color: '#10b981',
+        bg: 'rgba(16,185,129,0.08)',
+    },
+    {
+        icon: Target,
+        label: 'Goals & Milestones',
+        desc: 'Set targets and track your progress to stay on track',
+        color: '#f97316',
+        bg: 'rgba(249,115,22,0.08)',
+    },
+];
 
 const PublicNavbar = ({ onOpenAuth }) => {
     const navigate = useNavigate();
@@ -11,39 +74,44 @@ const PublicNavbar = ({ onOpenAuth }) => {
     const { theme, toggleTheme } = useTheme();
     const [scrolled, setScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [hoveredNav, setHoveredNav] = useState(null);
-    const navRef = useRef(null);
+    const [showFeatures, setShowFeatures] = useState(false);
+    const [mobileShowFeatures, setMobileShowFeatures] = useState(false);
+    const featuresRef = useRef(null);
+    const featuresTimer = useRef(null);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-        };
+        const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close mobile menu on route change
-    useEffect(() => {
-        setIsMenuOpen(false);
-    }, [location.pathname]);
+    useEffect(() => { setIsMenuOpen(false); }, [location.pathname]);
 
-    // Lock body scroll when mobile menu is open
     useEffect(() => {
-        if (isMenuOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
+        document.body.style.overflow = isMenuOpen ? 'hidden' : '';
         return () => { document.body.style.overflow = ''; };
     }, [isMenuOpen]);
 
-    const isAboutPage = location.pathname === '/about';
+    // Close features dropdown on click outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (featuresRef.current && !featuresRef.current.contains(e.target)) {
+                setShowFeatures(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
-    const navItems = [
-        { label: 'Features', path: isAboutPage ? '/#features' : '#features', id: 'features' },
-        { label: 'About', path: '/about', active: isAboutPage, id: 'about' },
-        { label: 'Blog', path: isAboutPage ? '/#blog' : '#blog', id: 'blog' }
-    ];
+    const handleFeaturesEnter = () => {
+        clearTimeout(featuresTimer.current);
+        setShowFeatures(true);
+    };
+    const handleFeaturesLeave = () => {
+        featuresTimer.current = setTimeout(() => setShowFeatures(false), 200);
+    };
+
+    const isAboutPage = location.pathname === '/about';
 
     const handleLogoClick = () => {
         if (location.pathname === '/') {
@@ -55,292 +123,756 @@ const PublicNavbar = ({ onOpenAuth }) => {
 
     return (
         <>
-            <header
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ease-out ${
-                    scrolled
-                        ? 'py-2.5'
-                        : 'py-4 sm:py-5'
-                }`}
-            >
-                {/* Animated gradient top-line accent on scroll */}
-                <motion.div
-                    initial={false}
-                    animate={{ opacity: scrolled ? 1 : 0, scaleX: scrolled ? 1 : 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent origin-center"
-                />
+            <style>{`
+                /* ── PUBLIC NAVBAR ──────────────────────────────────── */
+                .pub-navbar-wrap {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    z-index: 50;
+                    padding: 16px 20px;
+                    transition: padding 0.5s cubic-bezier(0.22,1,0.36,1);
+                }
+                .pub-navbar-wrap.scrolled { padding: 10px 20px; }
+                @media (min-width: 640px) {
+                    .pub-navbar-wrap { padding: 20px 32px; }
+                    .pub-navbar-wrap.scrolled { padding: 10px 32px; }
+                }
 
-                {/* Glassmorphism background */}
-                <motion.div
-                    initial={false}
-                    animate={{
-                        opacity: scrolled ? 1 : 0,
-                    }}
-                    transition={{ duration: 0.4 }}
-                    className="absolute inset-0 bg-white/70 dark:bg-slate-950/75 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/40 shadow-[0_4px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.2)]"
-                />
+                .pub-navbar {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    height: 56px;
+                    padding: 0 24px;
+                    border-radius: 100px;
+                    background: rgba(255,255,255, 0.92);
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                    border: 1px solid rgba(0,0,0,0.04);
+                    box-shadow: 0 2px 20px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
+                    transition: all 0.5s cubic-bezier(0.22,1,0.36,1);
+                }
+                .dark .pub-navbar {
+                    background: rgba(15,18,30,0.88);
+                    border-color: rgba(255,255,255,0.06);
+                    box-shadow: 0 2px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.04);
+                }
+                .pub-navbar-wrap.scrolled .pub-navbar {
+                    box-shadow: 0 4px 30px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.03);
+                }
+                .dark .pub-navbar-wrap.scrolled .pub-navbar {
+                    box-shadow: 0 4px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.05);
+                }
 
-                <div className="relative max-w-7xl mx-auto px-5 sm:px-10 flex justify-between items-center">
+                /* Logo */
+                .pub-nav-logo {
+                    display: flex;
+                    align-items: center;
+                    gap: 9px;
+                    cursor: pointer;
+                    text-decoration: none;
+                    flex-shrink: 0;
+                }
+                .pub-nav-logo img {
+                    height: 30px;
+                    width: auto;
+                    object-fit: contain;
+                    transition: transform 0.4s ease;
+                }
+                .pub-nav-logo:hover img { transform: rotate(6deg) scale(1.05); }
+                .pub-nav-logo-text {
+                    font-size: 20px;
+                    font-weight: 900;
+                    letter-spacing: -0.5px;
+                    color: #1e293b;
+                }
+                .dark .pub-nav-logo-text { color: #f1f5f9; }
+                .pub-nav-logo-accent {
+                    background: linear-gradient(135deg, #6366f1, #7c3aed);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+
+                /* Center pill nav */
+                .pub-nav-pill {
+                    display: none;
+                    align-items: center;
+                    gap: 0;
+                    background: transparent;
+                    border: none;
+                    border-radius: 100px;
+                    padding: 4px 5px;
+                }
+                .dark .pub-nav-pill {
+                    background: transparent;
+                    border-color: transparent;
+                }
+                @media (min-width: 768px) {
+                    .pub-nav-pill { display: inline-flex; }
+                }
+                .pub-nav-pill-link {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 8px 20px;
+                    border-radius: 100px;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                    color: #475569;
+                    text-decoration: none;
+                    transition: color 0.2s;
+                    cursor: pointer;
+                    background: transparent;
+                    border: none;
+                    white-space: nowrap;
+                }
+                .pub-nav-pill-link:hover { color: #1e293b; }
+                .pub-nav-pill-link.active { color: #6366f1; }
+                .dark .pub-nav-pill-link { color: #94a3b8; }
+                .dark .pub-nav-pill-link:hover { color: #e2e8f0; }
+                .dark .pub-nav-pill-link.active { color: #a5b4fc; }
+                .pub-nav-pill-link .chevron-icon {
+                    transition: transform 0.25s ease;
+                }
+                .pub-nav-pill-link.features-open .chevron-icon {
+                    transform: rotate(180deg);
+                }
+
+                /* ── FEATURES MEGA DROPDOWN ──────────────────────────── */
+                .pub-features-anchor {
+                    position: relative;
+                }
+                .pub-features-dropdown {
+                    position: absolute;
+                    top: calc(100% + 20px);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 620px;
+                    background: white;
+                    border: 1px solid #ebebef;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
+                    padding: 10px;
+                    z-index: 100;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 4px;
+                }
+                .dark .pub-features-dropdown {
+                    background: #141625;
+                    border-color: rgba(255,255,255,0.06);
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+                }
+                /* Arrow pointer centered under Features */
+                .pub-features-dropdown::before {
+                    content: '';
+                    position: absolute;
+                    top: -6px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(45deg);
+                    width: 12px;
+                    height: 12px;
+                    background: white;
+                    border-left: 1px solid #ebebef;
+                    border-top: 1px solid #ebebef;
+                    border-radius: 3px 0 0 0;
+                }
+                .dark .pub-features-dropdown::before {
+                    background: #141625;
+                    border-color: rgba(255,255,255,0.06);
+                }
+                /* Invisible hover bridge to prevent flickering */
+                .pub-features-dropdown::after {
+                    content: '';
+                    position: absolute;
+                    top: -24px;
+                    left: 0;
+                    right: 0;
+                    height: 24px;
+                }
+
+                .pub-feature-item {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    padding: 14px 16px;
+                    border-radius: 14px;
+                    text-decoration: none;
+                    transition: background 0.2s;
+                    cursor: pointer;
+                    border: none;
+                    background: transparent;
+                    text-align: left;
+                    width: 100%;
+                }
+                .pub-feature-item:hover {
+                    background: #f8f7ff;
+                }
+                .dark .pub-feature-item:hover {
+                    background: rgba(99,102,241,0.06);
+                }
+                .pub-feature-icon {
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .pub-feature-label {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #1e293b;
+                    margin-bottom: 2px;
+                    line-height: 1.3;
+                }
+                .dark .pub-feature-label { color: #e2e8f0; }
+                .pub-feature-desc {
+                    font-size: 11.5px;
+                    font-weight: 500;
+                    color: #94a3b8;
+                    line-height: 1.4;
+                }
+                .dark .pub-feature-desc { color: #64748b; }
+
+                /* Right section */
+                .pub-nav-right {
+                    display: none;
+                    align-items: center;
+                    gap: 6px;
+                }
+                @media (min-width: 768px) {
+                    .pub-nav-right { display: flex; }
+                }
+
+                .pub-nav-theme-btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 9px;
+                    border-radius: 50%;
+                    border: none;
+                    background: transparent;
+                    color: #64748b;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .pub-nav-theme-btn:hover { color: #6366f1; background: #f5f5f7; }
+                .dark .pub-nav-theme-btn { color: #94a3b8; }
+                .dark .pub-nav-theme-btn:hover { color: #a5b4fc; background: rgba(30,34,52,0.6); }
+
+                .pub-nav-signin {
+                    padding: 8px 18px;
+                    border-radius: 100px;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                    color: #475569;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .pub-nav-signin:hover { color: #1e293b; background: #f5f5f7; }
+                .dark .pub-nav-signin { color: #94a3b8; }
+                .dark .pub-nav-signin:hover { color: #e2e8f0; background: rgba(30,34,52,0.6); }
+
+                .pub-nav-cta {
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 9px 22px;
+                    border-radius: 100px;
+                    font-size: 13.5px;
+                    font-weight: 700;
+                    color: white;
+                    border: none;
+                    cursor: pointer;
+                    overflow: hidden;
+                    transition: transform 0.2s, box-shadow 0.3s;
+                    box-shadow: 0 2px 12px rgba(124,58,237,0.25);
+                }
+                .pub-nav-cta:hover {
+                    transform: scale(1.03);
+                    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+                }
+                .pub-nav-cta:active { transform: scale(0.97); }
+                .pub-nav-cta-bg {
+                    position: absolute;
+                    inset: 0;
+                    border-radius: 100px;
+                    background: linear-gradient(135deg, #6366f1, #7c3aed, #6366f1);
+                    background-size: 200% 100%;
+                    animation: shimmer-cta 3s ease-in-out infinite;
+                }
+                @keyframes shimmer-cta {
+                    0%, 100% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                }
+                .pub-nav-cta span,
+                .pub-nav-cta svg {
+                    position: relative;
+                    z-index: 1;
+                }
+                .pub-nav-cta:hover svg { transform: translateX(2px); }
+                .pub-nav-cta svg { transition: transform 0.2s; }
+
+                /* Mobile controls */
+                .pub-nav-mobile-controls {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+                @media (min-width: 768px) {
+                    .pub-nav-mobile-controls { display: none; }
+                }
+                .pub-nav-mobile-btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 9px;
+                    border-radius: 12px;
+                    border: none;
+                    background: transparent;
+                    color: #475569;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .pub-nav-mobile-btn:hover { background: #f1f5f9; color: #1e293b; }
+                .dark .pub-nav-mobile-btn { color: #94a3b8; }
+                .dark .pub-nav-mobile-btn:hover { background: rgba(30,34,52,0.6); color: #e2e8f0; }
+
+                /* ── MOBILE DRAWER ───────────────────────────────────── */
+                .pub-nav-backdrop {
+                    position: fixed;
+                    inset: 0;
+                    z-index: 40;
+                    background: rgba(0,0,0,0.18);
+                    backdrop-filter: blur(4px);
+                }
+                .dark .pub-nav-backdrop { background: rgba(0,0,0,0.4); }
+
+                .pub-nav-drawer {
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    width: 85%;
+                    max-width: 360px;
+                    height: 100%;
+                    z-index: 50;
+                    background: white;
+                    border-left: 1px solid #e8e8ef;
+                    box-shadow: -8px 0 30px rgba(0,0,0,0.08);
+                    overflow-y: auto;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .dark .pub-nav-drawer {
+                    background: #0c0e1a;
+                    border-left-color: rgba(255,255,255,0.05);
+                    box-shadow: -8px 0 30px rgba(0,0,0,0.4);
+                }
+
+                .pub-nav-drawer-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 20px;
+                    border-bottom: 1px solid #f1f5f9;
+                }
+                .dark .pub-nav-drawer-header { border-bottom-color: rgba(255,255,255,0.05); }
+
+                .pub-nav-drawer-links {
+                    padding: 16px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+                .pub-nav-drawer-link {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 14px 16px;
+                    border-radius: 14px;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #334155;
+                    text-decoration: none;
+                    transition: all 0.2s;
+                    cursor: pointer;
+                    border: none;
+                    background: none;
+                    width: 100%;
+                    text-align: left;
+                }
+                .pub-nav-drawer-link:hover { color: #6366f1; background: #f8fafc; }
+                .pub-nav-drawer-link.active { color: #6366f1; background: #eef2ff; }
+                .dark .pub-nav-drawer-link { color: #cbd5e1; }
+                .dark .pub-nav-drawer-link:hover { color: #a5b4fc; background: rgba(255,255,255,0.03); }
+                .dark .pub-nav-drawer-link.active { color: #a5b4fc; background: rgba(99,102,241,0.08); }
+                .pub-nav-drawer-link svg { color: #cbd5e1; transition: all 0.2s; }
+                .pub-nav-drawer-link:hover svg { color: #6366f1; transform: translateX(2px); }
+
+                /* Mobile features sub-items */
+                .pub-nav-mobile-features {
+                    padding: 0 20px 12px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                }
+                .pub-nav-mobile-feature-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 10px 14px;
+                    border-radius: 12px;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: background 0.2s;
+                    border: none;
+                    background: none;
+                    text-align: left;
+                    width: 100%;
+                }
+                .pub-nav-mobile-feature-item:hover { background: #f8f7ff; }
+                .dark .pub-nav-mobile-feature-item:hover { background: rgba(99,102,241,0.06); }
+                .pub-nav-mobile-feature-icon {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .pub-nav-mobile-feature-label {
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: #334155;
+                }
+                .dark .pub-nav-mobile-feature-label { color: #cbd5e1; }
+
+                .pub-nav-drawer-cta-area {
+                    padding: 8px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                .pub-nav-drawer-signin-btn {
+                    width: 100%;
+                    text-align: center;
+                    padding: 14px;
+                    border-radius: 14px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #334155;
+                    background: transparent;
+                    border: 1px solid #e2e8f0;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .pub-nav-drawer-signin-btn:hover { background: #f8fafc; }
+                .dark .pub-nav-drawer-signin-btn { color: #cbd5e1; border-color: rgba(255,255,255,0.08); }
+                .dark .pub-nav-drawer-signin-btn:hover { background: rgba(255,255,255,0.03); }
+
+                .pub-nav-drawer-signup-btn {
+                    width: 100%;
+                    text-align: center;
+                    padding: 14px;
+                    border-radius: 14px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: white;
+                    background: linear-gradient(135deg, #6366f1, #7c3aed);
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    box-shadow: 0 4px 16px rgba(124,58,237,0.2);
+                    transition: all 0.2s;
+                }
+                .pub-nav-drawer-signup-btn:hover { opacity: 0.92; }
+
+                .pub-nav-drawer-footer {
+                    margin-top: auto;
+                    padding: 20px;
+                    text-align: center;
+                    font-size: 11px;
+                    color: #94a3b8;
+                    font-weight: 500;
+                }
+                .dark .pub-nav-drawer-footer { color: #475569; }
+
+                @media (min-width: 768px) {
+                    .pub-nav-backdrop,
+                    .pub-nav-drawer { display: none !important; }
+                }
+            `}</style>
+
+            {/* ===== NAVBAR ===== */}
+            <header className={`pub-navbar-wrap ${scrolled ? 'scrolled' : ''}`}>
+                <div className="pub-navbar">
                     {/* Logo */}
-                    <motion.div
-                        onClick={handleLogoClick}
-                        className="flex items-center gap-2.5 cursor-pointer group select-none"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.97 }}
-                    >
-                        <div className="relative">
-                            <img
-                                src={logoImg}
-                                alt="DevDash Logo"
-                                className="h-9 w-auto object-contain transition-transform duration-500 group-hover:rotate-[8deg]"
-                            />
-                            {/* Soft glow behind logo on hover */}
-                            <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 scale-150" />
-                        </div>
-                        <span className="text-[22px] font-[900] tracking-tight text-slate-800 dark:text-white">
-                            Dev<span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Dash</span>
+                    <div className="pub-nav-logo" onClick={handleLogoClick}>
+                        <img src={logoImg} alt="DevDash Logo" />
+                        <span className="pub-nav-logo-text">
+                            Dev<span className="pub-nav-logo-accent">Dash</span>
                         </span>
-                    </motion.div>
+                    </div>
 
-                    {/* Desktop Navigation Links */}
-                    <nav ref={navRef} className="hidden md:flex items-center gap-1 bg-slate-100/60 dark:bg-slate-800/30 rounded-2xl px-2 py-1.5 border border-slate-200/40 dark:border-slate-700/30 backdrop-blur-sm">
-                        {navItems.map((item) => (
-                            <a
-                                key={item.label}
-                                href={item.path}
-                                onMouseEnter={() => setHoveredNav(item.id)}
-                                onMouseLeave={() => setHoveredNav(null)}
-                                className={`relative text-[13.5px] font-semibold tracking-wide transition-colors duration-300 px-5 py-2 rounded-xl z-10 ${
-                                    item.active
-                                        ? 'text-indigo-700 dark:text-indigo-300'
-                                        : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-                                }`}
+                    {/* Center Pill Navigation */}
+                    <nav className="pub-nav-pill">
+                        {/* Features with dropdown */}
+                        <div
+                            ref={featuresRef}
+                            className="pub-features-anchor"
+                            onMouseEnter={handleFeaturesEnter}
+                            onMouseLeave={handleFeaturesLeave}
+                        >
+                            <button
+                                className={`pub-nav-pill-link ${showFeatures ? 'features-open' : ''}`}
+                                onClick={() => setShowFeatures(!showFeatures)}
                             >
-                                {/* Animated hover pill background */}
-                                {hoveredNav === item.id && (
-                                    <motion.span
-                                        layoutId="navHoverPill"
-                                        className="absolute inset-0 bg-white dark:bg-slate-700/60 rounded-xl shadow-sm"
-                                        style={{ zIndex: -1 }}
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                                    />
-                                )}
+                                Features
+                                <ChevronDown size={13} className="chevron-icon" />
+                            </button>
 
-                                {/* Active indicator dot */}
-                                {item.active && (
-                                    <motion.span
-                                        layoutId="activeNavDot"
-                                        className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-indigo-600 dark:bg-indigo-400"
-                                        transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-                                    />
+                            <AnimatePresence>
+                                {showFeatures && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                        exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                                        transition={{ duration: 0.18, ease: 'easeOut' }}
+                                        className="pub-features-dropdown"
+                                        onMouseEnter={handleFeaturesEnter}
+                                        onMouseLeave={handleFeaturesLeave}
+                                    >
+                                        {featureItems.map((feat, idx) => (
+                                            <a
+                                                key={idx}
+                                                href="#features"
+                                                className="pub-feature-item"
+                                                onClick={() => setShowFeatures(false)}
+                                            >
+                                                <div
+                                                    className="pub-feature-icon"
+                                                    style={{ background: feat.bg, color: feat.color }}
+                                                >
+                                                    <feat.icon size={18} />
+                                                </div>
+                                                <div>
+                                                    <div className="pub-feature-label">{feat.label}</div>
+                                                    <div className="pub-feature-desc">{feat.desc}</div>
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </motion.div>
                                 )}
+                            </AnimatePresence>
+                        </div>
 
-                                {item.label}
-                            </a>
-                        ))}
+                        {/* About */}
+                        <a
+                            href="/about"
+                            className={`pub-nav-pill-link ${isAboutPage ? 'active' : ''}`}
+                        >
+                            About
+                        </a>
+
+                        {/* Blog */}
+                        <a
+                            href={isAboutPage ? '/#blog' : '#blog'}
+                            className="pub-nav-pill-link"
+                        >
+                            Blog
+                        </a>
                     </nav>
 
-                    {/* Desktop Right Actions */}
-                    <div className="hidden md:flex items-center gap-3">
-                        {/* Theme Toggle - Animated */}
-                        <motion.button
+                    {/* Right Actions */}
+                    <div className="pub-nav-right">
+                        <button
                             onClick={toggleTheme}
-                            className="relative p-2.5 rounded-xl text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-indigo-50/80 dark:hover:bg-indigo-950/40 transition-all duration-300 overflow-hidden"
-                            title={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
-                            whileHover={{ scale: 1.08 }}
-                            whileTap={{ scale: 0.9, rotate: 180 }}
+                            className="pub-nav-theme-btn"
+                            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                         >
                             <AnimatePresence mode="wait">
                                 {theme === 'dark' ? (
-                                    <motion.div
-                                        key="sun"
-                                        initial={{ rotate: -90, scale: 0, opacity: 0 }}
-                                        animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                                        exit={{ rotate: 90, scale: 0, opacity: 0 }}
-                                        transition={{ duration: 0.25 }}
-                                    >
+                                    <motion.div key="sun" initial={{ rotate: -90, scale: 0 }} animate={{ rotate: 0, scale: 1 }} exit={{ rotate: 90, scale: 0 }} transition={{ duration: 0.2 }}>
                                         <Sun size={18} />
                                     </motion.div>
                                 ) : (
-                                    <motion.div
-                                        key="moon"
-                                        initial={{ rotate: 90, scale: 0, opacity: 0 }}
-                                        animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                                        exit={{ rotate: -90, scale: 0, opacity: 0 }}
-                                        transition={{ duration: 0.25 }}
-                                    >
+                                    <motion.div key="moon" initial={{ rotate: 90, scale: 0 }} animate={{ rotate: 0, scale: 1 }} exit={{ rotate: -90, scale: 0 }} transition={{ duration: 0.2 }}>
                                         <Moon size={18} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-                        </motion.button>
+                        </button>
 
-                        {/* Sign In */}
-                        <button
-                            onClick={() => navigate('/login')}
-                            className="text-[13.5px] font-semibold text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-white transition-colors py-2 px-4 rounded-xl hover:bg-slate-100/70 dark:hover:bg-slate-800/50 cursor-pointer"
-                        >
+                        <button onClick={() => navigate('/login')} className="pub-nav-signin">
                             Sign in
                         </button>
 
-                        {/* Get Started CTA - Premium animated gradient button */}
-                        <motion.button
-                            onClick={() => navigate('/signup')}
-                            className="group relative flex items-center gap-2 text-white px-5 py-2.5 rounded-xl font-bold text-[13.5px] transition-all duration-300 overflow-hidden cursor-pointer"
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                        >
-                            {/* Animated gradient background */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite] rounded-xl" />
-
-                            {/* Glow effect */}
-                            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 blur-xl -z-10 scale-110" />
-
-                            <span className="relative z-10">Get Started</span>
-                            <ArrowRight size={14} className="relative z-10 group-hover:translate-x-0.5 transition-transform duration-300" />
-                        </motion.button>
+                        <button onClick={() => navigate('/signup')} className="pub-nav-cta">
+                            <div className="pub-nav-cta-bg" />
+                            <span>Get Started</span>
+                            <ArrowRight size={14} />
+                        </button>
                     </div>
 
                     {/* Mobile Controls */}
-                    <div className="md:hidden flex items-center gap-1.5">
-                        <motion.button
-                            onClick={toggleTheme}
-                            className="p-2.5 rounded-xl text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-all"
-                            whileTap={{ scale: 0.9, rotate: 180 }}
-                        >
+                    <div className="pub-nav-mobile-controls">
+                        <button onClick={toggleTheme} className="pub-nav-mobile-btn">
                             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                        </motion.button>
-
-                        <motion.button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
-                            aria-label="Toggle menu"
-                            whileTap={{ scale: 0.9 }}
-                        >
+                        </button>
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="pub-nav-mobile-btn" aria-label="Toggle menu">
                             <AnimatePresence mode="wait">
                                 {isMenuOpen ? (
-                                    <motion.div
-                                        key="close"
-                                        initial={{ rotate: -90, opacity: 0 }}
-                                        animate={{ rotate: 0, opacity: 1 }}
-                                        exit={{ rotate: 90, opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                    >
+                                    <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
                                         <X size={22} />
                                     </motion.div>
                                 ) : (
-                                    <motion.div
-                                        key="menu"
-                                        initial={{ rotate: 90, opacity: 0 }}
-                                        animate={{ rotate: 0, opacity: 1 }}
-                                        exit={{ rotate: -90, opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                    >
+                                    <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
                                         <Menu size={22} />
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-                        </motion.button>
+                        </button>
                     </div>
                 </div>
             </header>
 
-            {/* Mobile Fullscreen Overlay Menu */}
+            {/* ===== MOBILE DRAWER ===== */}
             <AnimatePresence>
                 {isMenuOpen && (
                     <>
-                        {/* Backdrop */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
                             onClick={() => setIsMenuOpen(false)}
-                            className="fixed inset-0 z-40 bg-black/20 dark:bg-black/40 backdrop-blur-sm md:hidden"
+                            className="pub-nav-backdrop"
                         />
-
-                        {/* Drawer */}
                         <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
+                            initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
                             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-                            className="fixed top-0 right-0 w-[85%] max-w-sm h-full z-50 bg-white dark:bg-slate-950 border-l border-slate-200/60 dark:border-slate-800/60 shadow-2xl md:hidden overflow-y-auto"
+                            className="pub-nav-drawer"
                         >
-                            {/* Drawer Header */}
-                            <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800/60">
-                                <div className="flex items-center gap-2">
-                                    <img src={logoImg} alt="DevDash" className="h-8 w-auto" />
-                                    <span className="text-lg font-[900] text-slate-800 dark:text-white">
-                                        Dev<span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Dash</span>
+                            <div className="pub-nav-drawer-header">
+                                <div className="pub-nav-logo">
+                                    <img src={logoImg} alt="DevDash" style={{ height: '26px' }} />
+                                    <span className="pub-nav-logo-text" style={{ fontSize: '18px' }}>
+                                        Dev<span className="pub-nav-logo-accent">Dash</span>
                                     </span>
                                 </div>
-                                <motion.button
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
-                                    whileTap={{ scale: 0.9 }}
-                                >
+                                <button onClick={() => setIsMenuOpen(false)} className="pub-nav-mobile-btn">
                                     <X size={20} />
+                                </button>
+                            </div>
+
+                            <div className="pub-nav-drawer-links">
+                                {/* Features accordion on mobile */}
+                                <button
+                                    className="pub-nav-drawer-link"
+                                    onClick={() => setMobileShowFeatures(!mobileShowFeatures)}
+                                >
+                                    <span>Features</span>
+                                    <ChevronDown
+                                        size={16}
+                                        style={{
+                                            transition: 'transform 0.25s',
+                                            transform: mobileShowFeatures ? 'rotate(180deg)' : 'none',
+                                            color: '#94a3b8'
+                                        }}
+                                    />
+                                </button>
+
+                                <AnimatePresence>
+                                    {mobileShowFeatures && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.25 }}
+                                            style={{ overflow: 'hidden' }}
+                                        >
+                                            <div className="pub-nav-mobile-features">
+                                                {featureItems.map((feat, idx) => (
+                                                    <a
+                                                        key={idx}
+                                                        href="#features"
+                                                        className="pub-nav-mobile-feature-item"
+                                                        onClick={() => setIsMenuOpen(false)}
+                                                    >
+                                                        <div
+                                                            className="pub-nav-mobile-feature-icon"
+                                                            style={{ background: feat.bg, color: feat.color }}
+                                                        >
+                                                            <feat.icon size={15} />
+                                                        </div>
+                                                        <span className="pub-nav-mobile-feature-label">{feat.label}</span>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* About */}
+                                <motion.a
+                                    href="/about"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    initial={{ opacity: 0, x: 30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.17 }}
+                                    className={`pub-nav-drawer-link ${isAboutPage ? 'active' : ''}`}
+                                >
+                                    <span>About</span>
+                                    <ChevronRight size={16} />
+                                </motion.a>
+
+                                {/* Blog */}
+                                <motion.a
+                                    href={isAboutPage ? '/#blog' : '#blog'}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    initial={{ opacity: 0, x: 30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.24 }}
+                                    className="pub-nav-drawer-link"
+                                >
+                                    <span>Blog</span>
+                                    <ChevronRight size={16} />
+                                </motion.a>
+                            </div>
+
+                            <div className="pub-nav-drawer-cta-area">
+                                <motion.button
+                                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+                                    onClick={() => { setIsMenuOpen(false); navigate('/login'); }}
+                                    className="pub-nav-drawer-signin-btn"
+                                >
+                                    Sign in
+                                </motion.button>
+                                <motion.button
+                                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42 }}
+                                    onClick={() => { setIsMenuOpen(false); navigate('/signup'); }}
+                                    className="pub-nav-drawer-signup-btn"
+                                >
+                                    <Sparkles size={16} />
+                                    Create Free Account
                                 </motion.button>
                             </div>
 
-                            {/* Drawer Nav Links */}
-                            <div className="p-5 space-y-1">
-                                {navItems.map((item, i) => (
-                                    <motion.a
-                                        key={item.label}
-                                        href={item.path}
-                                        onClick={() => setIsMenuOpen(false)}
-                                        initial={{ opacity: 0, x: 30 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.1 + i * 0.07 }}
-                                        className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-semibold text-[15px] transition-all duration-200 group ${
-                                            item.active
-                                                ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/30'
-                                                : 'text-slate-700 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
-                                        }`}
-                                    >
-                                        <span>{item.label}</span>
-                                        <ChevronRight size={16} className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all" />
-                                    </motion.a>
-                                ))}
-                            </div>
-
-                            {/* Drawer CTA Section */}
-                            <div className="px-5 pt-4 space-y-3">
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.35 }}
-                                >
-                                    <button
-                                        onClick={() => { setIsMenuOpen(false); navigate('/login'); }}
-                                        className="w-full text-center py-3.5 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                    >
-                                        Sign in
-                                    </button>
-                                </motion.div>
-
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.42 }}
-                                >
-                                    <button
-                                        onClick={() => { setIsMenuOpen(false); navigate('/signup'); }}
-                                        className="w-full text-center py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        <Sparkles size={16} />
-                                        Create Free Account
-                                    </button>
-                                </motion.div>
-                            </div>
-
-                            {/* Drawer Footer Decoration */}
-                            <div className="absolute bottom-0 left-0 w-full p-5">
-                                <div className="text-center text-[11px] text-slate-400 dark:text-slate-600 font-medium">
-                                    Built for developers who ship
-                                </div>
+                            <div className="pub-nav-drawer-footer">
+                                Built for developers who ship
                             </div>
                         </motion.div>
                     </>

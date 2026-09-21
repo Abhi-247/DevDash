@@ -12,15 +12,11 @@ export const useRecruiter = () => {
 };
 
 export const RecruiterProvider = ({ children }) => {
-    // Default to true for impressive first-glance recruiter experience, or load stored preference
+    // Default to false so developers see their actual profile data, or load stored preference
     const [isRecruiterMode, setIsRecruiterMode] = useState(() => {
         const saved = localStorage.getItem('recruiter_demo_mode');
-        return saved !== null ? saved === 'true' : true;
+        return saved !== null ? saved === 'true' : false;
     });
-
-    const [isArchModalOpen, setIsArchModalOpen] = useState(false);
-    const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-    const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
     useEffect(() => {
         localStorage.setItem('recruiter_demo_mode', isRecruiterMode);
@@ -37,12 +33,12 @@ export const RecruiterProvider = ({ children }) => {
                 setIsRecruiterMode,
                 toggleRecruiterMode,
                 mockData: MOCK_RECRUITER_DATA,
-                isArchModalOpen,
-                setIsArchModalOpen,
-                isTerminalOpen,
-                setIsTerminalOpen,
-                isCommandPaletteOpen,
-                setIsCommandPaletteOpen
+                isArchModalOpen: false,
+                setIsArchModalOpen: () => {},
+                isTerminalOpen: false,
+                setIsTerminalOpen: () => {},
+                isCommandPaletteOpen: false,
+                setIsCommandPaletteOpen: () => {}
             }}
         >
             {children}

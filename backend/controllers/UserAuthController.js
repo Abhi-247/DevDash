@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 
 exports.signup = async (req, res) => {
@@ -19,7 +20,23 @@ exports.signup = async (req, res) => {
             email: email,
             password: hashedPassword
         });
-        return res.status(201).send({ user });
+        const jwtToken = jwt.sign({
+            _id: user._id,
+            email: user.email,
+        },
+            process.env.JWT_KEY
+        );
+        const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER;
+        res.cookie("token", jwtToken, {
+            path: "/",
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax"
+        });
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        return res.status(201).send({ user: safeUser, jwtToken });
     } catch (error) {
         console.log(error);
         return res.status(500).send({ message: "Error Signing Up!" });
@@ -81,7 +98,14 @@ exports.login = async (req, res) => {
             return res.status(404).send({ message: "User Not Found!" });
         }
 
-        const isPasswordValid = (email === 'demo@devdash.com' || email === 'demo@example.com') ? true : await bcrypt.compare(password, user.password);
+        if (!user.password && user.authProvider === 'google') {
+            return res.status(400).send({ message: "This account was created with Google Sign-In. Please click 'Continue with Google'." });
+        }
+
+        const isPasswordValid = (email === 'demo@devdash.com' || email === 'demo@example.com') 
+            ? true 
+            : (user.password ? await bcrypt.compare(password, user.password) : false);
+
         if (!isPasswordValid) {
             return res.status(401).send({ message: "Invalid Password!" });
         }
@@ -106,6 +130,128 @@ exports.login = async (req, res) => {
     }
 };
 
+exports.googleAuth = async (req, res) => {
+    try {
+        const { credential, accessToken } = req.body;
+        let googleEmail = '';
+        let googleName = '';
+        let googlePicture = '';
+        let googleId = '';
+
+        if (credential) {
+            try {
+                // Verify Google ID token with Google's tokeninfo API
+                const response = await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+                const payload = response.data;
+                googleEmail = payload.email;
+                googleName = payload.name || payload.given_name || 'Developer';
+                googlePicture = payload.picture || '';
+                googleId = payload.sub;
+            } catch (verifErr) {
+                console.error("Failed to verify Google token via tokeninfo:", verifErr.message);
+                return res.status(401).json({ message: "Google authentication token verification failed. Please try again." });
+            }
+        } else if (accessToken) {
+            try {
+                // Verify Google OAuth2 access token with Google's userinfo API
+                const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                });
+                const payload = response.data;
+                googleEmail = payload.email;
+                googleName = payload.name || payload.given_name || 'Developer';
+                googlePicture = payload.picture || '';
+                googleId = payload.sub;
+            } catch (tokenErr) {
+                console.error("Failed to fetch Google userinfo with access token:", tokenErr.message);
+                return res.status(401).json({ message: "Failed to verify Google account details with Google. Please try again." });
+            }
+        } else {
+            return res.status(400).json({ message: "Google authorization token is required." });
+        }
+
+        if (!googleEmail) {
+            return res.status(400).json({ message: "No email associated with this Google account." });
+        }
+
+        // Find existing user by googleId or email
+        let user = await User.findOne({
+            $or: [
+                { googleId: googleId },
+                { email: googleEmail }
+            ]
+        });
+
+        if (user) {
+            // Update existing user profile if needed
+            let updated = false;
+            if (!user.googleId) {
+                user.googleId = googleId;
+                updated = true;
+            }
+            if (!user.avatar && googlePicture) {
+                user.avatar = googlePicture;
+                updated = true;
+            }
+            if (!user.fullName && googleName) {
+                user.fullName = googleName;
+                updated = true;
+            }
+            if (updated) {
+                await user.save();
+            }
+        } else {
+            // Create a new user for Google Sign-In
+            const baseUsername = googleEmail.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '') || 'dev';
+            let uniqueUsername = baseUsername;
+            let counter = 1;
+            while (await User.findOne({ username: uniqueUsername })) {
+                uniqueUsername = `${baseUsername}${Math.floor(Math.random() * 9000 + 1000)}`;
+                counter++;
+                if (counter > 10) break;
+            }
+
+            user = await User.create({
+                username: uniqueUsername,
+                email: googleEmail,
+                fullName: googleName,
+                avatar: googlePicture,
+                googleId: googleId,
+                authProvider: 'google',
+                devScore: 650,
+                connectedProfiles: {
+                    github: { connected: false, publicRepos: 0, followers: 0 },
+                    leetcode: { connected: false, totalSolved: 0 },
+                    codeforces: { connected: false, rating: 0 },
+                    gfg: { connected: false, codingScore: 0, totalSolved: 0 },
+                    hackerrank: { connected: false, badges: 0 }
+                }
+            });
+        }
+
+        const jwtToken = jwt.sign(
+            { _id: user._id, email: user.email },
+            process.env.JWT_KEY
+        );
+
+        const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER;
+        res.cookie("token", jwtToken, {
+            path: "/",
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+            httpOnly: true,
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax"
+        });
+
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        return res.status(200).send({ user: safeUser, jwtToken });
+    } catch (error) {
+        console.error("Error in googleAuth controller:", error);
+        return res.status(500).json({ message: "Server error during Google authentication." });
+    }
+};
+
 exports.logout=async(req,res)=>{
     try {
         res.clearCookie("token")
@@ -115,4 +261,5 @@ exports.logout=async(req,res)=>{
         return res.status(500).send({message:"Error Logging Out!"})
     }
 }
+
 

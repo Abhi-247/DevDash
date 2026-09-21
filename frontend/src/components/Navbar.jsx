@@ -5,23 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Search, Bell, Menu, X, Sun, Moon, ChevronDown, LogOut, Settings, 
     User, ExternalLink, LayoutDashboard, FileText, Code2, FolderKanban, 
-    Briefcase, BarChart3, Target, Link as LinkIcon, CheckCircle2, AlertCircle, Award,
-    Network, Terminal
+    Briefcase, BarChart3, Target, Link as LinkIcon, Layers, CheckCircle2, AlertCircle, Award,
+    Mail
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { useRecruiter } from '../context/RecruiterContext';
 import logoImg from '../assets/logodevdash.png';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
-    const { 
-        isRecruiterMode, 
-        toggleRecruiterMode, 
-        setIsArchModalOpen, 
-        setIsTerminalOpen, 
-        setIsCommandPaletteOpen 
-    } = useRecruiter();
     
     // Auth User
     const userStr = localStorage.getItem('user');
@@ -87,10 +79,11 @@ const Navbar = () => {
     const navItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
         { icon: User, label: 'Profile', path: '/profile' },
-        { icon: LinkIcon, label: 'Coding Profiles', path: '/coding-profiles' },
-        { icon: FolderKanban, label: 'Projects', path: '/projects' },
-        { icon: FileText, label: 'Resume', path: '/resume' },
-        { icon: Briefcase, label: 'Portfolio', path: '/portfolio' },
+        { icon: Layers, label: 'Accounts', path: '/accounts' },
+        { icon: FolderKanban, label: 'Projects & Systems', path: '/projects' },
+        { icon: FileText, label: 'Resume & ATS', path: '/resume' },
+        { icon: Mail, label: 'HR Outreach CRM', path: '/hr-outreach' },
+        { icon: Briefcase, label: 'Public Showcase', path: '/u/me' },
         { icon: BarChart3, label: 'Analytics', path: '/analytics' },
         { icon: Target, label: 'Goals', path: '/goals' },
         { icon: Settings, label: 'Settings', path: '/settings' },
@@ -98,7 +91,7 @@ const Navbar = () => {
 
     const quickLinks = [
         { label: 'Go to Profile', path: '/profile', icon: User },
-        { icon: LinkIcon, label: 'Sync Coding Profiles', path: '/coding-profiles' },
+        { icon: Layers, label: 'Manage Accounts', path: '/accounts' },
         { label: 'View Analytics', path: '/analytics', icon: BarChart3 },
         { label: 'Platform Settings', path: '/settings', icon: Settings },
     ];
@@ -109,287 +102,696 @@ const Navbar = () => {
 
     return (
         <>
-            <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 dark:border-slate-800/80 bg-white/70 dark:bg-slate-950/70 px-6 backdrop-blur-md transition-all duration-300">
-            {/* Mobile Hamburger menu & Logo */}
-            <div className="flex items-center gap-3 md:hidden">
-                <button 
-                    onClick={() => setIsMobileMenuOpen(true)}
-                    className="p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-                >
-                    <Menu size={22} />
-                </button>
-                <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-                    <img src={logoImg} alt="DevDash Logo" className="h-7 w-auto object-contain" />
-                    <span className="font-black text-slate-800 dark:text-slate-100 text-lg tracking-tight">DevDash</span>
-                </div>
-            </div>
-
-            {/* Search / Command Palette Trigger (Desktop) */}
-            <div className="hidden md:flex items-center gap-2 flex-1 max-w-md">
-                <button
-                    onClick={() => setIsCommandPaletteOpen(true)}
-                    className="flex items-center justify-between w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/60 py-2 px-3.5 text-xs text-slate-500 dark:text-slate-400 hover:border-indigo-400 dark:hover:border-indigo-500/50 hover:bg-white dark:hover:bg-slate-900 transition-all cursor-pointer shadow-sm group"
-                >
-                    <span className="flex items-center gap-2">
-                        <Search size={15} className="text-slate-400 group-hover:text-indigo-500 transition-colors" />
-                        <span>Search commands, pages, projects...</span>
-                    </span>
-                    <kbd className="px-2 py-0.5 text-[10px] font-mono bg-slate-200/70 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded text-slate-600 dark:text-slate-300 font-semibold shadow-xs">
-                        Ctrl+K
-                    </kbd>
-                </button>
-            </div>
-
-            {/* Desktop Actions & Recruiter Mode Switch */}
-            <div className="flex items-center gap-2.5">
-                {/* ⚡ Recruiter Demo Mode Pill Toggle */}
-                <button
-                    onClick={toggleRecruiterMode}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-sm ${
-                        isRecruiterMode
-                            ? 'bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-indigo-500/15 border-indigo-500/50 text-indigo-600 dark:text-indigo-300 hover:border-indigo-400 shadow-indigo-500/10'
-                            : 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400'
-                    }`}
-                    title="Toggle Recruiter Demo Mode to view full simulated engineering metrics"
-                >
-                    <span className="relative flex h-2 w-2">
-                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isRecruiterMode ? 'bg-indigo-400' : 'bg-slate-400'}`}></span>
-                        <span className={`relative inline-flex rounded-full h-2 w-2 ${isRecruiterMode ? 'bg-indigo-500' : 'bg-slate-500'}`}></span>
-                    </span>
-                    <span className="hidden lg:inline">{isRecruiterMode ? '⚡ Recruiter Mode: ON' : 'Recruiter Mode: OFF'}</span>
-                    <span className="lg:hidden">{isRecruiterMode ? '⚡ Demo' : 'Live'}</span>
-                </button>
-
-                {/* System Architecture Quick Button */}
-                <button
-                    onClick={() => setIsArchModalOpen(true)}
-                    className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
-                    title="System Architecture Visualizer"
-                >
-                    <Network size={18} />
-                </button>
-
-                {/* Developer Terminal Quick Button */}
-                <button
-                    onClick={() => setIsTerminalOpen(true)}
-                    className="p-2 rounded-xl text-slate-500 hover:text-emerald-500 dark:text-slate-400 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
-                    title="Developer Terminal (~)"
-                >
-                    <Terminal size={18} />
-                </button>
-
-                {/* Theme Toggle */}
-                <button 
-                    onClick={toggleTheme}
-                    className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-300"
-                    title={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
-                >
-                    {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
-                </button>
-
-                {/* Notifications Bell */}
-                <div ref={notificationRef} className="relative">
+            {/* ===== NAVBAR — clean edge-to-edge bar with subtle bottom border ===== */}
+            <header className="navbar-header">
+                {/* ---------- LEFT: Breadcrumb & Mobile hamburger ---------- */}
+                <div className="navbar-left">
+                    {/* Mobile hamburger */}
                     <button 
-                        onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-300"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                        className="navbar-mobile-toggle"
                     >
-                        <Bell size={19} />
-                        {unreadCount > 0 && (
-                            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-950 animate-pulse"></span>
-                        )}
+                        <Menu size={20} />
                     </button>
 
-                    {/* Notifications Dropdown */}
-                    <AnimatePresence>
-                        {showNotifications && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 10 }}
-                                transition={{ duration: 0.15 }}
-                                className="fixed left-2 right-2 top-16 sm:absolute sm:left-auto sm:top-auto sm:right-0 sm:mt-2.5 sm:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl overflow-hidden z-50"
-                            >
-                                <div className="px-4 py-3.5 border-b border-slate-100 dark:border-slate-850 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/30">
-                                    <span className="text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">Notifications</span>
-                                    {unreadCount > 0 && (
-                                        <button 
-                                            onClick={markAllRead}
-                                            className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 hover:underline"
-                                        >
-                                            Mark all read
-                                        </button>
-                                    )}
-                                </div>
-                                <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/60">
-                                    {notifications.map((notif) => (
-                                        <div 
-                                            key={notif.id} 
-                                            className={`p-4 flex gap-3 text-xs transition-colors hover:bg-slate-50/60 dark:hover:bg-slate-800/40 ${
-                                                !notif.read ? 'bg-indigo-50/20 dark:bg-indigo-500/5' : ''
-                                            }`}
-                                        >
-                                            <div className={`h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                                notif.type === 'success' ? 'bg-green-50 dark:bg-green-950/20 text-green-500' :
-                                                notif.type === 'award' ? 'bg-amber-50 dark:bg-amber-950/20 text-amber-500' :
-                                                'bg-blue-50 dark:bg-blue-950/20 text-blue-500'
-                                            }`}>
-                                                <notif.icon size={15} />
+                    {/* Breadcrumb */}
+                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                        <span className="text-slate-400 dark:text-slate-500 font-normal">Platform</span>
+                        <span className="text-slate-300 dark:text-slate-600 font-normal">/</span>
+                        <span className="text-slate-800 dark:text-slate-200 font-semibold">Dashboard</span>
+                    </div>
+                </div>
+
+                {/* ---------- RIGHT: Actions ---------- */}
+                <div className="navbar-right">
+                    {/* Theme Toggle */}
+                    <button 
+                        onClick={toggleTheme}
+                        className="navbar-icon-btn"
+                        title={theme === 'dark' ? "Light mode" : "Dark mode"}
+                    >
+                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
+
+                    {/* Notifications */}
+                    <div ref={notificationRef} className="navbar-dropdown-wrapper">
+                        <button 
+                            onClick={() => setShowNotifications(!showNotifications)}
+                            className="navbar-icon-btn"
+                        >
+                            <Bell size={18} />
+                            {unreadCount > 0 && <span className="navbar-notif-badge" />}
+                        </button>
+
+                        <AnimatePresence>
+                            {showNotifications && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                                    className="navbar-dropdown navbar-notif-dropdown"
+                                >
+                                    <div className="navbar-dropdown-header">
+                                        <span className="navbar-dropdown-title">Notifications</span>
+                                        {unreadCount > 0 && (
+                                            <button onClick={markAllRead} className="navbar-mark-read">Mark all read</button>
+                                        )}
+                                    </div>
+                                    <div className="navbar-notif-list">
+                                        {notifications.map((notif) => (
+                                            <div key={notif.id} className={`navbar-notif-item ${!notif.read ? 'unread' : ''}`}>
+                                                <div className={`navbar-notif-icon ${notif.type}`}>
+                                                    <notif.icon size={14} />
+                                                </div>
+                                                <div className="navbar-notif-content">
+                                                    <p className="navbar-notif-text">{notif.text}</p>
+                                                    <span className="navbar-notif-time">{notif.time}</span>
+                                                </div>
                                             </div>
-                                            <div className="flex-1 space-y-1">
-                                                <p className="text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
-                                                    {notif.text}
-                                                </p>
-                                                <span className="text-[10px] text-slate-400 dark:text-slate-550 block font-medium">
-                                                    {notif.time}
-                                                </span>
-                                            </div>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Profile Avatar + Dropdown */}
+                    <div ref={profileRef} className="navbar-dropdown-wrapper">
+                        <button 
+                            onClick={() => setShowProfileMenu(!showProfileMenu)}
+                            className="navbar-profile-btn"
+                        >
+                            <img
+                                src={user?.avatar || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=7c3aed&color=ffffff&bold=true`}
+                                alt="Profile"
+                                className="navbar-avatar"
+                            />
+                            <ChevronDown 
+                                size={13} 
+                                className="navbar-profile-chevron" 
+                                style={{ transform: showProfileMenu ? 'rotate(180deg)' : 'none' }} 
+                            />
+                        </button>
+
+                        <AnimatePresence>
+                            {showProfileMenu && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                                    className="navbar-dropdown navbar-profile-dropdown"
+                                >
+                                    <div className="navbar-dropdown-header" style={{ marginBottom: '4px' }}>
+                                        <div>
+                                            <p className="navbar-dropdown-title" style={{ textTransform: 'none', letterSpacing: 'normal' }}>{user?.name || 'Developer'}</p>
+                                            <p className="navbar-dropdown-subtitle">{user?.email || 'dev@devdash.com'}</p>
                                         </div>
-                                    ))}
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                    </div>
+                                    <button onClick={() => { navigate('/profile'); setShowProfileMenu(false); }} className="navbar-dropdown-item">
+                                        <User size={14} /> My Profile
+                                    </button>
+                                    <button onClick={() => { navigate('/settings'); setShowProfileMenu(false); }} className="navbar-dropdown-item">
+                                        <Settings size={14} /> Settings
+                                    </button>
+                                    <a href={`/u/${user?.username || 'me'}`} target="_blank" rel="noreferrer" className="navbar-dropdown-item">
+                                        <ExternalLink size={14} /> Public Profile
+                                    </a>
+                                    <div className="navbar-dropdown-divider" />
+                                    <button onClick={() => { handleLogout(); setShowProfileMenu(false); }} className="navbar-dropdown-item danger">
+                                        <LogOut size={14} /> Logout
+                                    </button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </div>
+            </header>
 
-                {/* Profile Section (Desktop with Dropdown) */}
-                <div ref={profileRef} className="relative flex items-center gap-3 pl-3 border-l border-slate-200 dark:border-slate-800 transition-colors">
-                    <button 
-                        onClick={() => setShowProfileMenu(!showProfileMenu)}
-                        className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all duration-300 group"
-                    >
-                        <img
-                            src={user?.avatar || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=c7d2fe&color=3730a3`}
-                            alt="Profile"
-                            className="h-8.5 w-8.5 rounded-full object-cover ring-2 ring-transparent group-hover:ring-indigo-100 dark:group-hover:ring-indigo-900/50 shadow-sm transition-all duration-300"
+            {/* ===== MOBILE DRAWER ===== */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <>
+                        <motion.div 
+                            initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} exit={{ opacity: 0 }}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="navbar-mobile-overlay"
                         />
-                        <div className="text-right hidden sm:block">
-                            <p className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-none mb-0.5">{user?.name || 'Developer'}</p>
-                            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold leading-none">{user?.role || 'User'}</p>
-                        </div>
-                        <ChevronDown size={14} className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-transform duration-300" style={{ transform: showProfileMenu ? 'rotate(180deg)' : 'none' }} />
-                    </button>
-
-                    {/* Profile Dropdown */}
-                    <AnimatePresence>
-                        {showProfileMenu && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 10 }}
-                                transition={{ duration: 0.15 }}
-                                className="fixed right-2 top-16 sm:absolute sm:top-auto sm:right-0 sm:mt-2.5 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl py-2 overflow-hidden z-50"
-                            >
-                                <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800/80 mb-1">
-                                    <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate">{user?.name || 'Developer'}</p>
-                                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold truncate">{user?.email || 'dev@devdash.com'}</p>
+                        <motion.div
+                            initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }}
+                            transition={{ type: 'tween', duration: 0.3 }}
+                            className="navbar-mobile-drawer"
+                        >
+                            <div className="navbar-drawer-header">
+                                <div className="navbar-logo">
+                                    <img src={logoImg} alt="DevDash" className="navbar-logo-img" style={{ height: '28px' }} />
+                                    <span className="navbar-logo-text" style={{ fontSize: '18px' }}>
+                                        Dev<span className="navbar-logo-accent">Dash</span>
+                                    </span>
                                 </div>
-                                <button
-                                    onClick={() => { navigate('/profile'); setShowProfileMenu(false); }}
-                                    className="flex w-full items-center gap-2.5 px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-355 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors text-left"
-                                >
-                                    <User size={14} />
-                                    My Profile
+                                <button onClick={() => setIsMobileMenuOpen(false)} className="navbar-icon-btn">
+                                    <X size={20} />
                                 </button>
-                                <button
-                                    onClick={() => { navigate('/settings'); setShowProfileMenu(false); }}
-                                    className="flex w-full items-center gap-2.5 px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-355 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors text-left"
-                                >
-                                    <Settings size={14} />
-                                    Settings
-                                </button>
-                                <a
-                                    href={`/u/${user?.username || 'me'}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="flex w-full items-center gap-2.5 px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-355 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors text-left"
-                                >
-                                    <ExternalLink size={14} />
-                                    Public Profile
-                                </a>
-                                <hr className="border-slate-100 dark:border-slate-800/80 my-1" />
-                                <button
-                                    onClick={() => { handleLogout(); setShowProfileMenu(false); }}
-                                    className="flex w-full items-center gap-2.5 px-4 py-2 text-xs font-bold text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors text-left"
-                                >
-                                    <LogOut size={14} />
-                                    Logout
-                                </button>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-            </div>
-        </header>
-
-        {/* Mobile Drawer Slide-over */}
-        <AnimatePresence>
-            {isMobileMenuOpen && (
-                <>
-                    {/* Overlay backdrop */}
-                    <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.4 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="fixed inset-0 bg-black z-40 md:hidden"
-                    />
-                    
-                    {/* Drawer body */}
-                    <motion.div
-                        initial={{ x: '-100%' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '-100%' }}
-                        transition={{ type: 'tween', duration: 0.3 }}
-                        className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-850 z-50 flex flex-col p-6 shadow-2xl md:hidden"
-                    >
-                        {/* Drawer Header */}
-                        <div className="flex items-center justify-between pb-5 border-b border-slate-100 dark:border-slate-900 mb-6">
-                            <div className="flex items-center gap-2">
-                                <img src={logoImg} alt="DevDash Logo" className="h-8 w-auto object-contain" />
-                                <span className="text-xl font-black text-slate-800 dark:text-slate-100 tracking-tight">DevDash</span>
                             </div>
-                            <button 
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-250 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
-                            >
-                                <X size={20} />
-                            </button>
-                        </div>
+                            <nav className="navbar-drawer-nav">
+                                {navItems.map((item) => (
+                                    <NavLink
+                                        key={item.path}
+                                        to={item.path}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={({ isActive }) =>
+                                            `navbar-drawer-link ${isActive ? 'active' : ''}`
+                                        }
+                                    >
+                                        <item.icon size={18} />
+                                        {item.label}
+                                    </NavLink>
+                                ))}
+                            </nav>
+                            <div className="navbar-drawer-footer">
+                                <button onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }} className="navbar-drawer-link danger">
+                                    <LogOut size={18} /> Logout Account
+                                </button>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
 
-                        {/* Drawer Nav links */}
-                        <nav className="flex-1 space-y-1.5">
-                            {navItems.map((item) => (
-                                <NavLink
-                                    key={item.path}
-                                    to={item.path}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className={({ isActive }) =>
-                                        `flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all ${isActive
-                                            ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400'
-                                            : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200'
-                                        }`
-                                    }
-                                >
-                                    <item.icon size={18} />
-                                    {item.label}
-                                </NavLink>
-                            ))}
-                        </nav>
+            {/* ===== SCOPED STYLES ===== */}
+            <style>{`
+                /* ── BASE BAR ────────────────────────────────────────── */
+                .navbar-header {
+                    position: sticky;
+                    top: 0;
+                    z-index: 30;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 60px;
+                    width: 100%;
+                    padding: 0 20px;
+                    background: rgba(255,255,255,0.92);
+                    backdrop-filter: blur(16px);
+                    -webkit-backdrop-filter: blur(16px);
+                    border-bottom: 1px solid #e8e8ef;
+                    transition: all 0.3s ease;
+                }
+                .dark .navbar-header {
+                    background: rgba(15,18,30,0.92);
+                    border-bottom-color: rgba(255,255,255,0.06);
+                }
 
-                        {/* Drawer Footer / Logout */}
-                        <div className="pt-5 border-t border-slate-100 dark:border-slate-900 mt-auto">
-                            <button
-                                onClick={() => { setIsMobileMenuOpen(false); handleLogout(); }}
-                                className="flex w-full items-center gap-3 px-4 py-3 text-red-650 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors text-sm font-bold"
-                            >
-                                <LogOut size={18} />
-                                Logout Account
-                            </button>
-                        </div>
-                    </motion.div>
-                </>
-            )}
-        </AnimatePresence>
+                @media (min-width: 768px) {
+                    .navbar-header { padding: 0 28px; }
+                }
+
+                /* ── LEFT SECTION ────────────────────────────────────── */
+                .navbar-left {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+                .navbar-mobile-toggle {
+                    display: flex;
+                    padding: 8px;
+                    border-radius: 10px;
+                    border: none;
+                    background: transparent;
+                    color: #64748b;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .navbar-mobile-toggle:hover { color: #334155; background: #f1f5f9; }
+                .dark .navbar-mobile-toggle { color: #94a3b8; }
+                .dark .navbar-mobile-toggle:hover { color: #e2e8f0; background: #1e293b; }
+                @media (min-width: 768px) {
+                    .navbar-mobile-toggle { display: none; }
+                }
+
+                .navbar-logo {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    cursor: pointer;
+                }
+                .navbar-logo-img {
+                    height: 26px;
+                    width: auto;
+                    object-fit: contain;
+                }
+                .navbar-logo-text {
+                    font-size: 16px;
+                    font-weight: 900;
+                    letter-spacing: -0.5px;
+                    color: #1e293b;
+                }
+                .dark .navbar-logo-text { color: #f1f5f9; }
+                .navbar-logo-accent {
+                    color: #7c3aed;
+                }
+                .dark .navbar-logo-accent { color: #a78bfa; }
+
+                /* ── CENTER PILL ──────────────────────────────────────── */
+                .navbar-center {
+                    display: none;
+                }
+                @media (min-width: 768px) {
+                    .navbar-center {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex: 1;
+                    }
+                }
+                .navbar-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0;
+                    background: #f4f4f8;
+                    border: 1px solid #e8e8ef;
+                    border-radius: 100px;
+                    padding: 4px 6px;
+                    transition: all 0.3s;
+                }
+                .dark .navbar-pill {
+                    background: rgba(30,34,52,0.7);
+                    border-color: rgba(255,255,255,0.06);
+                }
+                .navbar-pill-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 7px 16px;
+                    border-radius: 100px;
+                    border: none;
+                    background: transparent;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #475569;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    white-space: nowrap;
+                }
+                .navbar-pill-item:hover {
+                    color: #7c3aed;
+                    background: rgba(124,58,237,0.06);
+                }
+                .dark .navbar-pill-item { color: #94a3b8; }
+                .dark .navbar-pill-item:hover { color: #a78bfa; background: rgba(167,139,250,0.08); }
+
+                .navbar-pill-divider {
+                    width: 1px;
+                    height: 18px;
+                    background: #e2e2ea;
+                    flex-shrink: 0;
+                }
+                .dark .navbar-pill-divider { background: rgba(255,255,255,0.08); }
+
+                .navbar-pill-label {
+                    display: none;
+                }
+                @media (min-width: 900px) {
+                    .navbar-pill-label { display: inline; }
+                }
+
+                /* ── RIGHT SECTION ───────────────────────────────────── */
+                .navbar-right {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+                @media (min-width: 768px) {
+                    .navbar-right { gap: 6px; }
+                }
+
+                /* Recruiter toggle */
+                .navbar-recruiter-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 6px 14px;
+                    border-radius: 100px;
+                    border: 1px solid #e2e2ea;
+                    background: transparent;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #64748b;
+                    cursor: pointer;
+                    transition: all 0.25s;
+                }
+                .navbar-recruiter-btn:hover { border-color: #c4b5fd; color: #7c3aed; }
+                .navbar-recruiter-btn.active {
+                    background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(139,92,246,0.08));
+                    border-color: rgba(124,58,237,0.35);
+                    color: #7c3aed;
+                }
+                .dark .navbar-recruiter-btn { border-color: rgba(255,255,255,0.08); color: #94a3b8; }
+                .dark .navbar-recruiter-btn:hover { border-color: rgba(167,139,250,0.3); color: #a78bfa; }
+                .dark .navbar-recruiter-btn.active {
+                    background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(139,92,246,0.12));
+                    border-color: rgba(124,58,237,0.4);
+                    color: #a78bfa;
+                }
+                .navbar-recruiter-dot {
+                    position: relative;
+                    display: flex;
+                    height: 8px;
+                    width: 8px;
+                }
+                .navbar-recruiter-ping {
+                    position: absolute;
+                    display: inline-flex;
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 50%;
+                    background: #94a3b8;
+                    opacity: 0.6;
+                    animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite;
+                }
+                .navbar-recruiter-ping.active { background: #7c3aed; }
+                .navbar-recruiter-dot-inner {
+                    position: relative;
+                    display: inline-flex;
+                    border-radius: 50%;
+                    height: 8px;
+                    width: 8px;
+                    background: #94a3b8;
+                }
+                .navbar-recruiter-dot-inner.active { background: #7c3aed; }
+                .navbar-recruiter-label-lg { display: none; }
+                .navbar-recruiter-label-sm { display: inline; }
+                @media (min-width: 1024px) {
+                    .navbar-recruiter-label-lg { display: inline; }
+                    .navbar-recruiter-label-sm { display: none; }
+                }
+
+                @keyframes ping {
+                    75%, 100% { transform: scale(2); opacity: 0; }
+                }
+
+                /* Icon buttons */
+                .navbar-icon-btn {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 8px;
+                    border-radius: 50%;
+                    border: none;
+                    background: transparent;
+                    color: #64748b;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .navbar-icon-btn:hover { color: #7c3aed; background: #f4f4f8; }
+                .dark .navbar-icon-btn { color: #94a3b8; }
+                .dark .navbar-icon-btn:hover { color: #a78bfa; background: rgba(30,34,52,0.7); }
+
+                .navbar-notif-badge {
+                    position: absolute;
+                    top: 6px;
+                    right: 6px;
+                    height: 8px;
+                    width: 8px;
+                    border-radius: 50%;
+                    background: #ef4444;
+                    border: 2px solid white;
+                    animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;
+                }
+                .dark .navbar-notif-badge { border-color: #0f121e; }
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                }
+
+                /* ── DROPDOWNS ───────────────────────────────────────── */
+                .navbar-dropdown-wrapper {
+                    position: relative;
+                }
+                .navbar-dropdown {
+                    position: absolute;
+                    right: 0;
+                    top: calc(100% + 10px);
+                    background: white;
+                    border: 1px solid #e8e8ef;
+                    border-radius: 16px;
+                    box-shadow: 0 12px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02);
+                    overflow: hidden;
+                    z-index: 50;
+                }
+                .dark .navbar-dropdown {
+                    background: #141625;
+                    border-color: rgba(255,255,255,0.06);
+                    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+                }
+                .navbar-notif-dropdown { width: 380px; }
+                .navbar-profile-dropdown { width: 210px; padding: 6px 0; }
+
+                @media (max-width: 639px) {
+                    .navbar-dropdown {
+                        position: fixed;
+                        left: 8px;
+                        right: 8px;
+                        top: 68px;
+                        width: auto;
+                    }
+                }
+
+                .navbar-dropdown-header {
+                    padding: 12px 16px;
+                    border-bottom: 1px solid #f1f5f9;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .dark .navbar-dropdown-header { border-bottom-color: rgba(255,255,255,0.05); }
+
+                .navbar-dropdown-title {
+                    font-size: 11px;
+                    font-weight: 800;
+                    color: #334155;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .dark .navbar-dropdown-title { color: #e2e8f0; }
+                .navbar-dropdown-subtitle {
+                    font-size: 11px;
+                    color: #94a3b8;
+                    margin-top: 2px;
+                }
+                .dark .navbar-dropdown-subtitle { color: #64748b; }
+
+                .navbar-mark-read {
+                    font-size: 10px;
+                    font-weight: 700;
+                    color: #7c3aed;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                }
+                .navbar-mark-read:hover { text-decoration: underline; }
+                .dark .navbar-mark-read { color: #a78bfa; }
+
+                .navbar-dropdown-item {
+                    display: flex;
+                    width: 100%;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 9px 16px;
+                    font-size: 12.5px;
+                    font-weight: 600;
+                    color: #475569;
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.15s;
+                    text-decoration: none;
+                    text-align: left;
+                }
+                .navbar-dropdown-item:hover { color: #7c3aed; background: #f8f7ff; }
+                .dark .navbar-dropdown-item { color: #94a3b8; }
+                .dark .navbar-dropdown-item:hover { color: #a78bfa; background: rgba(124,58,237,0.06); }
+                .navbar-dropdown-item.danger { color: #ef4444; }
+                .navbar-dropdown-item.danger:hover { background: #fef2f2; }
+                .dark .navbar-dropdown-item.danger { color: #f87171; }
+                .dark .navbar-dropdown-item.danger:hover { background: rgba(239,68,68,0.06); }
+
+                .navbar-dropdown-divider {
+                    height: 1px;
+                    background: #f1f5f9;
+                    margin: 4px 0;
+                }
+                .dark .navbar-dropdown-divider { background: rgba(255,255,255,0.05); }
+
+                /* Notification items */
+                .navbar-notif-list {
+                    max-height: 320px;
+                    overflow-y: auto;
+                }
+                .navbar-notif-item {
+                    display: flex;
+                    gap: 12px;
+                    padding: 14px 16px;
+                    border-bottom: 1px solid #f8fafc;
+                    transition: background 0.15s;
+                    cursor: default;
+                }
+                .navbar-notif-item:last-child { border-bottom: none; }
+                .navbar-notif-item:hover { background: #fafafa; }
+                .dark .navbar-notif-item { border-bottom-color: rgba(255,255,255,0.03); }
+                .dark .navbar-notif-item:hover { background: rgba(255,255,255,0.02); }
+                .navbar-notif-item.unread { background: rgba(124,58,237,0.03); }
+                .dark .navbar-notif-item.unread { background: rgba(124,58,237,0.04); }
+
+                .navbar-notif-icon {
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .navbar-notif-icon.success { background: #ecfdf5; color: #22c55e; }
+                .dark .navbar-notif-icon.success { background: rgba(34,197,94,0.1); }
+                .navbar-notif-icon.award { background: #fffbeb; color: #f59e0b; }
+                .dark .navbar-notif-icon.award { background: rgba(245,158,11,0.1); }
+                .navbar-notif-icon.info { background: #eff6ff; color: #3b82f6; }
+                .dark .navbar-notif-icon.info { background: rgba(59,130,246,0.1); }
+
+                .navbar-notif-content { flex: 1; }
+                .navbar-notif-text {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #475569;
+                    line-height: 1.5;
+                    margin: 0;
+                }
+                .dark .navbar-notif-text { color: #cbd5e1; }
+                .navbar-notif-time {
+                    font-size: 10px;
+                    color: #94a3b8;
+                    display: block;
+                    margin-top: 3px;
+                }
+                .dark .navbar-notif-time { color: #64748b; }
+
+                /* ── PROFILE BUTTON ──────────────────────────────────── */
+                .navbar-profile-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 3px;
+                    padding-right: 8px;
+                    border-radius: 100px;
+                    border: none;
+                    background: transparent;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .navbar-profile-btn:hover { background: #f4f4f8; }
+                .dark .navbar-profile-btn:hover { background: rgba(30,34,52,0.7); }
+
+                .navbar-avatar {
+                    height: 32px;
+                    width: 32px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 2px solid #ede9fe;
+                    transition: border-color 0.2s;
+                }
+                .navbar-profile-btn:hover .navbar-avatar { border-color: #c4b5fd; }
+                .dark .navbar-avatar { border-color: rgba(124,58,237,0.2); }
+                .dark .navbar-profile-btn:hover .navbar-avatar { border-color: rgba(124,58,237,0.5); }
+
+                .navbar-profile-chevron {
+                    color: #94a3b8;
+                    transition: all 0.25s;
+                    display: none;
+                }
+                @media (min-width: 640px) {
+                    .navbar-profile-chevron { display: block; }
+                }
+
+                /* ── MOBILE DRAWER ───────────────────────────────────── */
+                .navbar-mobile-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background: black;
+                    z-index: 40;
+                }
+                @media (min-width: 768px) { .navbar-mobile-overlay { display: none; } }
+
+                .navbar-mobile-drawer {
+                    position: fixed;
+                    inset: 0 auto 0 0;
+                    width: 280px;
+                    background: white;
+                    border-right: 1px solid #e8e8ef;
+                    z-index: 50;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 24px;
+                    box-shadow: 8px 0 30px rgba(0,0,0,0.08);
+                }
+                .dark .navbar-mobile-drawer {
+                    background: #0c0e1a;
+                    border-right-color: rgba(255,255,255,0.05);
+                    box-shadow: 8px 0 30px rgba(0,0,0,0.4);
+                }
+                @media (min-width: 768px) { .navbar-mobile-drawer { display: none; } }
+
+                .navbar-drawer-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #f1f5f9;
+                    margin-bottom: 20px;
+                }
+                .dark .navbar-drawer-header { border-bottom-color: rgba(255,255,255,0.05); }
+
+                .navbar-drawer-nav {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                }
+                .navbar-drawer-link {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 10px 14px;
+                    border-radius: 12px;
+                    font-size: 13.5px;
+                    font-weight: 600;
+                    color: #64748b;
+                    text-decoration: none;
+                    transition: all 0.2s;
+                    border: none;
+                    background: none;
+                    cursor: pointer;
+                    width: 100%;
+                    text-align: left;
+                }
+                .navbar-drawer-link:hover { color: #1e293b; background: #f8fafc; }
+                .navbar-drawer-link.active { color: #7c3aed; background: #f5f3ff; }
+                .dark .navbar-drawer-link { color: #94a3b8; }
+                .dark .navbar-drawer-link:hover { color: #e2e8f0; background: rgba(255,255,255,0.03); }
+                .dark .navbar-drawer-link.active { color: #a78bfa; background: rgba(124,58,237,0.08); }
+                .navbar-drawer-link.danger { color: #ef4444; }
+                .navbar-drawer-link.danger:hover { background: #fef2f2; }
+                .dark .navbar-drawer-link.danger { color: #f87171; }
+
+                .navbar-drawer-footer {
+                    padding-top: 16px;
+                    border-top: 1px solid #f1f5f9;
+                    margin-top: auto;
+                }
+                .dark .navbar-drawer-footer { border-top-color: rgba(255,255,255,0.05); }
+            `}</style>
         </>
     );
 };

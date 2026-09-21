@@ -3,20 +3,15 @@ import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
     LayoutDashboard, User, FileText, Settings, LogOut, Code2, FolderKanban, 
-    Briefcase, BarChart3, Target, Link as LinkIcon, Mail, Terminal, Network, 
-    Sparkles, Command
+    Briefcase, BarChart3, Target, Link as LinkIcon, Layers, Mail, 
+    Sparkles
 } from 'lucide-react';
 import { useRecruiter } from '../context/RecruiterContext';
 import logoImg from '../assets/logodevdash.png';
 
 const Sidebar = () => {
     const navigate = useNavigate();
-    const { 
-        isRecruiterMode, 
-        setIsArchModalOpen, 
-        setIsTerminalOpen, 
-        setIsCommandPaletteOpen 
-    } = useRecruiter();
+    const { isRecruiterMode } = useRecruiter();
 
     const handleLogout = async () => {
         try {
@@ -34,7 +29,7 @@ const Sidebar = () => {
     const navItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
         { icon: User, label: 'Profile', path: '/profile' },
-        { icon: LinkIcon, label: 'Coding Profiles', path: '/coding-profiles' },
+        { icon: Layers, label: 'Accounts', path: '/accounts' },
         { icon: FolderKanban, label: 'Projects & Systems', path: '/projects' },
         { icon: FileText, label: 'Resume & ATS', path: '/resume' },
         { icon: Mail, label: 'HR Outreach CRM', path: '/hr-outreach' },
@@ -69,9 +64,9 @@ const Sidebar = () => {
                         key={item.path}
                         to={item.path}
                         className={({ isActive }) =>
-                            `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${isActive
-                                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200'
+                            `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${isActive
+                                ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200'
                             }`
                         }
                     >
@@ -79,42 +74,6 @@ const Sidebar = () => {
                         {item.label}
                     </NavLink>
                 ))}
-
-                {/* Developer Tools Section */}
-                <div className="pt-4">
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 py-1">
-                        Power Tools
-                    </div>
-                    <button
-                        onClick={() => setIsCommandPaletteOpen(true)}
-                        className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-indigo-400 rounded-xl transition-all cursor-pointer text-left"
-                    >
-                        <span className="flex items-center gap-3">
-                            <Command size={17} />
-                            <span>Command Palette</span>
-                        </span>
-                        <kbd className="text-[9px] font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">Ctrl+K</kbd>
-                    </button>
-
-                    <button
-                        onClick={() => setIsTerminalOpen(true)}
-                        className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-emerald-400 rounded-xl transition-all cursor-pointer text-left"
-                    >
-                        <span className="flex items-center gap-3">
-                            <Terminal size={17} />
-                            <span>Dev Terminal</span>
-                        </span>
-                        <kbd className="text-[9px] font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-500">~</kbd>
-                    </button>
-
-                    <button
-                        onClick={() => setIsArchModalOpen(true)}
-                        className="w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-indigo-400 rounded-xl transition-all cursor-pointer text-left"
-                    >
-                        <Network size={17} />
-                        <span>System Architecture</span>
-                    </button>
-                </div>
             </nav>
 
             {/* Logout Footer */}

@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
-const { fetchLeetCodeStats, fetchCodeforcesStats, fetchGitHubStats, calculateDevScore } = require("../services/platformFetcher");
+const { fetchLeetCodeStats, fetchCodeforcesStats, fetchGitHubStats, fetchGFGStats, calculateDevScore } = require("../services/platformFetcher");
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
@@ -69,6 +69,14 @@ router.post("/sync-stats", verifyToken, async (req, res) => {
             const ghData = await fetchGitHubStats(profiles.github.username);
             if (ghData) {
                 updatedProfiles.github = { ...updatedProfiles.github, ...ghData };
+            }
+        }
+
+        // Fetch GFG if connected
+        if (profiles.gfg?.connected && profiles.gfg?.username) {
+            const gfgData = await fetchGFGStats(profiles.gfg.username);
+            if (gfgData) {
+                updatedProfiles.gfg = { ...updatedProfiles.gfg, ...gfgData };
             }
         }
 
