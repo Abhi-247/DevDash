@@ -6,6 +6,9 @@ import Signup from './Signup';
 import PublicNavbar from '../components/PublicNavbar';
 import PublicFooter from '../components/PublicFooter';
 import boyHeroImg from '../assets/boyhero.png';
+import heroImg from '../assets/hero.png';
+import hourglassImg from '../assets/hourglass.png';
+import devdashIcon3dImg from '../assets/devdash-icon-3d.png';
 import {
     ArrowRight,
     Code2,
@@ -98,135 +101,95 @@ const LandingPage = () => {
     const navigate = useNavigate();
     const [authModal, setAuthModal] = useState(null);
 
-    // 🤖 No-Login AI Bullet Transformer State
-    const [bulletInput, setBulletInput] = useState('Built a React dashboard with Node.js backend for job tracking');
-    const [transformedBullet, setTransformedBullet] = useState('Architected & deployed a high-performance React & Node.js candidate tracking platform, boosting recruiter response rates by 42% and processing 10k+ live syncs.');
-    const [isTransforming, setIsTransforming] = useState(false);
-    const [copiedBullet, setCopiedBullet] = useState(false);
-
     // 🎛️ Interactive Feature Tabs State
     const [activeFeatureTab, setActiveFeatureTab] = useState('sync');
-
-    const presetBullets = [
-        'Built a React dashboard with Node.js backend for job tracking',
-        'Wrote SQL queries and authentication middleware in Express',
-        'Solved 300+ LeetCode DSA questions in Data Structures'
-    ];
-
-    const sampleTransformations = {
-        'Built a React dashboard with Node.js backend for job tracking': 'Architected & deployed a high-performance React & Node.js candidate tracking platform, boosting recruiter response rates by 42% and processing 10k+ live syncs.',
-        'Wrote SQL queries and authentication middleware in Express': 'Engineered secure JWT & bcrypt authentication middleware with optimized SQL query indexing, reducing authentication latency by 35%.',
-        'Solved 300+ LeetCode DSA questions in Data Structures': 'Mastered 300+ algorithmic problems across Graphs, Dynamic Programming, and Trees, achieving top 12% global rating in LeetCode Weekly Contests.'
-    };
-
-    const handleTransformBullet = (promptText) => {
-        const inputToUse = promptText || bulletInput;
-        if (!inputToUse.trim()) return;
-        setIsTransforming(true);
-        setTimeout(() => {
-            const enhanced = sampleTransformations[inputToUse] || `Designed, engineered, and optimized "${inputToUse}" using modern industry best practices, resulting in a 40% performance improvement and 99.9% reliability.`;
-            setTransformedBullet(enhanced);
-            setIsTransforming(false);
-        }, 700);
-    };
-
-    const handleCopyBullet = () => {
-        navigator.clipboard.writeText(transformedBullet);
-        setCopiedBullet(true);
-        setTimeout(() => setCopiedBullet(false), 2000);
-    };
 
     return (
         <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-650 selection:text-white overflow-x-hidden transition-colors duration-300">
             {/* Navbar */}
             <PublicNavbar onOpenAuth={setAuthModal} />
 
-            {/* Hero Section — Centered minimal layout */}
-            <section className="relative pt-36 sm:pt-44 pb-16 sm:pb-24 px-6 sm:px-12 overflow-hidden">
-                {/* Soft gradient background */}
-                <div className="absolute inset-0 -z-10 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-b from-purple-50/60 via-white to-white dark:from-purple-950/20 dark:via-slate-950 dark:to-slate-950 transition-colors duration-300" />
-                    <motion.div
-                        animate={{ x: [0, 30, -20, 0], y: [0, -20, 10, 0], scale: [1, 1.1, 0.95, 1] }}
-                        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/8 via-indigo-400/5 to-transparent rounded-full blur-3xl"
-                    />
-                    <motion.div
-                        animate={{ x: [0, -25, 15, 0], y: [0, 15, -25, 0], scale: [1, 0.9, 1.1, 1] }}
-                        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -top-10 right-1/4 w-[450px] h-[450px] bg-gradient-to-bl from-pink-400/6 via-indigo-400/4 to-transparent rounded-full blur-3xl"
-                    />
+            {/* Hero Section — Pagedone-style split: white left, gradient right, phone overlapping */}
+            <section className="relative pt-28 sm:pt-36 lg:pt-40 pb-0 overflow-hidden">
+                {/* ── Right-side gradient background — 33% right edge ── */}
+                <div
+                    className="absolute top-0 bottom-0 right-0 hidden lg:block pointer-events-none"
+                    style={{ width: '33%' }}
+                >
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-400 via-purple-500 to-indigo-600 dark:from-indigo-500 dark:via-purple-600 dark:to-indigo-800" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-purple-700/15 via-transparent to-white/8" />
                 </div>
 
-                <div className="max-w-4xl mx-auto text-center">
-                    {/* Headline */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: 25 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.15 }}
-                        className="text-2xl sm:text-3xl md:text-[2.7rem] lg:text-[3.2rem] font-[800] text-slate-900 dark:text-white leading-[1.18] tracking-tight mb-6"
-                    >
-                        <span>All your </span>
-                        <span
-                            className="relative inline"
-                            style={{
-                                background: 'linear-gradient(180deg, transparent 55%, rgba(250,204,21,0.35) 55%)',
-                            }}
-                        >
-                            coding profiles
-                        </span>
-                        <span> in one unified</span>
-                        <br />
-                        <span
-                            className="relative inline"
-                            style={{
-                                background: 'linear-gradient(180deg, transparent 55%, rgba(250,204,21,0.35) 55%)',
-                            }}
-                        >
-                            developer dashboard
-                        </span>
-                    </motion.h1>
+                {/* White left background */}
+                <div className="absolute inset-0 -z-10 bg-white dark:bg-slate-950 transition-colors duration-300" />
 
-                    {/* Subtitle */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.35 }}
-                        className="text-slate-500 dark:text-slate-400 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-2xl mx-auto mb-10"
-                    >
-                        Connect GitHub, LeetCode, Codeforces, and more, with one click. Sync your coding profiles, generate AI-powered resumes, automate HR outreach, and showcase your developer portfolio — all from a single unified dashboard.
-                    </motion.p>
+                <div className="max-w-7xl mx-auto px-6 sm:px-12 relative">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-start">
 
-                    {/* Single CTA Button */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                        className="flex justify-center"
-                    >
-                        <motion.button
-                            onClick={() => navigate('/signup')}
-                            className="group relative flex items-center justify-center gap-2 text-white px-9 py-4 rounded-full font-bold text-base shadow-lg shadow-purple-600/25 transition-all duration-300 cursor-pointer overflow-hidden"
-                            whileHover={{ scale: 1.04 }}
-                            whileTap={{ scale: 0.97 }}
+                        {/* ─── LEFT: Text Content ─── */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7, delay: 0.1 }}
+                            className="text-left relative z-10 pb-12 sm:pb-16 lg:pb-20"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite] rounded-full" />
-                            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 blur-xl -z-10 scale-110" />
-                            <span className="relative z-10">Get Started Free Now!</span>
-                            <ArrowRight size={17} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                        </motion.button>
-                    </motion.div>
+                            {/* Headline with inline curved arrow */}
+                            <h1 className="text-3xl sm:text-4xl md:text-[2.7rem] lg:text-[3.2rem] font-[800] text-slate-900 dark:text-white leading-[1.15] tracking-tight mb-7">
+                                <span>All your </span>
+                                <span className="text-[#6D28D9] dark:text-purple-400">coding profiles</span>
+                                <span> in one unified </span>
+                                <span className="text-[#6D28D9] dark:text-purple-400">developer dashboard</span>
+                            </h1>
+
+                            {/* Subtitle */}
+                            <p className="text-slate-500 dark:text-slate-400 text-[15px] sm:text-base font-normal leading-relaxed max-w-[520px] mb-10">
+                                Connect all your coding and social profiles in one unified developer dashboard to share with recruiters and employers.Along with job managment system.
+                            </p>
+
+                            {/* How it works — outlined button with play icon */}
+                            <button
+                                onClick={() => navigate('/about')}
+                                className="flex items-center gap-3 px-6 py-3 rounded-full border-2 border-slate-200 dark:border-slate-700 text-[#6D28D9] dark:text-purple-400 font-semibold text-sm sm:text-base hover:border-[#6D28D9] dark:hover:border-purple-400 hover:shadow-md transition-all duration-300 cursor-pointer bg-white dark:bg-slate-950"
+                            >
+                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#6D28D9] dark:bg-purple-500">
+                                    <Play size={13} className="fill-white text-white ml-0.5" />
+                                </span>
+                                <span>How it works</span>
+                            </button>
+                        </motion.div>
+
+                        {/* ─── RIGHT: Hero Phone Image ─── */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            className="relative flex justify-center lg:justify-end z-10 self-end"
+                        >
+                            <img
+                                src={heroImg}
+                                alt="DevDash app preview showing unified developer dashboard"
+                                className="relative w-[300px] sm:w-[350px] md:w-[380px] lg:w-[420px] xl:w-[460px] h-auto object-contain block align-bottom"
+                                style={{ filter: 'drop-shadow(0 20px 40px rgba(30, 0, 80, 0.3))' }}
+                            />
+                        </motion.div>
+
+                    </div>
                 </div>
+
+                {/* Mobile gradient background */}
+                <div className="lg:hidden absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-indigo-400/20 via-purple-400/10 to-transparent pointer-events-none" />
             </section>
 
+
+
             {/* Platform Integration Showcase — 2-Column Section matching reference */}
-            <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 border-y border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300 relative overflow-hidden">
+            <section className="pt-6 sm:pt-8 lg:pt-10 pb-20 lg:pb-28 bg-white dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300 relative overflow-hidden">
                 {/* Decorative ambient background glows */}
                 <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-purple-500/8 rounded-full blur-3xl pointer-events-none -z-10" />
                 <div className="absolute top-1/2 right-10 -translate-y-1/2 w-96 h-96 bg-indigo-500/8 rounded-full blur-3xl pointer-events-none -z-10" />
 
                 {/* Top-right sparkle accent rays */}
-                <div className="absolute top-8 right-12 sm:right-24 text-purple-400/50 pointer-events-none hidden sm:block">
+                <div className="absolute top-4 right-12 sm:right-24 text-purple-400/50 pointer-events-none hidden sm:block">
                     <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
                         <line x1="8" y1="28" x2="2" y2="34" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         <line x1="18" y1="20" x2="18" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -236,20 +199,16 @@ const LandingPage = () => {
 
                 <div className="max-w-7xl mx-auto px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-                        
+
                         {/* ---------- LEFT COLUMN: Headline, Text, Platform Pills & CTA ---------- */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                             className="lg:col-span-5 space-y-6 text-left"
                         >
-                            {/* Connect & Sync Pill Badge */}
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100/70 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 text-xs sm:text-sm font-bold shadow-xs">
-                                <Link2 size={15} className="text-purple-600 dark:text-purple-400 -rotate-45" />
-                                <span>Connect & Sync</span>
-                            </div>
+
 
                             {/* Headline */}
                             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-[800] text-slate-900 dark:text-white tracking-tight leading-[1.14]">
@@ -364,73 +323,19 @@ const LandingPage = () => {
                                     <ArrowRight size={17} className="group-hover:translate-x-1 transition-transform" />
                                 </button>
 
-                                <button
-                                    onClick={() => navigate('/about')}
-                                    className="flex items-center gap-2 text-[#6D28D9] dark:text-purple-400 font-bold text-sm sm:text-base px-3 py-3.5 hover:opacity-80 transition-opacity cursor-pointer"
-                                >
-                                    <Play size={13} className="fill-[#6D28D9] dark:fill-purple-400 text-[#6D28D9] dark:text-purple-400" />
-                                    <span>See how it works</span>
-                                </button>
                             </div>
                         </motion.div>
 
                         {/* ---------- RIGHT COLUMN: Dashboard Accounts Mockup with Floating Tooltips ---------- */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="lg:col-span-7 relative pt-8 sm:pt-6"
                         >
-                            {/* Floating GitHub Badge at top */}
-                            <div className="absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 sm:left-[58%] z-20 flex items-center gap-2 pointer-events-none">
-                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl flex items-center justify-center text-slate-900 dark:text-white">
-                                    <Github size={22} />
-                                </div>
-                                <div className="bg-[#7C3AED] text-white text-xs font-bold px-3.5 py-1.5 sm:py-2 rounded-xl shadow-lg relative flex items-center gap-1 whitespace-nowrap">
-                                    <span>Sync your repositories</span>
-                                    {/* Tooltip triangle tail pointing left towards GitHub */}
-                                    <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-r-[6px] border-r-[#7C3AED]" />
-                                </div>
-                            </div>
 
-                            {/* Floating LinkedIn Badge on right */}
-                            <div className="absolute -right-2 sm:-right-6 top-[22%] z-20 hidden sm:flex items-center gap-2 pointer-events-none">
-                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl flex items-center justify-center text-[#0A66C2]">
-                                    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                                    </svg>
-                                </div>
-                                <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 text-slate-800 dark:text-slate-100 text-xs font-bold px-3.5 py-2 rounded-xl shadow-xl whitespace-nowrap">
-                                    Build your professional profile
-                                </div>
-                            </div>
 
-                            {/* Floating LeetCode Badge at bottom left */}
-                            <div className="absolute -bottom-5 left-4 sm:left-8 z-20 flex items-center gap-2 pointer-events-none">
-                                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-xl flex items-center justify-center text-[#FFA116]">
-                                    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
-                                        <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
-                                    </svg>
-                                </div>
-                                <div className="bg-[#EEF2FF] dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-[#4338CA] dark:text-indigo-300 text-xs font-bold px-3.5 py-2 rounded-xl shadow-md whitespace-nowrap">
-                                    Track your progress
-                                </div>
-                            </div>
-
-                            {/* Hand-drawn celebration annotation on bottom right */}
-                            <div className="absolute -bottom-8 right-2 sm:right-6 z-20 text-[#6D28D9] dark:text-purple-400 font-sans hidden sm:block pointer-events-none select-none">
-                                <div className="flex items-center gap-2">
-                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" className="text-[#7C3AED] rotate-6">
-                                        <path d="M4 20 C 8 20, 16 16, 18 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="3 3"/>
-                                        <polygon points="12,5 19,4 20,11" fill="currentColor"/>
-                                    </svg>
-                                    <div>
-                                        <div className="text-xs font-black tracking-tight">One Login ✦</div>
-                                        <div className="text-[10px] font-bold opacity-80">Everything You Do</div>
-                                    </div>
-                                </div>
-                            </div>
 
                             {/* The Dashboard Accounts Mockup Card */}
                             <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-[28px] p-5 sm:p-6 shadow-2xl shadow-purple-500/10 text-left">
@@ -584,22 +489,7 @@ const LandingPage = () => {
                                             </div>
                                         </div>
 
-                                        {/* Mockup DevScore Ingestion Engine Bar */}
-                                        <div className="p-3 rounded-2xl bg-[#0E0620] dark:bg-black text-white flex items-center justify-between border border-purple-950/60 shadow-md">
-                                            <div className="flex items-center gap-2.5">
-                                                <div className="w-8 h-8 rounded-lg bg-purple-600/30 border border-purple-500/40 flex items-center justify-center text-purple-300 shrink-0">
-                                                    <Sparkles size={15} />
-                                                </div>
-                                                <div>
-                                                    <div className="text-xs font-bold tracking-tight">DevScore™ Ingestion Engine</div>
-                                                    <div className="text-[9.5px] text-slate-400">Syncs submissions, contest rating & repos directly into your portfolio score.</div>
-                                                </div>
-                                            </div>
-                                            <div className="text-right shrink-0 pl-2">
-                                                <span className="text-base sm:text-lg font-black text-white">500</span>
-                                                <span className="text-[10px] text-purple-300 ml-1 font-semibold">/ 2500</span>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -609,88 +499,109 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* 🤖 NO-LOGIN TOOL: Instant AI Resume Bullet Transformer */}
-            <section className="py-16 px-6 bg-slate-50 dark:bg-slate-900/40 border-y border-slate-200/60 dark:border-slate-800/80 transition-colors duration-300">
-                <div className="max-w-5xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/60 dark:border-indigo-800/40 text-indigo-700 dark:text-indigo-300 text-xs font-bold mb-4">
-                        <Wand2 size={15} className="text-indigo-600 dark:text-indigo-400 animate-spin-slow" />
-                        <span>Try Instant No-Login Tool</span>
-                    </div>
 
-                    <h2 className="text-3xl sm:text-4xl font-[800] text-slate-900 dark:text-white tracking-tight mb-3">
-                        AI Resume Bullet <span className="text-purple-600 dark:text-purple-400">Transformer</span>
-                    </h2>
-                    <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base max-w-xl mx-auto mb-8">
-                        Type any rough resume draft or click a sample preset below to watch DevDash transform it into a high-impact, quantified ATS bullet live!
-                    </p>
 
-                    {/* Presets */}
-                    <div className="flex flex-wrap justify-center gap-2 mb-6">
-                        {presetBullets.map((preset, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => {
-                                    setBulletInput(preset);
-                                    handleTransformBullet(preset);
-                                }}
-                                className="text-xs font-bold px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-purple-500 dark:hover:border-purple-500 transition-all active:scale-95 cursor-pointer shadow-sm"
-                            >
-                                💡 Preset {idx + 1}
-                            </button>
-                        ))}
-                    </div>
+            {/* ⚡ PROBLEM VS SOLUTION (CHAOS TO CLARITY) SECTION — Inspired by reference layout */}
+            <section className="py-20 lg:py-28 px-6 bg-white dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300 relative overflow-hidden">
+                <div className="max-w-6xl mx-auto">
+                    {/* Header */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-14 sm:mb-16"
+                    >
+                        <h2 className="text-2xl sm:text-3xl md:text-[2rem] font-[800] text-[#7C3AED] dark:text-purple-400 tracking-tight leading-tight">
+                            Stop Wasting Time Switching Platforms
+                        </h2>
+                        <h3 className="text-2xl sm:text-3xl md:text-[2.5rem] font-[800] text-slate-900 dark:text-white tracking-tight leading-tight mt-1 mb-5">
+                            Connect All Your Developer Profiles in One Dashboard
+                        </h3>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base font-normal max-w-3xl mx-auto leading-relaxed">
+                            Manual profile updating drains your time and energy. With DevDash, you can link GitHub, LeetCode, Codeforces, HackerRank, GeeksforGeeks, GitLab, and more, then automatically track rank, generate AI resumes, and manage every account from one place.
+                        </p>
+                    </motion.div>
 
-                    {/* Transformer Card */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-xl text-left space-y-6">
-                        <div>
-                            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Your Draft Bullet Point</label>
-                            <div className="flex flex-col sm:flex-row gap-2">
-                                <input
-                                    type="text"
-                                    value={bulletInput}
-                                    onChange={(e) => setBulletInput(e.target.value)}
-                                    placeholder="e.g. Worked on React frontend and database queries"
-                                    className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-800 dark:text-slate-200 font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                    {/* 2-Card Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
+
+                        {/* ---------- CARD 1: THE PROBLEM (CHAOS / KILLS TIME) ---------- */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="bg-[#F8F9FA] dark:bg-slate-900/60 rounded-[32px] sm:rounded-[36px] border border-slate-200/80 dark:border-slate-800 p-8 sm:p-10 flex flex-col justify-between text-left relative overflow-hidden transition-all duration-300 hover:shadow-lg"
+                        >
+                            <div>
+                                <h4 className="text-xl sm:text-2xl font-[800] text-slate-900 dark:text-white leading-snug mb-6">
+                                    Switching between apps <span className="text-[#DC2626] dark:text-rose-400 font-[800]">kills time and productivity</span>
+                                </h4>
+
+                                <div className="space-y-4 text-slate-600 dark:text-slate-400 text-sm sm:text-[14.5px] leading-relaxed font-normal">
+                                    <p>
+                                        Without automation, switching between coding platforms and repeating the same updates for each profile is tedious.
+                                    </p>
+                                    <p>
+                                        Sometimes it leads to missed platforms and errors, which is quite obvious if you're updating profiles manually.
+                                    </p>
+                                    <p>
+                                        However, the consequences of these are bad — inconsistency, decreased productivity, and increased burnout.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Bottom 3D Hourglass Visual */}
+                            <div className="flex justify-center pt-8 mt-auto">
+                                <img
+                                    src={hourglassImg}
+                                    alt="Wasted time with manual updates"
+                                    className="w-40 sm:w-48 h-auto object-contain mix-blend-multiply dark:mix-blend-normal select-none pointer-events-none hover:scale-105 transition-transform duration-500 drop-shadow-sm"
                                 />
-                                <button
-                                    onClick={() => handleTransformBullet()}
-                                    disabled={isTransforming}
-                                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-purple-600/20 active:scale-95 disabled:opacity-50 cursor-pointer"
-                                >
-                                    {isTransforming ? <RefreshCw size={16} className="animate-spin" /> : <Wand2 size={16} />}
-                                    <span>{isTransforming ? 'Enhancing...' : 'Transform ✨'}</span>
-                                </button>
                             </div>
-                        </div>
+                        </motion.div>
 
-                        {/* Result Container */}
-                        <div className="p-5 rounded-xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-200/50 dark:border-purple-900/40 relative">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
-                                    <Sparkles size={14} /> Enhanced High-Impact Bullet
-                                </span>
-                                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold">
-                                    +38% ATS Impact
-                                </span>
+                        {/* ---------- CARD 2: THE SOLUTION (FROM CHAOS TO CLARITY) ---------- */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="bg-white dark:bg-slate-900 rounded-[32px] sm:rounded-[36px] border-2 border-slate-900/80 dark:border-purple-500/40 p-8 sm:p-10 flex flex-col justify-between text-left relative overflow-hidden shadow-xl shadow-purple-500/5 transition-all duration-300 hover:shadow-2xl"
+                        >
+                            <div>
+                                <h4 className="text-xl sm:text-2xl font-[800] text-slate-900 dark:text-white leading-snug mb-6">
+                                    <span className="text-[#059669] dark:text-emerald-400 block mb-1">From Chaos to Clarity:</span>
+                                    Manage Every Account in One Place
+                                </h4>
+
+                                <div className="space-y-4 text-slate-600 dark:text-slate-400 text-sm sm:text-[14.5px] leading-relaxed font-normal">
+                                    <p>
+                                        Say goodbye to manual logins to each coding account separately. DevDash is here to change the game of developer tracking. Let's automate the process, link multiple accounts with DevDash, and enjoy unified profiles and live dashboards from the same place.
+                                    </p>
+                                    <p>
+                                        There are two connection methods, which make it more flexible: <strong className="text-slate-900 dark:text-white font-bold">One Click</strong> and <strong className="text-slate-900 dark:text-white font-bold">Custom App</strong> method.
+                                    </p>
+                                    <p>
+                                        The One Click method is super easy to set up, best for beginners, while the custom app method requires credentials or personal access tokens, perfect for advanced users.
+                                    </p>
+                                </div>
                             </div>
 
-                            <p className="text-slate-800 dark:text-slate-100 font-bold text-sm sm:text-base leading-relaxed pr-10">
-                                "{transformedBullet}"
-                            </p>
+                            {/* Bottom 3D App Icon Visual */}
+                            <div className="flex justify-end pt-8 mt-auto">
+                                <img
+                                    src={devdashIcon3dImg}
+                                    alt="DevDash unified dashboard app icon"
+                                    className="w-36 sm:w-44 h-auto object-contain mix-blend-multiply dark:mix-blend-normal select-none pointer-events-none hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                                />
+                            </div>
+                        </motion.div>
 
-                            <button
-                                onClick={handleCopyBullet}
-                                className="absolute right-4 bottom-4 p-2 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
-                                title="Copy bullet point"
-                            >
-                                {copiedBullet ? <Check size={16} className="text-emerald-500" /> : <Copy size={16} />}
-                            </button>
-                        </div>
                     </div>
                 </div>
             </section>
-
-            {/* 🎛️ INTERACTIVE FEATURE EXPLAINER TABS */}
             <section id="features" className="py-20 px-6 bg-white dark:bg-slate-950 transition-colors duration-300">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
@@ -716,8 +627,8 @@ const LandingPage = () => {
                                     key={tab.id}
                                     onClick={() => setActiveFeatureTab(tab.id)}
                                     className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap cursor-pointer ${activeFeatureTab === tab.id
-                                            ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-md'
-                                            : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+                                        ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-md'
+                                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
                                         }`}
                                 >
                                     {tab.label}

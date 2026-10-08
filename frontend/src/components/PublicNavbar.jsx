@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     Menu, X, ArrowRight, Sun, Moon, Sparkles, ChevronRight, ChevronDown,
-    Link2, BarChart3, FileText, Mail, FolderKanban, Target, Globe, Zap
+    RefreshCw, Trophy, FileText, Send, FolderKanban, BarChart3, Globe, Target
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import logoImg from '../assets/logodevdash.png';
@@ -11,60 +11,44 @@ import logoImg from '../assets/logodevdash.png';
 /* ── Feature items for the mega dropdown ── */
 const featureItems = [
     {
-        icon: Link2,
-        label: 'Coding Profile Sync',
+        icon: RefreshCw,
+        label: 'Profile Sync',
         desc: 'Connect LeetCode, GitHub, Codeforces & more in one click',
-        color: '#6366f1',
-        bg: 'rgba(99,102,241,0.08)',
     },
     {
-        icon: Zap,
-        label: 'DevScore™ Algorithm',
+        icon: Trophy,
+        label: 'DevScore™',
         desc: 'Auto-calculated developer ranking out of 2,000',
-        color: '#f59e0b',
-        bg: 'rgba(245,158,11,0.08)',
     },
     {
         icon: FileText,
-        label: 'AI Resume & ATS Builder',
+        label: 'AI Resume',
         desc: 'Generate optimized, recruiter-ready resumes instantly',
-        color: '#8b5cf6',
-        bg: 'rgba(139,92,246,0.08)',
     },
     {
-        icon: Mail,
-        label: 'HR Outreach CRM',
+        icon: Send,
+        label: 'HR Outreach',
         desc: 'Automate cold emails with Gmail SMTP & track responses',
-        color: '#ec4899',
-        bg: 'rgba(236,72,153,0.08)',
     },
     {
         icon: FolderKanban,
-        label: 'Projects & Systems',
+        label: 'Projects',
         desc: 'Showcase repositories with live tech stack detection',
-        color: '#14b8a6',
-        bg: 'rgba(20,184,166,0.08)',
     },
     {
         icon: BarChart3,
-        label: 'Developer Analytics',
+        label: 'Analytics',
         desc: 'Track growth, contributions & coding activity over time',
-        color: '#3b82f6',
-        bg: 'rgba(59,130,246,0.08)',
     },
     {
         icon: Globe,
-        label: 'Public Portfolio',
+        label: 'Portfolio',
         desc: 'Shareable developer profile with a single link',
-        color: '#10b981',
-        bg: 'rgba(16,185,129,0.08)',
     },
     {
         icon: Target,
-        label: 'Goals & Milestones',
+        label: 'Goals',
         desc: 'Set targets and track your progress to stay on track',
-        color: '#f97316',
-        bg: 'rgba(249,115,22,0.08)',
     },
 ];
 
@@ -132,9 +116,21 @@ const PublicNavbar = ({ onOpenAuth }) => {
                     width: 100%;
                     z-index: 50;
                     padding: 16px 20px;
-                    transition: padding 0.5s cubic-bezier(0.22,1,0.36,1);
+                    transition: padding 0.5s cubic-bezier(0.22,1,0.36,1),
+                                background 0.4s ease,
+                                backdrop-filter 0.4s ease;
                 }
-                .pub-navbar-wrap.scrolled { padding: 10px 20px; }
+                .pub-navbar-wrap.scrolled {
+                    padding: 10px 20px;
+                    background: rgba(255,255,255,0.88);
+                    backdrop-filter: blur(18px);
+                    -webkit-backdrop-filter: blur(18px);
+                    box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+                }
+                .dark .pub-navbar-wrap.scrolled {
+                    background: rgba(15,18,30,0.85);
+                    box-shadow: 0 1px 12px rgba(0,0,0,0.3);
+                }
                 @media (min-width: 640px) {
                     .pub-navbar-wrap { padding: 20px 32px; }
                     .pub-navbar-wrap.scrolled { padding: 10px 32px; }
@@ -147,25 +143,25 @@ const PublicNavbar = ({ onOpenAuth }) => {
                     max-width: 1200px;
                     margin: 0 auto;
                     height: 56px;
-                    padding: 0 24px;
-                    border-radius: 100px;
-                    background: rgba(255,255,255, 0.92);
-                    backdrop-filter: blur(20px);
-                    -webkit-backdrop-filter: blur(20px);
-                    border: 1px solid rgba(0,0,0,0.04);
-                    box-shadow: 0 2px 20px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
+                    padding: 0 8px;
+                    border-radius: 0;
+                    background: transparent;
+                    backdrop-filter: none;
+                    -webkit-backdrop-filter: none;
+                    border: none;
+                    box-shadow: none;
                     transition: all 0.5s cubic-bezier(0.22,1,0.36,1);
                 }
                 .dark .pub-navbar {
-                    background: rgba(15,18,30,0.88);
-                    border-color: rgba(255,255,255,0.06);
-                    box-shadow: 0 2px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.04);
+                    background: transparent;
+                    border-color: transparent;
+                    box-shadow: none;
                 }
                 .pub-navbar-wrap.scrolled .pub-navbar {
-                    box-shadow: 0 4px 30px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.03);
+                    box-shadow: none;
                 }
                 .dark .pub-navbar-wrap.scrolled .pub-navbar {
-                    box-shadow: 0 4px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.05);
+                    box-shadow: none;
                 }
 
                 /* Logo */
@@ -301,10 +297,10 @@ const PublicNavbar = ({ onOpenAuth }) => {
                     display: flex;
                     align-items: flex-start;
                     gap: 12px;
-                    padding: 14px 16px;
-                    border-radius: 14px;
+                    padding: 12px 14px;
+                    border-radius: 12px;
                     text-decoration: none;
-                    transition: background 0.2s;
+                    transition: all 0.2s ease;
                     cursor: pointer;
                     border: none;
                     background: transparent;
@@ -312,35 +308,55 @@ const PublicNavbar = ({ onOpenAuth }) => {
                     width: 100%;
                 }
                 .pub-feature-item:hover {
-                    background: #f8f7ff;
+                    background: #f4f4f5;
                 }
                 .dark .pub-feature-item:hover {
-                    background: rgba(99,102,241,0.06);
+                    background: rgba(255, 255, 255, 0.06);
                 }
                 .pub-feature-icon {
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 10px;
+                    width: 32px;
+                    height: 32px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     flex-shrink: 0;
+                    background: transparent;
+                    color: #0f172a;
+                    border: none;
+                    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease;
+                }
+                .pub-feature-item:hover .pub-feature-icon {
+                    background: transparent;
+                    color: #000000;
+                    transform: scale(1.12);
+                    box-shadow: none;
+                }
+                .dark .pub-feature-icon {
+                    background: transparent;
+                    color: #f8fafc;
+                    border: none;
+                }
+                .dark .pub-feature-item:hover .pub-feature-icon {
+                    background: transparent;
+                    color: #ffffff;
+                    transform: scale(1.12);
+                    box-shadow: none;
                 }
                 .pub-feature-label {
-                    font-size: 13px;
+                    font-size: 13.5px;
                     font-weight: 700;
-                    color: #1e293b;
+                    color: #0f172a;
                     margin-bottom: 2px;
                     line-height: 1.3;
                 }
-                .dark .pub-feature-label { color: #e2e8f0; }
+                .dark .pub-feature-label { color: #f8fafc; }
                 .pub-feature-desc {
                     font-size: 11.5px;
                     font-weight: 500;
-                    color: #94a3b8;
+                    color: #64748b;
                     line-height: 1.4;
                 }
-                .dark .pub-feature-desc { color: #64748b; }
+                .dark .pub-feature-desc { color: #94a3b8; }
 
                 /* Right section */
                 .pub-nav-right {
@@ -360,61 +376,114 @@ const PublicNavbar = ({ onOpenAuth }) => {
                     border-radius: 50%;
                     border: none;
                     background: transparent;
-                    color: #64748b;
+                    color: rgba(255, 255, 255, 0.95);
                     cursor: pointer;
                     transition: all 0.2s;
                 }
-                .pub-nav-theme-btn:hover { color: #6366f1; background: #f5f5f7; }
-                .dark .pub-nav-theme-btn { color: #94a3b8; }
-                .dark .pub-nav-theme-btn:hover { color: #a5b4fc; background: rgba(30,34,52,0.6); }
+                .pub-nav-theme-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.18); }
+                .dark .pub-nav-theme-btn { color: rgba(255, 255, 255, 0.95); }
+                .dark .pub-nav-theme-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.18); }
+                .pub-navbar-wrap.scrolled .pub-nav-theme-btn,
+                .pub-navbar-wrap.on-about .pub-nav-theme-btn { color: #64748b; }
+                .pub-navbar-wrap.scrolled .pub-nav-theme-btn:hover,
+                .pub-navbar-wrap.on-about .pub-nav-theme-btn:hover { color: #6366f1; background: #f5f5f7; }
+                .dark .pub-navbar-wrap.scrolled .pub-nav-theme-btn,
+                .dark .pub-navbar-wrap.on-about .pub-nav-theme-btn { color: #94a3b8; }
+                .dark .pub-navbar-wrap.scrolled .pub-nav-theme-btn:hover,
+                .dark .pub-navbar-wrap.on-about .pub-nav-theme-btn:hover { color: #a5b4fc; background: rgba(30,34,52,0.6); }
 
+                /* Sign In Button */
                 .pub-nav-signin {
-                    padding: 8px 18px;
+                    padding: 8px 20px;
                     border-radius: 100px;
                     font-size: 13.5px;
                     font-weight: 600;
-                    color: #475569;
+                    color: #ffffff;
                     background: transparent;
-                    border: none;
+                    border: 1.5px solid #ffffff;
                     cursor: pointer;
-                    transition: all 0.2s;
+                    transition: all 0.2s ease;
                 }
-                .pub-nav-signin:hover { color: #1e293b; background: #f5f5f7; }
-                .dark .pub-nav-signin { color: #94a3b8; }
-                .dark .pub-nav-signin:hover { color: #e2e8f0; background: rgba(30,34,52,0.6); }
+                .pub-nav-signin:hover {
+                    color: #ffffff;
+                    background: rgba(255, 255, 255, 0.18);
+                    border-color: #ffffff;
+                }
+                .dark .pub-nav-signin {
+                    color: #ffffff;
+                    border-color: #ffffff;
+                }
+                .dark .pub-nav-signin:hover {
+                    background: rgba(255, 255, 255, 0.18);
+                }
+                /* Sign In on scroll or on /about */
+                .pub-navbar-wrap.scrolled .pub-nav-signin,
+                .pub-navbar-wrap.on-about .pub-nav-signin {
+                    color: #334155;
+                    border-color: #cbd5e1;
+                    background: transparent;
+                }
+                .pub-navbar-wrap.scrolled .pub-nav-signin:hover,
+                .pub-navbar-wrap.on-about .pub-nav-signin:hover {
+                    color: #0f172a;
+                    border-color: #94a3b8;
+                    background: #f8fafc;
+                }
+                .dark .pub-navbar-wrap.scrolled .pub-nav-signin,
+                .dark .pub-navbar-wrap.on-about .pub-nav-signin {
+                    color: #e2e8f0;
+                    border-color: rgba(255, 255, 255, 0.25);
+                }
+                .dark .pub-navbar-wrap.scrolled .pub-nav-signin:hover,
+                .dark .pub-navbar-wrap.on-about .pub-nav-signin:hover {
+                    color: #ffffff;
+                    border-color: rgba(255, 255, 255, 0.5);
+                    background: rgba(255, 255, 255, 0.08);
+                }
 
+                /* Get Started CTA Button */
                 .pub-nav-cta {
                     position: relative;
                     display: inline-flex;
                     align-items: center;
-                    gap: 6px;
-                    padding: 9px 22px;
+                    gap: 7px;
+                    padding: 8.5px 22px;
                     border-radius: 100px;
                     font-size: 13.5px;
                     font-weight: 700;
-                    color: white;
-                    border: none;
+                    color: #6D28D9;
+                    background: #ffffff;
+                    border: 1.5px solid #ffffff;
                     cursor: pointer;
-                    overflow: hidden;
-                    transition: transform 0.2s, box-shadow 0.3s;
-                    box-shadow: 0 2px 12px rgba(124,58,237,0.25);
+                    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
                 }
                 .pub-nav-cta:hover {
                     transform: scale(1.03);
-                    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+                    background: #f8fafc;
+                    color: #5b21b6;
+                    border-color: #ffffff;
+                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
                 }
                 .pub-nav-cta:active { transform: scale(0.97); }
-                .pub-nav-cta-bg {
-                    position: absolute;
-                    inset: 0;
-                    border-radius: 100px;
-                    background: linear-gradient(135deg, #6366f1, #7c3aed, #6366f1);
-                    background-size: 200% 100%;
-                    animation: shimmer-cta 3s ease-in-out infinite;
+                /* Get Started on scroll or on /about */
+                .pub-navbar-wrap.scrolled .pub-nav-cta,
+                .pub-navbar-wrap.on-about .pub-nav-cta {
+                    background: #6D28D9;
+                    color: #ffffff;
+                    border-color: #6D28D9;
+                    box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
                 }
-                @keyframes shimmer-cta {
-                    0%, 100% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
+                .pub-navbar-wrap.scrolled .pub-nav-cta:hover,
+                .pub-navbar-wrap.on-about .pub-nav-cta:hover {
+                    background: #5b21b6;
+                    border-color: #5b21b6;
+                    box-shadow: 0 6px 20px rgba(109, 40, 217, 0.4);
+                }
+                .dark .pub-navbar-wrap.scrolled .pub-nav-cta,
+                .dark .pub-navbar-wrap.on-about .pub-nav-cta {
+                    background: #7c3aed;
+                    border-color: #7c3aed;
                 }
                 .pub-nav-cta span,
                 .pub-nav-cta svg {
@@ -541,16 +610,23 @@ const PublicNavbar = ({ onOpenAuth }) => {
                     text-align: left;
                     width: 100%;
                 }
-                .pub-nav-mobile-feature-item:hover { background: #f8f7ff; }
-                .dark .pub-nav-mobile-feature-item:hover { background: rgba(99,102,241,0.06); }
+                .pub-nav-mobile-feature-item:hover { background: #f4f4f5; }
+                .dark .pub-nav-mobile-feature-item:hover { background: rgba(255, 255, 255, 0.06); }
                 .pub-nav-mobile-feature-icon {
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 8px;
+                    width: 26px;
+                    height: 26px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     flex-shrink: 0;
+                    background: transparent;
+                    color: #0f172a;
+                    border: none;
+                }
+                .dark .pub-nav-mobile-feature-icon {
+                    background: transparent;
+                    color: #f8fafc;
+                    border: none;
                 }
                 .pub-nav-mobile-feature-label {
                     font-size: 13px;
@@ -619,7 +695,7 @@ const PublicNavbar = ({ onOpenAuth }) => {
             `}</style>
 
             {/* ===== NAVBAR ===== */}
-            <header className={`pub-navbar-wrap ${scrolled ? 'scrolled' : ''}`}>
+            <header className={`pub-navbar-wrap ${scrolled ? 'scrolled' : ''} ${isAboutPage ? 'on-about' : 'on-landing'}`}>
                 <div className="pub-navbar">
                     {/* Logo */}
                     <div className="pub-nav-logo" onClick={handleLogoClick}>
@@ -664,11 +740,8 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                                 className="pub-feature-item"
                                                 onClick={() => setShowFeatures(false)}
                                             >
-                                                <div
-                                                    className="pub-feature-icon"
-                                                    style={{ background: feat.bg, color: feat.color }}
-                                                >
-                                                    <feat.icon size={18} />
+                                                <div className="pub-feature-icon">
+                                                    <feat.icon size={20} strokeWidth={2.2} />
                                                 </div>
                                                 <div>
                                                     <div className="pub-feature-label">{feat.label}</div>
@@ -723,7 +796,6 @@ const PublicNavbar = ({ onOpenAuth }) => {
                         </button>
 
                         <button onClick={() => navigate('/signup')} className="pub-nav-cta">
-                            <div className="pub-nav-cta-bg" />
                             <span>Get Started</span>
                             <ArrowRight size={14} />
                         </button>
@@ -812,11 +884,8 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                                         className="pub-nav-mobile-feature-item"
                                                         onClick={() => setIsMenuOpen(false)}
                                                     >
-                                                        <div
-                                                            className="pub-nav-mobile-feature-icon"
-                                                            style={{ background: feat.bg, color: feat.color }}
-                                                        >
-                                                            <feat.icon size={15} />
+                                                        <div className="pub-nav-mobile-feature-icon">
+                                                            <feat.icon size={15} strokeWidth={2.2} />
                                                         </div>
                                                         <span className="pub-nav-mobile-feature-label">{feat.label}</span>
                                                     </a>
