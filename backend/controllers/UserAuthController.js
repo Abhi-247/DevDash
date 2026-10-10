@@ -193,6 +193,10 @@ exports.googleAuth = async (req, res) => {
                 user.avatar = googlePicture;
                 updated = true;
             }
+            if (googlePicture && !user.googleAvatar) {
+                user.googleAvatar = googlePicture;
+                updated = true;
+            }
             if (!user.fullName && googleName) {
                 user.fullName = googleName;
                 updated = true;
@@ -216,6 +220,7 @@ exports.googleAuth = async (req, res) => {
                 email: googleEmail,
                 fullName: googleName,
                 avatar: googlePicture,
+                googleAvatar: googlePicture,
                 googleId: googleId,
                 authProvider: 'google',
                 devScore: 650,

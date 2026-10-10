@@ -142,7 +142,7 @@ const Goals = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             </div>
         );
     }
@@ -152,15 +152,15 @@ const Goals = () => {
     const pendingGoals = goals.filter(g => g.status === 'pending');
 
     return (
-        <div className="p-8 max-w-6xl mx-auto">
+        <div className="p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6 font-poppins">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Goals</h1>
-                    <p className="text-slate-600 dark:text-slate-400 mt-2">Track your learning and development goals</p>
+                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Goals</h1>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Track your learning and development goals</p>
                 </div>
                 <button
                     onClick={() => setShowModal(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
                 >
                     <Plus size={20} />
                     Add Goal
@@ -169,27 +169,27 @@ const Goals = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center">
                             <AlertCircle size={20} className="text-yellow-600 dark:text-yellow-400" />
                         </div>
                         <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{pendingGoals.length}</span>
                     </div>
                     <p className="text-slate-600 dark:text-slate-400 text-sm">Pending Goals</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
                             <Clock size={20} className="text-blue-600 dark:text-blue-400" />
                         </div>
                         <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{inProgressGoals.length}</span>
                     </div>
                     <p className="text-slate-600 dark:text-slate-400 text-sm">In Progress</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
                             <CheckCircle2 size={20} className="text-green-600 dark:text-green-400" />
                         </div>
                         <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{completedGoals.length}</span>
@@ -199,13 +199,13 @@ const Goals = () => {
             </div>
 
             {goals.length === 0 ? (
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-12 text-center">
                     <Target size={48} className="mx-auto text-slate-400 mb-4" />
                     <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">No goals yet</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-4">Set your first goal to track your progress</p>
                     <button
                         onClick={() => setShowModal(true)}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
                     >
                         <Plus size={20} />
                         Add Your First Goal
@@ -288,7 +288,7 @@ const Goals = () => {
                                     type="text"
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
+                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
                                     required
                                 />
                             </div>
@@ -301,7 +301,7 @@ const Goals = () => {
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     rows={3}
-                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100 resize-none"
+                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100 resize-none"
                                 />
                             </div>
 
@@ -313,7 +313,7 @@ const Goals = () => {
                                     type="date"
                                     value={formData.targetDate}
                                     onChange={(e) => setFormData({ ...formData, targetDate: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
+                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
                                 />
                             </div>
 
@@ -324,7 +324,7 @@ const Goals = () => {
                                 <select
                                     value={formData.status}
                                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
+                                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-slate-100"
                                 >
                                     <option value="pending">Pending</option>
                                     <option value="in-progress">In Progress</option>
@@ -350,13 +350,13 @@ const Goals = () => {
                                 <button
                                     type="button"
                                     onClick={handleCloseModal}
-                                    className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                                    className="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
                                 >
                                     {editingGoal ? 'Update' : 'Add'} Goal
                                 </button>
@@ -377,7 +377,7 @@ const GoalCard = ({ goal, onEdit, onDelete, onProgressUpdate, getStatusConfig })
         <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-sm border ${statusConfig.borderColor} p-6`}>
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start gap-3">
-                    <div className={`w-10 h-10 ${statusConfig.bgColor} rounded-lg flex items-center justify-center`}>
+                    <div className={`w-10 h-10 ${statusConfig.bgColor} rounded-xl flex items-center justify-center`}>
                         <StatusIcon size={20} className={statusConfig.color} />
                     </div>
                     <div>
@@ -417,7 +417,7 @@ const GoalCard = ({ goal, onEdit, onDelete, onProgressUpdate, getStatusConfig })
                 </div>
                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                     <div
-                        className="bg-indigo-600 h-2 rounded-full transition-all"
+                        className="bg-blue-600 h-2 rounded-full transition-all"
                         style={{ width: `${goal.progress}%` }}
                     />
                 </div>
@@ -431,7 +431,7 @@ const GoalCard = ({ goal, onEdit, onDelete, onProgressUpdate, getStatusConfig })
                             onClick={() => onProgressUpdate(goal._id, value)}
                             className={`flex-1 py-1 text-xs rounded transition-colors ${
                                 goal.progress === value
-                                    ? 'bg-indigo-600 text-white'
+                                    ? 'bg-blue-600 text-white'
                                     : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
                             }`}
                         >

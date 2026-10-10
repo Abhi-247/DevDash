@@ -52,13 +52,22 @@ const Resume = () => {
     const projects = (activeData.projects && activeData.projects.length > 0) ? activeData.projects : (isRecruiterMode ? mockData.projects : []);
     const skills = (activeData.skills && activeData.skills.length > 0) ? activeData.skills : (isRecruiterMode ? mockData.skills : ['JavaScript', 'React', 'Node.js', 'Web Development', 'Git']);
 
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
+                <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">Generating ATS Resume...</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-6">
+        <div className="p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6 font-poppins">
             {/* Header & Tab Switcher (Hidden when printing) */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 print:hidden">
                 <div>
                     <div className="flex items-center gap-2">
-                        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
+                        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                             Resume & ATS Intelligence
                         </h1>
                     </div>
@@ -74,7 +83,7 @@ const Resume = () => {
                             onClick={() => setActiveTab('ats')}
                             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
                                 activeTab === 'ats' 
-                                    ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs' 
+                                    ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs' 
                                     : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                             }`}
                         >
@@ -87,7 +96,7 @@ const Resume = () => {
                             onClick={() => setActiveTab('preview')}
                             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                                 activeTab === 'preview' 
-                                    ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs' 
+                                    ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs' 
                                     : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                             }`}
                         >
@@ -97,7 +106,7 @@ const Resume = () => {
 
                     <button
                         onClick={handleDownloadPDF}
-                        className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                        className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
                     >
                         <Download size={16} />
                         <span>Print / Save PDF</span>
@@ -109,7 +118,7 @@ const Resume = () => {
             {activeTab === 'ats' && (
                 <div className="print:hidden">
                     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 sm:p-12 shadow-sm text-center max-w-3xl mx-auto space-y-6">
-                        <div className="w-16 h-16 mx-auto rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-xs">
+                        <div className="w-16 h-16 mx-auto rounded-2xl bg-blue-50 dark:bg-blue-950/50 border border-blue-100 dark:border-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 shadow-xs">
                             <Sparkles size={32} />
                         </div>
 
@@ -118,7 +127,7 @@ const Resume = () => {
                                 <Clock size={13} />
                                 <span>Coming Soon</span>
                             </div>
-                            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
                                 ATS Detailed Analyzer & Matcher
                             </h2>
                             <p className="text-sm text-slate-500 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
@@ -129,7 +138,7 @@ const Resume = () => {
                         {/* Feature Preview Cards */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-left">
                             <div className="p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 space-y-2">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
                                     <Target size={16} />
                                 </div>
                                 <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100">Neural ATS Match</h4>
@@ -163,7 +172,7 @@ const Resume = () => {
                         <div className="pt-2">
                             <button
                                 onClick={() => setActiveTab('preview')}
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer"
                             >
                                 <FileText size={15} />
                                 <span>View Verified Resume Preview</span>
@@ -187,7 +196,7 @@ const Resume = () => {
                             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                                 {activeData.fullName || activeData.username || "Abhishek Verma"}
                             </h1>
-                            <p className="text-base text-indigo-600 font-bold mt-0.5">
+                            <p className="text-base text-blue-600 font-bold mt-0.5">
                                 {activeData.role || "Full Stack & Distributed Systems Engineer"}
                             </p>
                         </div>

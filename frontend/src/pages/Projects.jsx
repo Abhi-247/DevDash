@@ -134,7 +134,7 @@ const Projects = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             </div>
         );
     }
@@ -142,16 +142,16 @@ const Projects = () => {
     const activeProjects = isRecruiterMode ? mockData.projects : projects;
 
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-6">
+        <div className="p-4 sm:p-6 lg:p-7 max-w-7xl font-poppins mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Projects & Systems</h1>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">Manage your full-stack applications and system architectures</p>
+                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Projects & Systems</h1>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Manage your full-stack applications and system architectures</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setShowModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors text-xs font-semibold shadow-sm cursor-pointer"
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-xs font-semibold shadow-sm cursor-pointer"
                     >
                         <Plus size={16} />
                         <span>Add Project</span>
@@ -161,9 +161,9 @@ const Projects = () => {
 
             {/* Recruiter Demo Banner if simulated */}
             {isRecruiterMode && (
-                <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5 text-xs text-indigo-700 dark:text-indigo-300">
-                        <Sparkles size={16} className="text-indigo-500 flex-shrink-0" />
+                <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5 text-xs text-blue-700 dark:text-blue-300">
+                        <Sparkles size={16} className="text-blue-500 flex-shrink-0" />
                         <span><strong>Recruiter Demo Mode:</strong> Viewing pre-loaded distributed architectures with live metrics. Toggle demo mode in the top navbar to view your live projects.</span>
                     </div>
                 </div>
@@ -172,7 +172,7 @@ const Projects = () => {
             {/* Empty State */}
             {activeProjects.length === 0 ? (
                 <div className="p-12 rounded-3xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-800 text-center space-y-4">
-                    <div className="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto">
+                    <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto">
                         <FolderKanban size={28} />
                     </div>
                     <div>
@@ -184,7 +184,7 @@ const Projects = () => {
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                         <button
                             onClick={() => setShowModal(true)}
-                            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition-all text-xs font-bold shadow-sm"
+                            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition-all text-xs font-bold shadow-sm"
                         >
                             <Plus size={16} />
                             <span>Create Your First Project</span>
@@ -193,7 +193,7 @@ const Projects = () => {
                             onClick={handleSeedSample}
                             className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-xs font-semibold"
                         >
-                            <Sparkles size={16} className="text-indigo-500" />
+                            <Sparkles size={16} className="text-blue-500" />
                             <span>Add Sample Architecture Project</span>
                         </button>
                     </div>
@@ -205,17 +205,17 @@ const Projects = () => {
                             key={project._id || idx}
                             className={`bg-white dark:bg-slate-900 rounded-2xl shadow-sm border ${
                                 project.featured 
-                                    ? 'border-indigo-300 dark:border-indigo-600/80 ring-2 ring-indigo-100 dark:ring-indigo-900/20' 
+                                    ? 'border-blue-300 dark:border-blue-600/80 ring-2 ring-blue-100 dark:ring-blue-900/20' 
                                     : 'border-slate-200 dark:border-slate-800'
-                            } p-6 flex flex-col justify-between hover:border-indigo-500/50 transition-all group`}
+                            } p-6 flex flex-col justify-between hover:border-blue-500/50 transition-all group`}
                         >
                             <div>
                                 <div className="flex items-start justify-between gap-3 mb-2">
-                                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-500 transition-colors">
+                                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors">
                                         {project.title}
                                     </h3>
                                     {project.featured && (
-                                        <span className="px-2.5 py-0.5 bg-indigo-600 text-white rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0">
+                                        <span className="px-2.5 py-0.5 bg-blue-600 text-white rounded-full text-xs font-semibold flex items-center gap-1 flex-shrink-0">
                                             <Star size={12} /> Featured
                                         </span>
                                     )}
@@ -234,7 +234,7 @@ const Projects = () => {
 
                                 {project.architecture && (
                                     <div className="mb-4 text-[11px] font-mono text-slate-400 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
-                                        <span className="text-indigo-400 font-bold block mb-0.5">Pipeline:</span>
+                                        <span className="text-blue-400 font-bold block mb-0.5">Pipeline:</span>
                                         {project.architecture}
                                     </div>
                                 )}
@@ -269,7 +269,7 @@ const Projects = () => {
                                             href={project.liveUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition-colors text-xs font-semibold shadow-xs"
+                                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition-colors text-xs font-semibold shadow-xs"
                                         >
                                             <ExternalLink size={15} />
                                             Live Demo
@@ -318,7 +318,7 @@ const Projects = () => {
                                     required
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="e.g. Distributed Telemetry Pipeline"
                                 />
                             </div>
@@ -332,7 +332,7 @@ const Projects = () => {
                                     rows="4"
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="Explain the architectural choices, problem solved, and technical challenges overcome..."
                                 />
                             </div>
@@ -346,7 +346,7 @@ const Projects = () => {
                                     required
                                     value={formData.technologies}
                                     onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                                     placeholder="React, Node.js, Express, MongoDB, Redis, Docker"
                                 />
                             </div>
@@ -360,7 +360,7 @@ const Projects = () => {
                                         type="url"
                                         value={formData.githubUrl}
                                         onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
-                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         placeholder="https://github.com/username/project"
                                     />
                                 </div>
@@ -373,7 +373,7 @@ const Projects = () => {
                                         type="url"
                                         value={formData.liveUrl}
                                         onChange={(e) => setFormData({ ...formData, liveUrl: e.target.value })}
-                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         placeholder="https://myproject.vercel.app"
                                     />
                                 </div>
@@ -385,7 +385,7 @@ const Projects = () => {
                                     id="featured"
                                     checked={formData.featured}
                                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                                 />
                                 <label htmlFor="featured" className="text-sm font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                                     Pin as Featured Project (displayed prominently in dashboard & public showcase)
@@ -402,7 +402,7 @@ const Projects = () => {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors text-xs font-bold shadow-md shadow-indigo-600/20 cursor-pointer"
+                                    className="px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-xs font-bold shadow-md shadow-blue-600/20 cursor-pointer"
                                 >
                                     {editingProject ? 'Save Changes' : 'Publish Project'}
                                 </button>

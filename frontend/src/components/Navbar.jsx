@@ -6,18 +6,33 @@ import {
     Search, Bell, Menu, X, Sun, Moon, ChevronDown, LogOut, Settings, 
     User, ExternalLink, LayoutDashboard, FileText, Code2, FolderKanban, 
     Briefcase, BarChart3, Target, Link as LinkIcon, Layers, CheckCircle2, AlertCircle, Award,
-    Mail
+    Mail, Plus
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import logoImg from '../assets/logodevdash.png';
 
-const Navbar = () => {
+const Navbar = ({ toggleSidebar, isSidebarExpanded }) => {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
     
     // Auth User
-    const userStr = localStorage.getItem('user');
-    const user = userStr ? JSON.parse(userStr) : null;
+    const [user, setUser] = useState(() => {
+        const userStr = localStorage.getItem('user');
+        return userStr ? JSON.parse(userStr) : null;
+    });
+
+    useEffect(() => {
+        const handleUserUpdate = () => {
+            const userStr = localStorage.getItem('user');
+            setUser(userStr ? JSON.parse(userStr) : null);
+        };
+        window.addEventListener('userUpdated', handleUserUpdate);
+        window.addEventListener('storage', handleUserUpdate);
+        return () => {
+            window.removeEventListener('userUpdated', handleUserUpdate);
+            window.removeEventListener('storage', handleUserUpdate);
+        };
+    }, []);
 
     // States
     const [searchFocused, setSearchFocused] = useState(false);
@@ -102,96 +117,64 @@ const Navbar = () => {
 
     return (
         <>
-            {/* ===== NAVBAR — clean edge-to-edge bar with subtle bottom border ===== */}
-            <header className="navbar-header">
-                {/* ---------- LEFT: Breadcrumb & Mobile hamburger ---------- */}
-                <div className="navbar-left">
-                    {/* Mobile hamburger */}
+            {/* ===== NAVBAR — matching Image 1 layout ===== */}
+            <header className="navbar-header flex items-center justify-between px-4 sm:px-6 h-16 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/80 sticky top-0 z-30 transition-colors font-poppins">
+                {/* ---------- LEFT: Hamburger & Search Input ---------- */}
+                <div className="flex items-center gap-3 md:gap-4 flex-1">
+                    {/* Mobile hamburger (hidden on desktop where sidebar is always open) */}
                     <button 
                         onClick={() => setIsMobileMenuOpen(true)}
-                        className="navbar-mobile-toggle"
+                        className="md:hidden navbar-mobile-toggle text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
+                        title="Open Navigation Menu"
                     >
                         <Menu size={20} />
                     </button>
 
-                    {/* Breadcrumb */}
-                    <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                        <span className="text-slate-400 dark:text-slate-500 font-normal">Platform</span>
-                        <span className="text-slate-300 dark:text-slate-600 font-normal">/</span>
-                        <span className="text-slate-800 dark:text-slate-200 font-semibold">Dashboard</span>
+                    {/* Search Bar matching Image 1 */}
+                    <div className="relative w-full max-w-xs sm:max-w-sm">
+                        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                        <input
+                            type="text"
+                            placeholder="Search telemetry, repos, skills..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-9 pr-4 py-1.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 rounded-full text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        />
                     </div>
                 </div>
 
-                {/* ---------- RIGHT: Actions ---------- */}
-                <div className="navbar-right">
+                {/* ---------- RIGHT: Image 1 Actions (Badge, Avatar, + Button, Settings) ---------- */}
+                <div className="flex items-center gap-2.5 sm:gap-3">
                     {/* Theme Toggle */}
                     <button 
                         onClick={toggleTheme}
-                        className="navbar-icon-btn"
+                        className="w-8 h-8 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors cursor-pointer"
                         title={theme === 'dark' ? "Light mode" : "Dark mode"}
                     >
-                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                        {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
                     </button>
 
-                    {/* Notifications */}
-                    <div ref={notificationRef} className="navbar-dropdown-wrapper">
-                        <button 
-                            onClick={() => setShowNotifications(!showNotifications)}
-                            className="navbar-icon-btn"
-                        >
-                            <Bell size={18} />
-                            {unreadCount > 0 && <span className="navbar-notif-badge" />}
-                        </button>
+                    {/* Red Platform / Channel Badge matching Image 1 */}
+                    <button
+                        onClick={() => navigate('/accounts')}
+                        title="Connected Accounts"
+                        className="w-7 h-7 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center text-[10px] font-bold shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                    >
+                        ⚡
+                    </button>
 
-                        <AnimatePresence>
-                            {showNotifications && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                                    transition={{ duration: 0.15, ease: 'easeOut' }}
-                                    className="navbar-dropdown navbar-notif-dropdown"
-                                >
-                                    <div className="navbar-dropdown-header">
-                                        <span className="navbar-dropdown-title">Notifications</span>
-                                        {unreadCount > 0 && (
-                                            <button onClick={markAllRead} className="navbar-mark-read">Mark all read</button>
-                                        )}
-                                    </div>
-                                    <div className="navbar-notif-list">
-                                        {notifications.map((notif) => (
-                                            <div key={notif.id} className={`navbar-notif-item ${!notif.read ? 'unread' : ''}`}>
-                                                <div className={`navbar-notif-icon ${notif.type}`}>
-                                                    <notif.icon size={14} />
-                                                </div>
-                                                <div className="navbar-notif-content">
-                                                    <p className="navbar-notif-text">{notif.text}</p>
-                                                    <span className="navbar-notif-time">{notif.time}</span>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
-                    {/* Profile Avatar + Dropdown */}
-                    <div ref={profileRef} className="navbar-dropdown-wrapper">
+                    {/* Profile Avatar + Dropdown with active indicator */}
+                    <div ref={profileRef} className="navbar-dropdown-wrapper relative">
                         <button 
                             onClick={() => setShowProfileMenu(!showProfileMenu)}
-                            className="navbar-profile-btn"
+                            className="relative flex items-center cursor-pointer group"
                         >
                             <img
-                                src={user?.avatar || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=7c3aed&color=ffffff&bold=true`}
+                                src={user?.avatar || `https://ui-avatars.com/api/?name=${user?.name || 'Dev'}&background=2563eb&color=ffffff&bold=true`}
                                 alt="Profile"
-                                className="navbar-avatar"
+                                className="w-8 h-8 rounded-full object-cover border border-slate-200 dark:border-slate-700 shadow-sm group-hover:ring-2 group-hover:ring-blue-400/40 transition-all"
                             />
-                            <ChevronDown 
-                                size={13} 
-                                className="navbar-profile-chevron" 
-                                style={{ transform: showProfileMenu ? 'rotate(180deg)' : 'none' }} 
-                            />
+                            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
                         </button>
 
                         <AnimatePresence>
@@ -226,6 +209,24 @@ const Navbar = () => {
                             )}
                         </AnimatePresence>
                     </div>
+
+                    {/* Cyan / Light-Blue + Button matching Image 1 */}
+                    <button
+                        onClick={() => navigate('/projects')}
+                        title="Add Project"
+                        className="w-7 h-7 rounded-full bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-950/60 dark:hover:bg-cyan-900/60 text-cyan-600 dark:text-cyan-300 flex items-center justify-center shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                    >
+                        <Plus size={14} strokeWidth={2.5} />
+                    </button>
+
+                    {/* Settings Gear Button matching Image 1 */}
+                    <button
+                        onClick={() => navigate('/settings')}
+                        title="Platform Settings"
+                        className="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors cursor-pointer"
+                    >
+                        <Settings size={17} />
+                    </button>
                 </div>
             </header>
 

@@ -8,7 +8,7 @@ const Analytics = () => {
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
-    const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
+    const COLORS = ['#2563eb', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6'];
 
     useEffect(() => {
         fetchAnalytics();
@@ -36,7 +36,7 @@ const Analytics = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             </div>
         );
     }
@@ -61,7 +61,7 @@ const Analytics = () => {
             label: 'Total Commits',
             value: analytics?.analytics?.totalCommits || 0,
             icon: GitCommit,
-            color: 'bg-indigo-500',
+            color: 'bg-blue-500',
             change: '+12%'
         },
         {
@@ -88,16 +88,16 @@ const Analytics = () => {
     ];
 
     return (
-        <div className="p-8 max-w-7xl mx-auto">
+        <div className="p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6 font-poppins">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Analytics</h1>
-                    <p className="text-slate-600 dark:text-slate-400 mt-2">Track your coding activity and progress</p>
+                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Analytics</h1>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Track your coding activity and progress</p>
                 </div>
                 <button
                     onClick={handleRefresh}
                     disabled={refreshing}
-                    className="flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
                 >
                     <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
                     Refresh
@@ -111,17 +111,17 @@ const Analytics = () => {
                     return (
                         <div
                             key={stat.label}
-                            className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6"
+                            className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6"
                         >
                             <div className="flex items-start justify-between mb-4">
-                                <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center text-white`}>
+                                <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center text-white`}>
                                     <Icon size={24} />
                                 </div>
                                 <span className="text-green-600 dark:text-green-400 text-sm font-medium">
                                     {stat.change}
                                 </span>
                             </div>
-                            <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">
+                            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-1">
                                 {stat.value}
                             </h3>
                             <p className="text-slate-600 dark:text-slate-400 text-sm">{stat.label}</p>
@@ -133,7 +133,7 @@ const Analytics = () => {
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 {/* Activity Chart */}
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">
                         Weekly Activity
                     </h3>
@@ -150,13 +150,13 @@ const Analytics = () => {
                                     color: '#f1f5f9'
                                 }}
                             />
-                            <Bar dataKey="commits" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="commits" fill="#2563eb" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
 
                 {/* Languages Chart */}
-                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">
                         Languages Used
                     </h3>
@@ -196,7 +196,7 @@ const Analytics = () => {
             </div>
 
             {/* Contribution Trend */}
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-8">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6 mb-8">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">
                     Contribution Trend
                 </h3>
@@ -219,7 +219,7 @@ const Analytics = () => {
             </div>
 
             {/* Connected Profiles Status */}
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-6">
                     Connected Profiles
                 </h3>
@@ -232,7 +232,7 @@ const Analytics = () => {
                     ].map((profile) => (
                         <div
                             key={profile.name}
-                            className="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-lg"
+                            className="flex items-center gap-3 p-4 border border-slate-200 dark:border-slate-700 rounded-xl"
                         >
                             <div className={`w-3 h-3 rounded-full ${profile.connected ? 'bg-green-500' : 'bg-slate-300 dark:bg-slate-600'}`} />
                             <span className="text-slate-700 dark:text-slate-300 font-medium">{profile.name}</span>

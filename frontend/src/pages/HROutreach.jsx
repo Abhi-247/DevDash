@@ -361,7 +361,7 @@ Best regards,`
             if (res.data.lastSynced) {
                 setGmailStatus(prev => ({ ...prev, lastSynced: res.data.lastSynced }));
             }
-        } catch (error) {
+        } catch {
             // silent catch for background auto-sync
         }
     };
@@ -548,7 +548,7 @@ Best regards,`
             case 'sent':
                 return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
             case 'replied':
-                return 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20';
+                return 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20';
             case 'interviewing':
                 return 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20';
             case 'offered':
@@ -573,15 +573,24 @@ Best regards,`
         return matchesSearch && matchesStatus && matchesSource;
     });
 
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3">
+                <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase">Loading HR Outreach CRM...</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-8 animate-fade-in text-slate-900 dark:text-slate-100 relative">
+        <div className="p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6 font-poppins text-slate-900 dark:text-slate-100 relative">
             {/* Custom Toast Notification */}
             {toast && (
                 <div className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl shadow-2xl border flex items-center gap-3 transition-all animate-bounce ${
                     toast.type === 'error'
                         ? 'bg-red-950 border-red-800 text-red-200'
                         : toast.type === 'info'
-                        ? 'bg-indigo-950 border-indigo-800 text-indigo-200'
+                        ? 'bg-blue-950 border-blue-800 text-blue-200'
                         : 'bg-emerald-950 border-emerald-800 text-emerald-200'
                 }`}>
                     {toast.type === 'error' ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
@@ -592,7 +601,7 @@ Best regards,`
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold">HR Outreach & Job Application Tracker</h1>
+                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight">HR Outreach & Job Application Tracker</h1>
                     <p className="text-slate-600 dark:text-slate-400 mt-1">
                         Track job applications, manage application status, set follow-up reminders, and auto-sync entries from Gmail.
                     </p>
@@ -600,10 +609,10 @@ Best regards,`
             </div>
 
             {/* Gmail Integration Status Card */}
-            <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 border border-blue-500/30 p-5 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center shrink-0">
-                        <Mail className="text-indigo-400" size={24} />
+                    <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0">
+                        <Mail className="text-blue-400" size={24} />
                     </div>
                     <div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -623,7 +632,7 @@ Best regards,`
                                 ? `Job applications sent or received via Gmail are automatically synced into your tracker.` 
                                 : `Connect your Gmail account to automatically capture applications submitted via email.`}
                             {gmailStatus.lastSynced && (
-                                <span className="ml-2 text-indigo-300 font-medium">
+                                <span className="ml-2 text-blue-300 font-medium">
                                     • Last synced: {new Date(gmailStatus.lastSynced).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             )}
@@ -637,7 +646,7 @@ Best regards,`
                             <button
                                 onClick={handleSyncGmail}
                                 disabled={syncingGmail}
-                                className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-50"
+                                className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:opacity-50"
                             >
                                 <RefreshCw size={14} className={syncingGmail ? 'animate-spin' : ''} />
                                 <span>{syncingGmail ? 'Syncing Inbox...' : 'Sync Gmail Applications'}</span>
@@ -653,7 +662,7 @@ Best regards,`
                         <button
                             onClick={() => setEmailConnectModal(true)}
                             disabled={connectingGmail}
-                            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
+                            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
                         >
                             <Mail size={16} />
                             <span>Connect Gmail Account</span>
@@ -668,7 +677,7 @@ Best regards,`
                     onClick={() => setActiveTab('compose')}
                     className={`pb-4 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
                         activeTab === 'compose'
-                            ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
+                            ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                             : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
                     }`}
                 >
@@ -680,7 +689,7 @@ Best regards,`
                     onClick={() => setActiveTab('history')}
                     className={`pb-4 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
                         activeTab === 'history'
-                            ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
+                            ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                             : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
                     }`}
                 >
@@ -692,7 +701,7 @@ Best regards,`
                     onClick={() => setActiveTab('vault')}
                     className={`pb-4 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
                         activeTab === 'vault'
-                            ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
+                            ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                             : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
                     }`}
                 >
@@ -709,7 +718,7 @@ Best regards,`
                         {/* Connected Sender Status Chip */}
                         <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
                             <div className="flex items-center gap-2">
-                                <Mail size={15} className={gmailStatus.connected ? "text-emerald-500" : "text-indigo-500"} />
+                                <Mail size={15} className={gmailStatus.connected ? "text-emerald-500" : "text-blue-500"} />
                                 <span className="text-slate-500 dark:text-slate-400">Sending as:</span>
                                 <strong className="text-slate-900 dark:text-white font-mono">
                                     {gmailStatus.connected ? gmailStatus.email : (currentUser?.email || 'DevDash Mail Engine')}
@@ -728,7 +737,7 @@ Best regards,`
                                 <button
                                     type="button"
                                     onClick={() => setEmailConnectModal(true)}
-                                    className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold cursor-pointer"
+                                    className="text-blue-600 dark:text-blue-400 hover:underline font-semibold cursor-pointer"
                                 >
                                     Connect your Gmail &rarr;
                                 </button>
@@ -748,7 +757,7 @@ Best regards,`
                                         value={formData.hrEmail}
                                         onChange={(e) => setFormData({ ...formData, hrEmail: e.target.value })}
                                         placeholder="hr@company.com"
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
                                     />
                                 </div>
                             </div>
@@ -764,7 +773,7 @@ Best regards,`
                                         value={formData.companyName}
                                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                                         placeholder="Google, Stripe, Microsoft..."
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
                                     />
                                 </div>
                             </div>
@@ -780,7 +789,7 @@ Best regards,`
                                     value={formData.position}
                                     onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                                     placeholder="Full Stack Engineer / Frontend Lead"
-                                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
                                 />
                             </div>
 
@@ -791,7 +800,7 @@ Best regards,`
                                 <select
                                     value={formData.selectedResumeId}
                                     onChange={(e) => setFormData({ ...formData, selectedResumeId: e.target.value })}
-                                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500 cursor-pointer"
+                                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
                                 >
                                     <option value="">No attachment</option>
                                     {resumes.map(r => (
@@ -811,7 +820,7 @@ Best regards,`
                                 value={formData.subject}
                                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                                 placeholder="Application for Software Engineer Role"
-                                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
                             />
                         </div>
 
@@ -825,7 +834,7 @@ Best regards,`
                                 value={formData.body}
                                 onChange={(e) => setFormData({ ...formData, body: e.target.value })}
                                 placeholder="Dear Hiring Manager..."
-                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm leading-relaxed focus:outline-none focus:border-indigo-500 font-mono"
+                                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm leading-relaxed focus:outline-none focus:border-blue-500 font-mono"
                             ></textarea>
                         </div>
 
@@ -833,7 +842,7 @@ Best regards,`
                             <button
                                 type="submit"
                                 disabled={sending}
-                                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition-all cursor-pointer"
+                                className="px-6 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-blue-600/20 transition-all cursor-pointer"
                             >
                                 <Send size={18} className={sending ? 'animate-bounce' : ''} />
                                 <span>{sending ? 'Sending & Saving...' : 'Send Email & Save Record'}</span>
@@ -844,7 +853,7 @@ Best regards,`
                     {/* Right Templates Column (1 col) */}
                     <div className="space-y-6">
                         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
-                            <h3 className="text-base font-bold mb-4 flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                            <h3 className="text-base font-bold mb-4 flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                 <Sparkles size={18} />
                                 <span>Quick Email Templates</span>
                             </h3>
@@ -853,9 +862,9 @@ Best regards,`
                                     <div
                                         key={idx}
                                         onClick={() => applyTemplate(tpl)}
-                                        className="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-indigo-500 rounded-xl cursor-pointer transition-all group"
+                                        className="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-blue-500 rounded-xl cursor-pointer transition-all group"
                                     >
-                                        <div className="font-semibold text-sm group-hover:text-indigo-500 transition-colors">
+                                        <div className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
                                             {tpl.title}
                                         </div>
                                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
@@ -867,8 +876,8 @@ Best regards,`
                         </div>
 
                         {/* Resume Status Card */}
-                        <div className="bg-gradient-to-br from-indigo-900/30 to-purple-900/20 border border-indigo-500/20 p-6 rounded-2xl">
-                            <h4 className="font-bold text-sm text-indigo-400 mb-2 flex items-center gap-2">
+                        <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/20 border border-blue-500/20 p-6 rounded-2xl">
+                            <h4 className="font-bold text-sm text-blue-400 mb-2 flex items-center gap-2">
                                 <FileCheck size={16} />
                                 <span>Resume Vault Attached</span>
                             </h4>
@@ -877,7 +886,7 @@ Best regards,`
                             </p>
                             <button
                                 onClick={() => setActiveTab('vault')}
-                                className="text-xs font-semibold text-indigo-400 hover:underline"
+                                className="text-xs font-semibold text-blue-400 hover:underline"
                             >
                                 Manage Resume Vault &rarr;
                             </button>
@@ -899,7 +908,7 @@ Best regards,`
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search company, role, HR..."
-                                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
                                 />
                             </div>
 
@@ -962,7 +971,7 @@ Best regards,`
                                                     <div className="font-bold text-slate-900 dark:text-slate-100">
                                                         {rec.companyName}
                                                     </div>
-                                                    <div className="text-xs text-indigo-500 font-medium">
+                                                    <div className="text-xs text-blue-500 font-medium">
                                                         {rec.position || 'Software Engineer'}
                                                     </div>
                                                     {rec.source === 'gmail_sync' ? (
@@ -970,7 +979,7 @@ Best regards,`
                                                             <Mail size={10} /> Synced from Gmail
                                                         </span>
                                                     ) : (
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mt-1">
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20 mt-1">
                                                             <Send size={10} /> DevDash Sent
                                                         </span>
                                                     )}
@@ -989,7 +998,7 @@ Best regards,`
                                                         </span>
                                                         <button
                                                             onClick={() => handlePrepareFollowUp(rec)}
-                                                            className="p-1 hover:bg-indigo-50 dark:hover:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded transition-colors"
+                                                            className="p-1 hover:bg-blue-50 dark:hover:bg-blue-950 text-blue-600 dark:text-blue-400 rounded transition-colors"
                                                             title="Pre-fill Follow-up Email"
                                                         >
                                                             <MessageSquare size={14} />
@@ -1011,7 +1020,7 @@ Best regards,`
                                                         className={`text-xs font-semibold px-2.5 py-1 rounded-full border cursor-pointer focus:outline-none transition-colors capitalize ${getStatusStyle(rec.status || 'delivered')}`}
                                                     >
                                                         <option value="delivered" className="bg-slate-900 text-emerald-400">Delivered / Sent</option>
-                                                        <option value="replied" className="bg-slate-900 text-indigo-400">Replied</option>
+                                                        <option value="replied" className="bg-slate-900 text-blue-400">Replied</option>
                                                         <option value="interviewing" className="bg-slate-900 text-purple-400">Interviewing</option>
                                                         <option value="offered" className="bg-slate-900 text-amber-400">Offered Job</option>
                                                         <option value="rejected" className="bg-slate-900 text-rose-400">Rejected</option>
@@ -1055,7 +1064,7 @@ Best regards,`
                             </div>
                             <button
                                 onClick={() => setActiveTab('compose')}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-sm transition-all cursor-pointer"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-sm transition-all cursor-pointer"
                             >
                                 <Send size={14} />
                                 <span>Compose HR Email</span>
@@ -1071,7 +1080,7 @@ Best regards,`
                     {/* Upload Form */}
                     <form onSubmit={handleUploadResume} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl space-y-4 shadow-sm">
                         <h3 className="text-lg font-bold flex items-center gap-2">
-                            <Upload className="text-indigo-600 dark:text-indigo-400" size={20} />
+                            <Upload className="text-blue-600 dark:text-blue-400" size={20} />
                             <span>Upload Resume to Vault</span>
                         </h3>
 
@@ -1085,7 +1094,7 @@ Best regards,`
                                 value={uploadTitle}
                                 onChange={(e) => setUploadTitle(e.target.value)}
                                 placeholder="e.g. Frontend Engineer 2026 Resume"
-                                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-indigo-500"
+                                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
                             />
                         </div>
 
@@ -1098,14 +1107,14 @@ Best regards,`
                                 accept=".pdf,.doc,.docx"
                                 required
                                 onChange={handleFileChange}
-                                className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-950 file:text-indigo-600 dark:file:text-indigo-400 hover:file:bg-indigo-100 cursor-pointer"
+                                className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-blue-950 file:text-blue-600 dark:file:text-blue-400 hover:file:bg-blue-100 cursor-pointer"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={uploading || !selectedFile}
-                            className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-semibold rounded-xl text-sm shadow-md transition-all cursor-pointer"
+                            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold rounded-xl text-sm shadow-md transition-all cursor-pointer"
                         >
                             {uploading ? 'Uploading...' : 'Save to Resume Vault'}
                         </button>
@@ -1117,7 +1126,7 @@ Best regards,`
                         {resumes.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {resumes.map(res => (
-                                    <div key={res._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl flex flex-col justify-between hover:border-indigo-500/40 transition-all shadow-sm">
+                                    <div key={res._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl flex flex-col justify-between hover:border-blue-500/40 transition-all shadow-sm">
                                         <div>
                                             <div className="flex justify-between items-start mb-2">
                                                 <h4 className="font-bold text-slate-900 dark:text-slate-100">{res.title}</h4>
@@ -1132,7 +1141,7 @@ Best regards,`
                                             <a
                                                 href={res.fileData}
                                                 download={res.fileName}
-                                                className="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline flex items-center gap-1"
+                                                className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline flex items-center gap-1"
                                             >
                                                 <FileText size={14} />
                                                 <span>Download File</span>
@@ -1172,7 +1181,7 @@ Best regards,`
                                 </div>
                                 <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400">
                                     <div>
-                                        To: <span className="text-indigo-400 font-mono font-medium">{selectedRecord.hrEmail}</span>
+                                        To: <span className="text-blue-400 font-mono font-medium">{selectedRecord.hrEmail}</span>
                                     </div>
                                     <div>
                                         Company: <span className="text-slate-200 font-semibold">{selectedRecord.companyName}</span>
@@ -1200,7 +1209,7 @@ Best regards,`
                             <div>
                                 {selectedRecord.attachedResumeName ? (
                                     <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700 px-3 py-1.5 rounded-xl">
-                                        <Paperclip size={14} className="text-indigo-400" />
+                                        <Paperclip size={14} className="text-blue-400" />
                                         <span className="text-slate-200 font-medium">{selectedRecord.attachedResumeName}</span>
                                     </div>
                                 ) : (
@@ -1215,7 +1224,7 @@ Best regards,`
                                         setSelectedRecord(null);
                                         handlePrepareFollowUp(rec);
                                     }}
-                                    className="px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 rounded-xl font-semibold flex items-center gap-1.5 transition-colors"
+                                    className="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-xl font-semibold flex items-center gap-1.5 transition-colors"
                                 >
                                     <MessageSquare size={14} />
                                     <span>Follow-up Email</span>
@@ -1238,7 +1247,7 @@ Best regards,`
                     <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 md:p-8 shadow-2xl text-slate-100 space-y-5">
                         <div className="flex justify-between items-start">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                                <div className="w-10 h-10 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
                                     <Mail size={22} />
                                 </div>
                                 <div>
@@ -1278,13 +1287,13 @@ Best regards,`
                                 type="button"
                                 onClick={() => handleConnectGmail(currentUser.email)}
                                 disabled={connectingGmail}
-                                className="w-full py-2.5 px-3.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-xl text-xs font-semibold flex items-center justify-between transition-all cursor-pointer"
+                                className="w-full py-2.5 px-3.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-semibold flex items-center justify-between transition-all cursor-pointer"
                             >
                                 <span className="flex items-center gap-2 truncate">
-                                    <Mail size={14} className="text-indigo-400 shrink-0" />
+                                    <Mail size={14} className="text-blue-400 shrink-0" />
                                     <span className="truncate">Quick connect as <strong className="text-white">{currentUser.email}</strong></span>
                                 </span>
-                                <span className="text-indigo-400 shrink-0">&rarr;</span>
+                                <span className="text-blue-400 shrink-0">&rarr;</span>
                             </button>
                         )}
 
@@ -1307,7 +1316,7 @@ Best regards,`
                                     value={manualGmailEmail}
                                     onChange={(e) => setManualGmailEmail(e.target.value)}
                                     placeholder="your_email@gmail.com"
-                                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 text-white"
+                                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs focus:outline-none focus:border-blue-500 text-white"
                                 />
                             </div>
 
@@ -1320,7 +1329,7 @@ Best regards,`
                                         href="https://myaccount.google.com/apppasswords"
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="text-[10px] text-indigo-400 hover:underline"
+                                        className="text-[10px] text-blue-400 hover:underline"
                                     >
                                         Get App Password &rarr;
                                     </a>
@@ -1330,7 +1339,7 @@ Best regards,`
                                     value={manualAppPassword}
                                     onChange={(e) => setManualAppPassword(e.target.value)}
                                     placeholder="16-character app password"
-                                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs focus:outline-none focus:border-indigo-500 text-white font-mono"
+                                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs focus:outline-none focus:border-blue-500 text-white font-mono"
                                 />
                                 <p className="text-[10px] text-slate-400 mt-1">
                                     Optional: Enables direct personal sending from your own Gmail account.
@@ -1350,7 +1359,7 @@ Best regards,`
                                 type="button"
                                 onClick={() => handleConnectGmail(manualGmailEmail, manualAppPassword)}
                                 disabled={connectingGmail || !manualGmailEmail}
-                                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/30 transition-all flex items-center gap-2 cursor-pointer"
+                                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-600/30 transition-all flex items-center gap-2 cursor-pointer"
                             >
                                 <Mail size={15} />
                                 <span>{connectingGmail ? 'Connecting...' : 'Connect Gmail'}</span>

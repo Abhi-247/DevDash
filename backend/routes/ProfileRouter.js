@@ -109,14 +109,30 @@ router.get("/profile", verifyToken, async (req, res) => {
 // Update user profile
 router.put("/profile", verifyToken, async (req, res) => {
     try {
-        const { fullName, bio, location, website, skills } = req.body;
+        const { fullName, bio, location, website, skills, avatar, role, githubUrl, linkedinUrl, twitterUrl, googleAvatar } = req.body;
+        
+        const updateFields = {};
+        if (fullName !== undefined) updateFields.fullName = fullName;
+        if (bio !== undefined) updateFields.bio = bio;
+        if (location !== undefined) updateFields.location = location;
+        if (website !== undefined) updateFields.website = website;
+        if (skills !== undefined) updateFields.skills = skills;
+        if (avatar !== undefined) updateFields.avatar = avatar;
+        if (role !== undefined) updateFields.role = role;
+        if (githubUrl !== undefined) updateFields.githubUrl = githubUrl;
+        if (linkedinUrl !== undefined) updateFields.linkedinUrl = linkedinUrl;
+        if (twitterUrl !== undefined) updateFields.twitterUrl = twitterUrl;
+        if (googleAvatar !== undefined) updateFields.googleAvatar = googleAvatar;
+
         const user = await User.findByIdAndUpdate(
             req.userId,
-            { fullName, bio, location, website, skills },
+            { $set: updateFields },
             { new: true }
         ).select("-password");
+
         res.json(user);
     } catch (error) {
+        console.error("Error updating profile:", error);
         res.status(500).json({ message: "Error updating profile" });
     }
 });

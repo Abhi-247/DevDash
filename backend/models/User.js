@@ -26,6 +26,10 @@ const userSchema=new mongoose.Schema({
         type: String,
         default: ''
     },
+    googleAvatar: {
+        type: String,
+        default: ''
+    },
     authProvider: {
         type: String,
         default: 'local'
@@ -34,6 +38,10 @@ const userSchema=new mongoose.Schema({
     fullName: {
         type: String,
         default: ''
+    },
+    role: {
+        type: String,
+        default: 'Full Stack Developer'
     },
     bio: {
         type: String,
@@ -44,6 +52,18 @@ const userSchema=new mongoose.Schema({
         default: ''
     },
     website: {
+        type: String,
+        default: ''
+    },
+    githubUrl: {
+        type: String,
+        default: ''
+    },
+    linkedinUrl: {
+        type: String,
+        default: ''
+    },
+    twitterUrl: {
         type: String,
         default: ''
     },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { RecruiterProvider } from './context/RecruiterContext';
@@ -22,13 +22,23 @@ import HROutreach from './pages/HROutreach';
 
 // Layout for authenticated pages
 const ProtectedLayout = () => {
-  // Simple check: do we have a user in local storage?
   const isAuthenticated = !!localStorage.getItem('user');
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(() => {
+    return localStorage.getItem('devdash_sidebar_expanded') === 'true';
+  });
+
+  const toggleSidebar = () => {
+    setIsSidebarExpanded((prev) => {
+      const next = !prev;
+      localStorage.setItem('devdash_sidebar_expanded', String(next));
+      return next;
+    });
+  };
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex bg-slate-50 dark:bg-slate-900 min-h-screen font-sans text-slate-900 dark:text-slate-50">
+    <div className="flex bg-[#F4F7FD] dark:bg-slate-950 min-h-screen font-poppins text-slate-900 dark:text-slate-50">
       <Sidebar />
       <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
         <Navbar />
