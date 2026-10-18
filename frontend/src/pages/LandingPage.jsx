@@ -5,6 +5,7 @@ import Login from './Login';
 import Signup from './Signup';
 import PublicNavbar from '../components/PublicNavbar';
 import PublicFooter from '../components/PublicFooter';
+import HowItWorksModal from '../components/HowItWorksModal';
 import boyHeroImg from '../assets/boyhero.png';
 import heroImg from '../assets/hero.png';
 import timerImg from '../assets/timer.png';
@@ -101,6 +102,7 @@ const ScrollStrip = ({ platforms, direction = 'left', speed = 35 }) => {
 const LandingPage = () => {
     const navigate = useNavigate();
     const [authModal, setAuthModal] = useState(null);
+    const [showHowItWorks, setShowHowItWorks] = useState(false);
 
     // 🎛️ Interactive Feature Tabs State
     const [activeFeatureTab, setActiveFeatureTab] = useState('sync');
@@ -150,7 +152,7 @@ const LandingPage = () => {
 
                             {/* How it works — outlined button with play icon */}
                             <button
-                                onClick={() => navigate('/about')}
+                                onClick={() => setShowHowItWorks(true)}
                                 className="flex items-center gap-3 px-6 py-3 rounded-full border-2 border-slate-200 dark:border-slate-700 text-[#6D28D9] dark:text-purple-400 font-semibold text-sm sm:text-base hover:border-[#6D28D9] dark:hover:border-purple-400 hover:shadow-md transition-all duration-300 cursor-pointer bg-white dark:bg-slate-950"
                             >
                                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#6D28D9] dark:bg-purple-500">
@@ -1151,6 +1153,11 @@ const LandingPage = () => {
             <PublicFooter />
 
             {/* Modals */}
+            <HowItWorksModal
+                isOpen={showHowItWorks}
+                onClose={() => setShowHowItWorks(false)}
+                onOpenSignup={() => setAuthModal('signup')}
+            />
             {authModal === 'login' && <Login isModal onClose={() => setAuthModal(null)} onSwitchToSignup={() => setAuthModal('signup')} />}
             {authModal === 'signup' && <Signup isModal onClose={() => setAuthModal(null)} onSwitchToLogin={() => setAuthModal('login')} />}
         </div>

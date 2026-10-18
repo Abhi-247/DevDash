@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevDash Extension Options</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0b0f19;
+            color: #f8fafc;
+            padding: 30px;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+        p { font-size: 13px; color: #94a3b8; margin-bottom: 20px; line-height: 1.5; }
+        .card {
+            background: #131a29;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .field { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 12px; font-weight: 700; color: #cbd5e1; }
+        input {
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 13px;
+            color: #ffffff;
+            outline: none;
+        }
+        input:focus { border-color: #6366f1; }
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+        button {
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .save-btn { background: #6366f1; color: white; }
+        .save-btn:hover { background: #4f46e5; }
+        .test-btn { background: #1e293b; color: #cbd5e1; }
+        .test-btn:hover { background: #334155; }
+        .status { margin-top: 10px; font-size: 12px; font-weight: 600; }
+        .success { color: #34d399; }
+        .error { color: #f87171; }
+    </style>
+</head>
+<body>
+    <h2>⚡ DevDash Extension Configuration</h2>
+    <p>Configure your DevDash local or production endpoints and authentication status.</p>
+
+    <div class="card">
+        <div class="field">
+            <label>Backend API URL</label>
+            <input type="text" id="opt-api-url" placeholder="http://localhost:4000">
+        </div>
+        <div class="field">
+            <label>Frontend Client URL</label>
+            <input type="text" id="opt-client-url" placeholder="http://localhost:5173">
+        </div>
+        <div class="field">
+            <label>Auth Token (JWT)</label>
+            <input type="password" id="opt-token" placeholder="DevDash JWT Token">
+        </div>
+
+        <div class="btn-row">
+            <button id="btn-save" class="save-btn">Save Settings</button>
+            <button id="btn-test" class="test-btn">Test Connection</button>
+        </div>
+        <div id="opt-status" class="status"></div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>
