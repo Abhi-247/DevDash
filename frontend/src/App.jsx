@@ -20,6 +20,21 @@ import Analytics from './pages/Analytics';
 import Goals from './pages/Goals';
 import HROutreach from './pages/HROutreach';
 
+import ScrollToTop from './components/ScrollToTop';
+import FeaturesPage from './pages/FeaturesPage';
+import DeveloperLinkPage from './pages/DeveloperLinkPage';
+import IntegrationsPage from './pages/IntegrationsPage';
+import PricingPage from './pages/PricingPage';
+import BlogPage from './pages/BlogPage';
+import CareersPage from './pages/CareersPage';
+import ContactPage from './pages/ContactPage';
+import DocsPage from './pages/DocsPage';
+import CommunityPage from './pages/CommunityPage';
+import OpenSourcePage from './pages/OpenSourcePage';
+import StatusPage from './pages/StatusPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
+
 // Layout for authenticated pages
 const ProtectedLayout = () => {
   const isAuthenticated = !!localStorage.getItem('user');
@@ -64,12 +79,27 @@ const App = () => {
     <ThemeProvider>
       <RecruiterProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<RootRoute />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/features" element={<FeaturesPage />} />
+            <Route path="/developer-link" element={<DeveloperLinkPage />} />
+            <Route path="/integrations" element={<IntegrationsPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/support" element={<Navigate to="/contact" replace />} />
+            <Route path="/docs" element={<DocsPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/open-source" element={<OpenSourcePage />} />
+            <Route path="/status" element={<StatusPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
 
             {/* Protected Routes */}
             <Route element={<ProtectedLayout />}>

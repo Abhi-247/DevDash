@@ -734,11 +734,14 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                         onMouseLeave={handleFeaturesLeave}
                                     >
                                         {featureItems.map((feat, idx) => (
-                                            <a
+                                            <button
                                                 key={idx}
-                                                href="#features"
+                                                type="button"
                                                 className="pub-feature-item"
-                                                onClick={() => setShowFeatures(false)}
+                                                onClick={() => {
+                                                    setShowFeatures(false);
+                                                    navigate('/features');
+                                                }}
                                             >
                                                 <div className="pub-feature-icon">
                                                     <feat.icon size={20} strokeWidth={2.2} />
@@ -747,7 +750,7 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                                     <div className="pub-feature-label">{feat.label}</div>
                                                     <div className="pub-feature-desc">{feat.desc}</div>
                                                 </div>
-                                            </a>
+                                            </button>
                                         ))}
                                     </motion.div>
                                 )}
@@ -755,20 +758,28 @@ const PublicNavbar = ({ onOpenAuth }) => {
                         </div>
 
                         {/* About */}
-                        <a
-                            href="/about"
-                            className={`pub-nav-pill-link ${isAboutPage ? 'active' : ''}`}
+                        <button
+                            onClick={() => navigate('/about')}
+                            className={`pub-nav-pill-link ${location.pathname === '/about' ? 'active' : ''}`}
                         >
                             About
-                        </a>
+                        </button>
 
                         {/* Blog */}
-                        <a
-                            href={isAboutPage ? '/#blog' : '#blog'}
-                            className="pub-nav-pill-link"
+                        <button
+                            onClick={() => navigate('/blog')}
+                            className={`pub-nav-pill-link ${location.pathname === '/blog' ? 'active' : ''}`}
                         >
                             Blog
-                        </a>
+                        </button>
+
+                        {/* Pricing */}
+                        <button
+                            onClick={() => navigate('/pricing')}
+                            className={`pub-nav-pill-link ${location.pathname === '/pricing' ? 'active' : ''}`}
+                        >
+                            Pricing
+                        </button>
                     </nav>
 
                     {/* Right Actions */}
@@ -878,17 +889,20 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                         >
                                             <div className="pub-nav-mobile-features">
                                                 {featureItems.map((feat, idx) => (
-                                                    <a
+                                                    <button
                                                         key={idx}
-                                                        href="#features"
+                                                        type="button"
                                                         className="pub-nav-mobile-feature-item"
-                                                        onClick={() => setIsMenuOpen(false)}
+                                                        onClick={() => {
+                                                            setIsMenuOpen(false);
+                                                            navigate('/features');
+                                                        }}
                                                     >
                                                         <div className="pub-nav-mobile-feature-icon">
                                                             <feat.icon size={15} strokeWidth={2.2} />
                                                         </div>
                                                         <span className="pub-nav-mobile-feature-label">{feat.label}</span>
-                                                    </a>
+                                                    </button>
                                                 ))}
                                             </div>
                                         </motion.div>
@@ -896,30 +910,40 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                 </AnimatePresence>
 
                                 {/* About */}
-                                <motion.a
-                                    href="/about"
-                                    onClick={() => setIsMenuOpen(false)}
+                                <motion.button
+                                    onClick={() => { setIsMenuOpen(false); navigate('/about'); }}
                                     initial={{ opacity: 0, x: 30 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.17 }}
-                                    className={`pub-nav-drawer-link ${isAboutPage ? 'active' : ''}`}
+                                    className={`pub-nav-drawer-link ${location.pathname === '/about' ? 'active' : ''}`}
                                 >
                                     <span>About</span>
                                     <ChevronRight size={16} />
-                                </motion.a>
+                                </motion.button>
 
                                 {/* Blog */}
-                                <motion.a
-                                    href={isAboutPage ? '/#blog' : '#blog'}
-                                    onClick={() => setIsMenuOpen(false)}
+                                <motion.button
+                                    onClick={() => { setIsMenuOpen(false); navigate('/blog'); }}
                                     initial={{ opacity: 0, x: 30 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.24 }}
-                                    className="pub-nav-drawer-link"
+                                    className={`pub-nav-drawer-link ${location.pathname === '/blog' ? 'active' : ''}`}
                                 >
                                     <span>Blog</span>
                                     <ChevronRight size={16} />
-                                </motion.a>
+                                </motion.button>
+
+                                {/* Pricing */}
+                                <motion.button
+                                    onClick={() => { setIsMenuOpen(false); navigate('/pricing'); }}
+                                    initial={{ opacity: 0, x: 30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.3 }}
+                                    className={`pub-nav-drawer-link ${location.pathname === '/pricing' ? 'active' : ''}`}
+                                >
+                                    <span>Pricing</span>
+                                    <ChevronRight size={16} />
+                                </motion.button>
                             </div>
 
                             <div className="pub-nav-drawer-cta-area">

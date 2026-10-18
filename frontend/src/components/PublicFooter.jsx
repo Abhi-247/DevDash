@@ -22,28 +22,28 @@ const PublicFooter = () => {
         {
             title: 'Product',
             links: [
-                { label: 'Features', href: '#features' },
-                { label: 'Developer Link', href: '#' },
-                { label: 'Integrations', href: '#' },
-                { label: 'Pricing Plan', href: '#' }
+                { label: 'Features', onClick: () => navigate('/features') },
+                { label: 'Developer Link', onClick: () => navigate('/developer-link') },
+                { label: 'Integrations', onClick: () => navigate('/integrations') },
+                { label: 'Pricing Plan', onClick: () => navigate('/pricing') }
             ]
         },
         {
             title: 'Company',
             links: [
                 { label: 'About Us', onClick: () => navigate('/about') },
-                { label: 'Developer Blog', href: '#blog' },
-                { label: 'Careers', badge: 'Hiring', href: '#' },
-                { label: 'Support & Contact', href: '#' }
+                { label: 'Developer Blog', onClick: () => navigate('/blog') },
+                { label: 'Careers', badge: 'Hiring', onClick: () => navigate('/careers') },
+                { label: 'Support & Contact', onClick: () => navigate('/contact') }
             ]
         },
         {
             title: 'Resources',
             links: [
-                { label: 'Documentation', href: '#' },
-                { label: 'Community Forum', href: '#' },
-                { label: 'Open Source', href: '#' },
-                { label: 'Status Updates', href: '#' }
+                { label: 'Documentation', onClick: () => navigate('/docs') },
+                { label: 'Community Forum', onClick: () => navigate('/community') },
+                { label: 'Open Source', onClick: () => navigate('/open-source') },
+                { label: 'Status Updates', onClick: () => navigate('/status') }
             ]
         }
     ];
@@ -172,8 +172,8 @@ const PublicFooter = () => {
                         <span>© 2026 DevDash. All rights reserved.</span>
                     </div>
                     <div className="flex items-center gap-6">
-                        <a href="#" className="hover:text-slate-650 dark:hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-slate-650 dark:hover:text-white transition-colors">Terms of Service</a>
+                        <button onClick={() => navigate('/privacy')} className="hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-xs font-bold text-slate-400 dark:text-slate-500">Privacy Policy</button>
+                        <button onClick={() => navigate('/terms')} className="hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-xs font-bold text-slate-400 dark:text-slate-500">Terms of Service</button>
                         <span className="flex items-center gap-1.5 select-none">
                             Made with 💙 for developers
                         </span>

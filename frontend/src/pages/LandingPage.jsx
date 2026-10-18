@@ -7,8 +7,8 @@ import PublicNavbar from '../components/PublicNavbar';
 import PublicFooter from '../components/PublicFooter';
 import boyHeroImg from '../assets/boyhero.png';
 import heroImg from '../assets/hero.png';
-import hourglassImg from '../assets/hourglass.png';
-import devdashIcon3dImg from '../assets/devdash-icon-3d.png';
+import timerImg from '../assets/timer.png';
+import logoDevDashImg from '../assets/logodevdash.png';
 import {
     ArrowRight,
     Code2,
@@ -52,7 +52,8 @@ import {
     Send,
     Paperclip,
     Plus,
-    Search
+    Search,
+    Briefcase
 } from 'lucide-react';
 
 /* ─── Platform Chip ─── */
@@ -103,6 +104,7 @@ const LandingPage = () => {
 
     // 🎛️ Interactive Feature Tabs State
     const [activeFeatureTab, setActiveFeatureTab] = useState('sync');
+    const [mockApplicationStatus, setMockApplicationStatus] = useState('interviewing');
 
     return (
         <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-650 selection:text-white overflow-x-hidden transition-colors duration-300">
@@ -555,9 +557,9 @@ const LandingPage = () => {
                             {/* Bottom 3D Hourglass Visual */}
                             <div className="flex justify-center pt-8 mt-auto">
                                 <img
-                                    src={hourglassImg}
+                                    src={timerImg}
                                     alt="Wasted time with manual updates"
-                                    className="w-40 sm:w-48 h-auto object-contain mix-blend-multiply dark:mix-blend-normal select-none pointer-events-none hover:scale-105 transition-transform duration-500 drop-shadow-sm"
+                                    className="w-44 sm:w-52 h-auto object-contain select-none pointer-events-none hover:scale-105 transition-transform duration-500 drop-shadow-xl"
                                 />
                             </div>
                         </motion.div>
@@ -589,13 +591,15 @@ const LandingPage = () => {
                                 </div>
                             </div>
 
-                            {/* Bottom 3D App Icon Visual */}
-                            <div className="flex justify-end pt-8 mt-auto">
-                                <img
-                                    src={devdashIcon3dImg}
-                                    alt="DevDash unified dashboard app icon"
-                                    className="w-36 sm:w-44 h-auto object-contain mix-blend-multiply dark:mix-blend-normal select-none pointer-events-none hover:scale-105 transition-transform duration-500 drop-shadow-md"
-                                />
+                            {/* Bottom 3D DevDash Logo Visual */}
+                            <div className="flex justify-end pt-4 mt-auto -mb-6 -mr-6 sm:-mb-8 sm:-mr-8">
+                                <div className="relative group/logo">
+                                    <img
+                                        src={logoDevDashImg}
+                                        alt="DevDash App Logo"
+                                        className="w-44 sm:w-52 h-auto object-contain transform rotate-[7deg] select-none pointer-events-none transition-transform duration-500 group-hover/logo:rotate-0 group-hover/logo:scale-105 drop-shadow-[0_20px_25px_rgba(124,58,237,0.3)]"
+                                    />
+                                </div>
                             </div>
                         </motion.div>
 
@@ -619,7 +623,7 @@ const LandingPage = () => {
                         <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
                             {[
                                 { id: 'sync', label: '🔄 Live Profile Sync' },
-                                { id: 'outreach', label: '✉️ Cold HR Outreach' },
+                                { id: 'outreach', label: '✉️ Direct Mail & Job Tracker' },
                                 { id: 'analytics', label: '📊 Developer Analytics' },
                                 { id: 'showcase', label: '💼 Public Showcase' }
                             ].map((tab) => (
@@ -687,38 +691,118 @@ const LandingPage = () => {
                             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                                 <div className="lg:col-span-6 space-y-4 text-left">
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 text-xs font-bold">
-                                        <span>Automated Cold Emails</span>
+                                        <Briefcase size={13} />
+                                        <span>Direct Mail & Job Management System</span>
                                     </div>
-                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white">Target HRs & Deliver Resumes Directly</h3>
+                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white leading-tight">
+                                        Direct Mail to HRs & Complete Job Management System
+                                    </h3>
                                     <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
-                                        Send customized, recruiter-tailored cold emails directly through Gmail SMTP. DevDash attaches your verified PDF resume from the Resume Vault and logs responses in real-time.
+                                        Send customized, recruiter-tailored cold emails directly through Gmail SMTP with verified ATS resumes attached, and manage your entire application pipeline in one place where you can track and update job status in real time.
                                     </p>
-                                    <button
-                                        onClick={() => setAuthModal('signup')}
-                                        className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-purple-600/20 active:scale-95 cursor-pointer"
-                                    >
-                                        <span>Try HR Outreach</span>
-                                        <ArrowRight size={16} />
-                                    </button>
-                                </div>
-                                <div className="lg:col-span-6 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-3 text-left">
-                                    <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-                                        <Mail size={18} className="text-purple-600" />
-                                        <span className="font-bold text-sm text-slate-800 dark:text-slate-200">HR Outreach Mailer Mockup</span>
+                                    <div className="space-y-2.5 pt-1">
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-purple-500 shrink-0" />
+                                            <span>Direct Recruiter Outreach via Gmail with PDF Resume</span>
+                                        </div>
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-purple-500 shrink-0" />
+                                            <span>Job Management System to Track & Update Application Status</span>
+                                        </div>
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-purple-500 shrink-0" />
+                                            <span>Real-Time Gmail Response Sync & Follow-Up Reminders</span>
+                                        </div>
                                     </div>
-                                    <div className="space-y-2.5 text-left text-xs">
-                                        <div className="p-2.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-slate-700 dark:text-slate-300">
-                                            <strong>To:</strong> tech.recruiter@stripe.com
+                                    <div className="pt-2">
+                                        <button
+                                            onClick={() => setAuthModal('signup')}
+                                            className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-purple-600/20 active:scale-95 cursor-pointer"
+                                        >
+                                            <span>Explore Direct Mail & Job Tracker</span>
+                                            <ArrowRight size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="lg:col-span-6 bg-white dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-left">
+                                    {/* 1. Direct Mailer Snippet */}
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+                                            <div className="flex items-center gap-2">
+                                                <Mail size={16} className="text-purple-600" />
+                                                <span className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200">1. Direct Mail Recruiter Outreach</span>
+                                            </div>
+                                            <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md">Gmail SMTP</span>
                                         </div>
-                                        <div className="p-2.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-slate-700 dark:text-slate-300">
-                                            <strong>Subject:</strong> Full Stack Developer Application — Alex Developer
+                                        <div className="p-2.5 bg-slate-50 dark:bg-slate-900 rounded-lg text-slate-700 dark:text-slate-300 text-xs space-y-1">
+                                            <div><strong>To:</strong> tech.recruiter@stripe.com</div>
+                                            <div><strong>Subject:</strong> Full Stack Developer Application — Alex Developer</div>
+                                            <div className="flex items-center gap-1.5 text-purple-600 dark:text-purple-400 font-bold pt-1">
+                                                <Paperclip size={13} />
+                                                <span>Attached: Alex_Developer_Resume.pdf (150 KB)</span>
+                                            </div>
                                         </div>
-                                        <div className="p-3 bg-purple-50/50 dark:bg-purple-950/30 rounded-lg border border-purple-100 dark:border-purple-900/30 text-slate-700 dark:text-slate-300 leading-relaxed">
-                                            "Hi Tech Recruiting Team! I am a Full-Stack Engineer with 345+ solved LeetCode DSA problems and 28 public GitHub repositories..."
+                                    </div>
+
+                                    {/* 2. Job Management System with Live Status Updater */}
+                                    <div className="space-y-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <Briefcase size={16} className="text-indigo-600 dark:text-indigo-400" />
+                                                <span className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200">2. Job Management System — Update Status</span>
+                                            </div>
+                                            <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md">Live Interactive</span>
                                         </div>
-                                        <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold">
-                                            <Paperclip size={14} />
-                                            <span>Attached: Alex_Developer_Resume.pdf (150 KB)</span>
+
+                                        <div className="p-3.5 bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <div className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">Stripe · Full Stack Developer</div>
+                                                    <div className="text-[11px] text-slate-500 dark:text-slate-400">Applied 2 days ago · Synced via Gmail</div>
+                                                </div>
+                                                <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full capitalize ${
+                                                    mockApplicationStatus === 'applied' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' :
+                                                    mockApplicationStatus === 'screening' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300' :
+                                                    mockApplicationStatus === 'interviewing' ? 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' :
+                                                    mockApplicationStatus === 'offered' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' :
+                                                    'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300'
+                                                }`}>
+                                                    ● {mockApplicationStatus}
+                                                </span>
+                                            </div>
+
+                                            {/* Interactive Status Pills */}
+                                            <div>
+                                                <div className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1.5">
+                                                    Click to test updating application status:
+                                                </div>
+                                                <div className="grid grid-cols-4 gap-1.5">
+                                                    {[
+                                                        { id: 'applied', label: 'Applied' },
+                                                        { id: 'screening', label: 'Screening' },
+                                                        { id: 'interviewing', label: 'Interview' },
+                                                        { id: 'offered', label: 'Offered 🎉' }
+                                                    ].map((st) => (
+                                                        <button
+                                                            key={st.id}
+                                                            type="button"
+                                                            onClick={() => setMockApplicationStatus(st.id)}
+                                                            className={`py-1.5 px-2 rounded-lg text-[11px] font-bold border transition-all cursor-pointer text-center ${
+                                                                mockApplicationStatus === st.id
+                                                                    ? 'bg-purple-600 text-white border-purple-600 shadow-sm'
+                                                                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                                            }`}
+                                                        >
+                                                            {st.label}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center justify-between pt-1 border-t border-slate-200/50 dark:border-slate-800">
+                                                <span>Current Status: <strong className="text-slate-800 dark:text-slate-200 capitalize">{mockApplicationStatus}</strong></span>
+                                                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">✓ Real-time synced</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
