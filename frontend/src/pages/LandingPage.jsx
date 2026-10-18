@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
 import PublicNavbar from '../components/PublicNavbar';
 import PublicFooter from '../components/PublicFooter';
 import HowItWorksModal from '../components/HowItWorksModal';
+import ExtensionModal from '../components/ExtensionModal';
 import boyHeroImg from '../assets/boyhero.png';
 import heroImg from '../assets/hero.png';
 import timerImg from '../assets/timer.png';
@@ -101,12 +102,26 @@ const ScrollStrip = ({ platforms, direction = 'left', speed = 35 }) => {
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [authModal, setAuthModal] = useState(null);
     const [showHowItWorks, setShowHowItWorks] = useState(false);
+    const [showExtensionModal, setShowExtensionModal] = useState(false);
 
     // 🎛️ Interactive Feature Tabs State
     const [activeFeatureTab, setActiveFeatureTab] = useState('sync');
     const [mockApplicationStatus, setMockApplicationStatus] = useState('interviewing');
+
+    // Auto-scroll to #chrome-extension if routed with hash
+    useEffect(() => {
+        if (window.location.hash === '#chrome-extension' || window.location.hash === '#extension') {
+            setTimeout(() => {
+                const el = document.getElementById('chrome-extension');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 180);
+        }
+    }, [location.hash]);
 
     return (
         <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-650 selection:text-white overflow-x-hidden transition-colors duration-300">
@@ -625,6 +640,7 @@ const LandingPage = () => {
                         <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
                             {[
                                 { id: 'sync', label: '🔄 Live Profile Sync' },
+                                { id: 'extension', label: '⚡ Chrome Extension' },
                                 { id: 'outreach', label: '✉️ Direct Mail & Job Tracker' },
                                 { id: 'analytics', label: '📊 Developer Analytics' },
                                 { id: 'showcase', label: '💼 Public Showcase' }
@@ -683,6 +699,78 @@ const LandingPage = () => {
                                         <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                             <span className="font-bold text-sm text-cyan-500">🏆 Codeforces</span>
                                             <span className="text-xs font-bold text-slate-600 dark:text-slate-400">1540 Rating (Specialist)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {activeFeatureTab === 'extension' && (
+                            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                                <div className="lg:col-span-6 space-y-4 text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold">
+                                        <Zap size={13} className="text-amber-500 fill-amber-500" />
+                                        <span>Official Chrome Extension · 1-Click Fast Apply</span>
+                                    </div>
+                                    <h3 className="text-2xl sm:text-3xl font-[800] text-slate-900 dark:text-white leading-tight">
+                                        Fast Apply Directly from LinkedIn &amp; Job Boards
+                                    </h3>
+                                    <p className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
+                                        No more copying and pasting recruiter emails. Our companion Chrome Extension scans the open job posting in real time, auto-fills the company, role, and recruiter email, formats your subject line, and attaches your verified DevDash Resume Vault PDF in a single click.
+                                    </p>
+                                    <div className="space-y-2.5 pt-1">
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-indigo-500 shrink-0" />
+                                            <span>Universal Screen Scanner: Auto-detects HR Email, Role &amp; Company</span>
+                                        </div>
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-indigo-500 shrink-0" />
+                                            <span>Smart Subject Generator: Auto-writes "Application for [Role]"</span>
+                                        </div>
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-indigo-500 shrink-0" />
+                                            <span>Auto-Syncs Resume Vault &amp; Dispatches via Gmail SMTP</span>
+                                        </div>
+                                        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                                            <CheckCircle2 size={16} className="text-indigo-500 shrink-0" />
+                                            <span>Logged Automatically to Your DevDash Outreach CRM</span>
+                                        </div>
+                                    </div>
+                                    <div className="pt-2 flex flex-wrap gap-3">
+                                        <button
+                                            onClick={() => setShowExtensionModal(true)}
+                                            className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition-all shadow-md shadow-indigo-600/20 active:scale-95 cursor-pointer"
+                                        >
+                                            <Zap size={16} />
+                                            <span>Get Chrome Extension</span>
+                                        </button>
+                                        <button
+                                            onClick={() => setAuthModal('signup')}
+                                            className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold px-5 py-3 rounded-xl text-sm transition-all cursor-pointer"
+                                        >
+                                            <span>Connect Resume Vault</span>
+                                            <ArrowRight size={15} />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="lg:col-span-6 flex justify-center">
+                                    <div className="relative group max-w-sm sm:max-w-md w-full">
+                                        <div className="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-md opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                                        <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-2.5 sm:p-4 border border-slate-200/80 dark:border-slate-800 shadow-2xl">
+                                            <div className="flex items-center justify-between pb-3 px-2 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                    <span>DevDash Extension Active on LinkedIn</span>
+                                                </div>
+                                                <span className="text-[11px] bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-md font-bold">1-Click Fast Apply</span>
+                                            </div>
+                                            <div className="pt-3 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-950 flex items-center justify-center">
+                                                <img
+                                                    src="/extension-popup.png"
+                                                    alt="DevDash Chrome Extension Popup"
+                                                    className="w-full max-w-[320px] sm:max-w-[340px] h-auto object-contain rounded-2xl shadow-lg transform hover:scale-[1.02] transition-transform duration-300"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -894,6 +982,102 @@ const LandingPage = () => {
                                 </div>
                             </motion.div>
                         )}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════ CHROME EXTENSION SHOWCASE HERO BANNER ═══════ */}
+            <section id="chrome-extension" className="py-20 px-6 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-900/40 dark:via-slate-950 dark:to-slate-900/40 border-y border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300 overflow-hidden relative">
+                {/* Ambient glow orbs */}
+                <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-purple-500/10 dark:bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-1/2 right-1/4 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="max-w-7xl mx-auto relative z-10">
+                    <div className="text-center max-w-3xl mx-auto mb-14">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold mb-4">
+                            <Zap size={14} className="text-amber-500 fill-amber-500" />
+                            <span>Browser Companion Extension</span>
+                        </div>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-[800] text-slate-900 dark:text-white tracking-tight leading-tight">
+                            Apply to Any Role in <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 -webkit-background-clip-text text-transparent bg-clip-text">10 Seconds</span> Flat
+                        </h2>
+                        <p className="text-slate-600 dark:text-slate-400 font-medium text-sm sm:text-base mt-4 leading-relaxed">
+                            Turn your web browser into an automated developer job application machine. Works seamlessly over LinkedIn, Indeed, Wellfound, Greenhouse, Lever, and any company careers page.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                        {/* Left Screenshot: Full LinkedIn real-world overlay */}
+                        <div className="lg:col-span-7 order-2 lg:order-1">
+                            <div className="relative group">
+                                <div className="absolute -inset-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-50 transition duration-500" />
+                                <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-2xl bg-white dark:bg-slate-900">
+                                    <div className="bg-slate-100 dark:bg-slate-800 px-4 py-2.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full bg-rose-500 inline-block" />
+                                            <span className="w-3 h-3 rounded-full bg-amber-500 inline-block" />
+                                            <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
+                                            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 ml-2">linkedin.com/jobs</span>
+                                        </div>
+                                        <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/70 px-2 py-0.5 rounded">⚡ DevDash Live Extension</span>
+                                    </div>
+                                    <img
+                                        src="/extension-linkedin-demo.png"
+                                        alt="DevDash Chrome Extension on LinkedIn"
+                                        className="w-full h-auto object-cover hover:scale-[1.01] transition-transform duration-300"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Content: Step-by-step breakdown */}
+                        <div className="lg:col-span-5 order-1 lg:order-2 space-y-5 text-left">
+                            <div className="space-y-3.5">
+                                {[
+                                    {
+                                        step: '01',
+                                        title: 'Auto-Scrape Recruiter & Role',
+                                        desc: 'Navigate to any job posting on LinkedIn or Indeed. The extension instantly extracts the hiring manager email, company, and role.'
+                                    },
+                                    {
+                                        step: '02',
+                                        title: 'Auto-Generated Subject & Clean UI',
+                                        desc: 'Automatically prepares "Application for [Role]" subject lines while leaving the body clean for your custom tailored pitch.'
+                                    },
+                                    {
+                                        step: '03',
+                                        title: 'Attach DevDash Vault PDF Resume',
+                                        desc: 'Pulls your uploaded verified developer resumes from your DevDash account with 1-click selection.'
+                                    },
+                                    {
+                                        step: '04',
+                                        title: '1-Click Send & Real-Time CRM Log',
+                                        desc: 'Dispatches cleanly via your Gmail SMTP and automatically adds the application to your DevDash HR Outreach CRM pipeline.'
+                                    }
+                                ].map((item, idx) => (
+                                    <div key={idx} className="flex items-start gap-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+                                        <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 font-extrabold flex items-center justify-center shrink-0 text-sm">
+                                            {item.step}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-slate-900 dark:text-white text-sm">{item.title}</h4>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mt-0.5">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="pt-2">
+                                <button
+                                    onClick={() => setShowExtensionModal(true)}
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-7 py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-purple-600/25 active:scale-95 cursor-pointer"
+                                >
+                                    <Zap size={16} />
+                                    <span>How to Install Chrome Extension</span>
+                                    <ArrowRight size={16} />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1157,6 +1341,11 @@ const LandingPage = () => {
                 isOpen={showHowItWorks}
                 onClose={() => setShowHowItWorks(false)}
                 onOpenSignup={() => setAuthModal('signup')}
+            />
+            <ExtensionModal
+                isOpen={showExtensionModal}
+                onClose={() => setShowExtensionModal(false)}
+                onOpenOutreach={() => navigate('/hr-outreach')}
             />
             {authModal === 'login' && <Login isModal onClose={() => setAuthModal(null)} onSwitchToSignup={() => setAuthModal('signup')} />}
             {authModal === 'signup' && <Signup isModal onClose={() => setAuthModal(null)} onSwitchToLogin={() => setAuthModal('login')} />}

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     Menu, X, ArrowRight, Sun, Moon, Sparkles, ChevronRight, ChevronDown,
-    RefreshCw, Trophy, FileText, Send, FolderKanban, BarChart3, Globe, Target
+    RefreshCw, Trophy, FileText, Send, FolderKanban, BarChart3, Globe, Target, Zap
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import logoImg from '../assets/logodevdash.png';
@@ -29,6 +29,11 @@ const featureItems = [
         icon: Send,
         label: 'HR Outreach',
         desc: 'Automate cold emails with Gmail SMTP & track responses',
+    },
+    {
+        icon: Zap,
+        label: 'Chrome Extension',
+        desc: '1-Click fast apply on LinkedIn with DevDash Vault resume',
     },
     {
         icon: FolderKanban,
@@ -102,6 +107,19 @@ const PublicNavbar = ({ onOpenAuth }) => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             navigate('/');
+        }
+    };
+
+    const handleViewExtensionClick = () => {
+        setIsMenuOpen(false);
+        setShowFeatures(false);
+        if (location.pathname === '/') {
+            const el = document.getElementById('chrome-extension');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        } else {
+            navigate('/#chrome-extension');
         }
     };
 
@@ -740,7 +758,11 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                                 className="pub-feature-item"
                                                 onClick={() => {
                                                     setShowFeatures(false);
-                                                    navigate('/features');
+                                                    if (feat.label === 'Chrome Extension') {
+                                                        handleViewExtensionClick();
+                                                    } else {
+                                                        navigate('/features');
+                                                    }
                                                 }}
                                             >
                                                 <div className="pub-feature-icon">
@@ -756,6 +778,16 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                 )}
                             </AnimatePresence>
                         </div>
+
+                        {/* View Extension Button */}
+                        <button
+                            onClick={handleViewExtensionClick}
+                            className="pub-nav-pill-link"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                        >
+                            <Zap size={13} className="text-amber-500 fill-amber-500" />
+                            <span>View Extension</span>
+                        </button>
 
                         {/* About */}
                         <button
@@ -895,7 +927,11 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                                         className="pub-nav-mobile-feature-item"
                                                         onClick={() => {
                                                             setIsMenuOpen(false);
-                                                            navigate('/features');
+                                                            if (feat.label === 'Chrome Extension') {
+                                                                handleViewExtensionClick();
+                                                            } else {
+                                                                navigate('/features');
+                                                            }
                                                         }}
                                                     >
                                                         <div className="pub-nav-mobile-feature-icon">
@@ -908,6 +944,21 @@ const PublicNavbar = ({ onOpenAuth }) => {
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
+
+                                {/* View Extension */}
+                                <motion.button
+                                    onClick={handleViewExtensionClick}
+                                    initial={{ opacity: 0, x: 30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.12 }}
+                                    className="pub-nav-drawer-link"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <Zap size={16} className="text-amber-500 fill-amber-500" />
+                                        <span>View Extension</span>
+                                    </div>
+                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400">NEW</span>
+                                </motion.button>
 
                                 {/* About */}
                                 <motion.button
