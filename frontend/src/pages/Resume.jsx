@@ -76,12 +76,12 @@ const Resume = () => {
                     </p>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                     {/* View Switcher */}
-                    <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+                    <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold w-full sm:w-auto">
                         <button
                             onClick={() => setActiveTab('ats')}
-                            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+                            className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap ${
                                 activeTab === 'ats' 
                                     ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs' 
                                     : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
@@ -94,7 +94,7 @@ const Resume = () => {
                         </button>
                         <button
                             onClick={() => setActiveTab('preview')}
-                            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                            className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg transition-all cursor-pointer text-center whitespace-nowrap ${
                                 activeTab === 'preview' 
                                     ? 'bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 shadow-xs' 
                                     : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
@@ -106,7 +106,7 @@ const Resume = () => {
 
                     <button
                         onClick={handleDownloadPDF}
-                        className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm transition-all cursor-pointer"
+                        className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap shrink-0 w-full sm:w-auto"
                     >
                         <Download size={16} />
                         <span>Print / Save PDF</span>

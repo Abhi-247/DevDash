@@ -583,7 +583,7 @@ Best regards,`
     }
 
     return (
-        <div className="p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6 font-poppins text-slate-900 dark:text-slate-100 relative">
+        <div className="p-3 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-5 sm:space-y-6 pb-12 sm:pb-6 font-poppins text-slate-900 dark:text-slate-100 relative min-w-0 max-w-full overflow-x-hidden">
             {/* Custom Toast Notification */}
             {toast && (
                 <div className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl shadow-2xl border flex items-center gap-3 transition-all animate-bounce ${
@@ -599,27 +599,28 @@ Best regards,`
             )}
 
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight">HR Outreach & Job Application Tracker</h1>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 min-w-0">
+                <div className="min-w-0">
+                    <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white break-words">HR Outreach & Job Application Tracker</h1>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                         Track job applications, manage application status, set follow-up reminders, and auto-sync entries from Gmail.
                     </p>
                 </div>
             </div>
 
             {/* Gmail Integration Status Card */}
-            <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 border border-blue-500/30 p-5 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0">
-                        <Mail className="text-blue-400" size={24} />
+            <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 border border-blue-500/30 p-4 sm:p-5 rounded-2xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 w-full min-w-0 max-w-full overflow-hidden">
+                <div className="flex items-start sm:items-center gap-3 sm:gap-4 w-full md:w-auto min-w-0">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
+                        <Mail className="text-blue-400" size={20} />
                     </div>
-                    <div>
-                        <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="font-bold text-base text-white">Gmail Application Auto-Sync</h3>
+                    <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                            <h3 className="font-bold text-sm sm:text-base text-white">Gmail Application Auto-Sync</h3>
                             {gmailStatus.connected ? (
-                                <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                                    <CheckCircle2 size={12} /> Connected: {gmailStatus.email}
+                                <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 max-w-full">
+                                    <CheckCircle2 size={12} className="shrink-0" />
+                                    <span className="truncate max-w-[170px] xs:max-w-[220px] sm:max-w-none">Connected: {gmailStatus.email}</span>
                                 </span>
                             ) : (
                                 <span className="bg-slate-800 text-slate-400 border border-slate-700 text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -627,12 +628,12 @@ Best regards,`
                                 </span>
                             )}
                         </div>
-                        <p className="text-xs text-slate-300 mt-1">
+                        <p className="text-xs text-slate-300 mt-1 leading-relaxed">
                             {gmailStatus.connected 
                                 ? `Job applications sent or received via Gmail are automatically synced into your tracker.` 
                                 : `Connect your Gmail account to automatically capture applications submitted via email.`}
                             {gmailStatus.lastSynced && (
-                                <span className="ml-2 text-blue-300 font-medium">
+                                <span className="block sm:inline sm:ml-2 text-blue-300 font-medium text-[11px] sm:text-xs mt-0.5 sm:mt-0">
                                     • Last synced: {new Date(gmailStatus.lastSynced).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             )}
@@ -640,20 +641,20 @@ Best regards,`
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 w-full md:w-auto justify-end shrink-0">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full md:w-auto shrink-0 pt-1 md:pt-0">
                     {gmailStatus.connected ? (
                         <>
                             <button
                                 onClick={handleSyncGmail}
                                 disabled={syncingGmail}
-                                className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:opacity-50"
+                                className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer disabled:opacity-50"
                             >
                                 <RefreshCw size={14} className={syncingGmail ? 'animate-spin' : ''} />
                                 <span>{syncingGmail ? 'Syncing Inbox...' : 'Sync Gmail Applications'}</span>
                             </button>
                             <button
                                 onClick={handleDisconnectGmail}
-                                className="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium transition-all cursor-pointer border border-slate-700"
+                                className="w-full sm:w-auto px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-medium transition-all cursor-pointer border border-slate-700 shrink-0 text-center"
                             >
                                 Disconnect
                             </button>
@@ -662,7 +663,7 @@ Best regards,`
                         <button
                             onClick={() => setEmailConnectModal(true)}
                             disabled={connectingGmail}
-                            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+                            className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
                         >
                             <Mail size={16} />
                             <span>Connect Gmail Account</span>
@@ -672,63 +673,63 @@ Best regards,`
             </div>
 
             {/* Navigation Tabs */}
-            <div className="flex border-b border-slate-200 dark:border-slate-800 gap-8">
+            <div className="flex border-b border-slate-200 dark:border-slate-800 gap-3 sm:gap-8 overflow-x-auto no-scrollbar scroll-smooth w-full min-w-0 max-w-full">
                 <button
                     onClick={() => setActiveTab('compose')}
-                    className={`pb-4 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+                    className={`pb-3 sm:pb-4 font-semibold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 border-b-2 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                         activeTab === 'compose'
                             ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                             : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
                     }`}
                 >
-                    <Send size={18} />
+                    <Send size={16} className="shrink-0" />
                     <span>Compose HR Email</span>
                 </button>
 
                 <button
                     onClick={() => setActiveTab('history')}
-                    className={`pb-4 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+                    className={`pb-3 sm:pb-4 font-semibold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 border-b-2 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                         activeTab === 'history'
                             ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                             : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
                     }`}
                 >
-                    <History size={18} />
+                    <History size={16} className="shrink-0" />
                     <span>Application Records ({records.length})</span>
                 </button>
 
                 <button
                     onClick={() => setActiveTab('vault')}
-                    className={`pb-4 font-semibold text-sm flex items-center gap-2 border-b-2 transition-all cursor-pointer ${
+                    className={`pb-3 sm:pb-4 font-semibold text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 border-b-2 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                         activeTab === 'vault'
                             ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                             : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
                     }`}
                 >
-                    <Paperclip size={18} />
+                    <Paperclip size={16} className="shrink-0" />
                     <span>Resume Vault ({resumes.length})</span>
                 </button>
             </div>
 
             {/* TAB 1: COMPOSE EMAIL */}
             {activeTab === 'compose' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 min-w-0 max-w-full">
                     {/* Left Form (2 cols) */}
-                    <form onSubmit={handleSendEmail} className="lg:col-span-2 space-y-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-2xl shadow-sm">
+                    <form onSubmit={handleSendEmail} className="lg:col-span-2 space-y-5 sm:space-y-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm min-w-0 max-w-full overflow-hidden">
                         {/* Connected Sender Status Chip */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs">
-                            <div className="flex items-center gap-2">
-                                <Mail size={15} className={gmailStatus.connected ? "text-emerald-500" : "text-blue-500"} />
-                                <span className="text-slate-500 dark:text-slate-400">Sending as:</span>
-                                <strong className="text-slate-900 dark:text-white font-mono">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs min-w-0">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 min-w-0">
+                                <Mail size={15} className={`shrink-0 ${gmailStatus.connected ? "text-emerald-500" : "text-blue-500"}`} />
+                                <span className="text-slate-500 dark:text-slate-400 shrink-0">Sending as:</span>
+                                <strong className="text-slate-900 dark:text-white font-mono text-xs truncate max-w-[170px] xs:max-w-[240px] sm:max-w-none" title={gmailStatus.connected ? gmailStatus.email : (currentUser?.email || 'DevDash Mail Engine')}>
                                     {gmailStatus.connected ? gmailStatus.email : (currentUser?.email || 'DevDash Mail Engine')}
                                 </strong>
                                 {gmailStatus.connected ? (
-                                    <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                                    <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20 whitespace-nowrap shrink-0">
                                         Gmail Verified
                                     </span>
                                 ) : (
-                                    <span className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px]">
+                                    <span className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] whitespace-nowrap shrink-0">
                                         Default SMTP
                                     </span>
                                 )}
@@ -737,7 +738,7 @@ Best regards,`
                                 <button
                                     type="button"
                                     onClick={() => setEmailConnectModal(true)}
-                                    className="text-blue-600 dark:text-blue-400 hover:underline font-semibold cursor-pointer"
+                                    className="text-blue-600 dark:text-blue-400 hover:underline font-semibold cursor-pointer whitespace-nowrap shrink-0 text-left sm:text-right"
                                 >
                                     Connect your Gmail &rarr;
                                 </button>
@@ -838,11 +839,11 @@ Best regards,`
                             ></textarea>
                         </div>
 
-                        <div className="flex justify-end">
+                        <div className="flex justify-end pt-2">
                             <button
                                 type="submit"
                                 disabled={sending}
-                                className="px-6 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold rounded-xl flex items-center gap-2 shadow-lg shadow-blue-600/20 transition-all cursor-pointer"
+                                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 transition-all cursor-pointer text-sm"
                             >
                                 <Send size={18} className={sending ? 'animate-bounce' : ''} />
                                 <span>{sending ? 'Sending & Saving...' : 'Send Email & Save Record'}</span>
@@ -851,9 +852,9 @@ Best regards,`
                     </form>
 
                     {/* Right Templates Column (1 col) */}
-                    <div className="space-y-6">
-                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
-                            <h3 className="text-base font-bold mb-4 flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                    <div className="space-y-5 sm:space-y-6 min-w-0">
+                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 sm:p-6 rounded-2xl">
+                            <h3 className="text-sm sm:text-base font-bold mb-4 flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                 <Sparkles size={18} />
                                 <span>Quick Email Templates</span>
                             </h3>
@@ -862,9 +863,9 @@ Best regards,`
                                     <div
                                         key={idx}
                                         onClick={() => applyTemplate(tpl)}
-                                        className="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-blue-500 rounded-xl cursor-pointer transition-all group"
+                                        className="p-3.5 sm:p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-blue-500 rounded-xl cursor-pointer transition-all group"
                                     >
-                                        <div className="font-semibold text-sm group-hover:text-blue-500 transition-colors">
+                                        <div className="font-semibold text-xs sm:text-sm group-hover:text-blue-500 transition-colors">
                                             {tpl.title}
                                         </div>
                                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
@@ -876,8 +877,8 @@ Best regards,`
                         </div>
 
                         {/* Resume Status Card */}
-                        <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/20 border border-blue-500/20 p-6 rounded-2xl">
-                            <h4 className="font-bold text-sm text-blue-400 mb-2 flex items-center gap-2">
+                        <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/20 border border-blue-500/20 p-4 sm:p-6 rounded-2xl">
+                            <h4 className="font-bold text-xs sm:text-sm text-blue-400 mb-2 flex items-center gap-2">
                                 <FileCheck size={16} />
                                 <span>Resume Vault Attached</span>
                             </h4>
@@ -897,53 +898,55 @@ Best regards,`
 
             {/* TAB 2: OUTREACH HISTORY RECORDS */}
             {activeTab === 'history' && (
-                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm space-y-5 sm:space-y-6 min-w-0 max-w-full overflow-hidden">
                     {/* Search & Filter Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                            <div className="relative flex-1 md:w-72">
+                    <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 sm:gap-4 min-w-0">
+                        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-3 w-full md:w-auto">
+                            <div className="relative flex-1 min-w-0 md:w-72">
                                 <Search className="absolute left-3 top-3 text-slate-400" size={16} />
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search company, role, HR..."
-                                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500"
+                                    className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-blue-500"
                                 />
                             </div>
 
-                            <select
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className="px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
-                            >
-                                <option value="all">All Statuses</option>
-                                <option value="delivered">Delivered / Sent</option>
-                                <option value="replied">Replied</option>
-                                <option value="interviewing">Interviewing</option>
-                                <option value="offered">Offered</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="failed">Failed</option>
-                            </select>
+                            <div className="flex items-center gap-2">
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className="flex-1 sm:flex-initial px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
+                                >
+                                    <option value="all">All Statuses</option>
+                                    <option value="delivered">Delivered / Sent</option>
+                                    <option value="replied">Replied</option>
+                                    <option value="interviewing">Interviewing</option>
+                                    <option value="offered">Offered</option>
+                                    <option value="rejected">Rejected</option>
+                                    <option value="failed">Failed</option>
+                                </select>
 
-                            <select
-                                value={sourceFilter}
-                                onChange={(e) => setSourceFilter(e.target.value)}
-                                className="px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
-                            >
-                                <option value="all">All Sources</option>
-                                <option value="gmail_sync">Synced from Gmail</option>
-                                <option value="app_email">Sent via DevDash</option>
-                            </select>
+                                <select
+                                    value={sourceFilter}
+                                    onChange={(e) => setSourceFilter(e.target.value)}
+                                    className="flex-1 sm:flex-initial px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
+                                >
+                                    <option value="all">All Sources</option>
+                                    <option value="gmail_sync">Synced from Gmail</option>
+                                    <option value="app_email">Sent via DevDash</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <span className="text-xs text-slate-500">Showing {filteredRecords.length} records</span>
+                        <span className="text-xs text-slate-500 self-start md:self-auto">Showing {filteredRecords.length} records</span>
                     </div>
 
                     {/* Applications Table */}
                     {filteredRecords.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left text-sm border-collapse">
+                        <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                            <table className="w-full text-left text-sm border-collapse min-w-[680px]">
                                 <thead>
                                     <tr className="border-b border-slate-200 dark:border-slate-800 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                                         <th className="py-3 px-4">Applied Date</th>
@@ -1076,10 +1079,10 @@ Best regards,`
 
             {/* TAB 3: RESUME VAULT */}
             {activeTab === 'vault' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 min-w-0 max-w-full">
                     {/* Upload Form */}
-                    <form onSubmit={handleUploadResume} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl space-y-4 shadow-sm">
-                        <h3 className="text-lg font-bold flex items-center gap-2">
+                    <form onSubmit={handleUploadResume} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 sm:p-6 rounded-2xl space-y-4 shadow-sm min-w-0">
+                        <h3 className="text-base sm:text-lg font-bold flex items-center gap-2">
                             <Upload className="text-blue-600 dark:text-blue-400" size={20} />
                             <span>Upload Resume to Vault</span>
                         </h3>
@@ -1121,20 +1124,20 @@ Best regards,`
                     </form>
 
                     {/* Resumes List (2 cols) */}
-                    <div className="lg:col-span-2 space-y-4">
-                        <h3 className="text-lg font-bold">Stored Resumes ({resumes.length})</h3>
+                    <div className="lg:col-span-2 space-y-4 min-w-0">
+                        <h3 className="text-base sm:text-lg font-bold">Stored Resumes ({resumes.length})</h3>
                         {resumes.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {resumes.map(res => (
-                                    <div key={res._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl flex flex-col justify-between hover:border-blue-500/40 transition-all shadow-sm">
-                                        <div>
-                                            <div className="flex justify-between items-start mb-2">
-                                                <h4 className="font-bold text-slate-900 dark:text-slate-100">{res.title}</h4>
-                                                <span className="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                                    <div key={res._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 sm:p-5 rounded-2xl flex flex-col justify-between hover:border-blue-500/40 transition-all shadow-sm min-w-0">
+                                        <div className="min-w-0">
+                                            <div className="flex justify-between items-start mb-2 gap-2">
+                                                <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm truncate">{res.title}</h4>
+                                                <span className="text-[11px] text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded shrink-0">
                                                     {res.fileSize || '200 KB'}
                                                 </span>
                                             </div>
-                                            <p className="text-xs text-slate-500 font-mono mb-4">{res.fileName}</p>
+                                            <p className="text-xs text-slate-500 font-mono mb-4 truncate" title={res.fileName}>{res.fileName}</p>
                                         </div>
 
                                         <div className="flex justify-between items-center pt-3 border-t border-slate-100 dark:border-slate-800">
@@ -1158,7 +1161,7 @@ Best regards,`
                                 ))}
                             </div>
                         ) : (
-                            <div className="bg-slate-50 dark:bg-slate-900/40 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center text-slate-500 text-sm">
+                            <div className="bg-slate-50 dark:bg-slate-900/40 border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 text-center text-slate-500 text-xs sm:text-sm">
                                 No resumes uploaded yet. Upload a resume file to attach it to HR emails.
                             </div>
                         )}
@@ -1168,8 +1171,8 @@ Best regards,`
 
             {/* View Email Record Modal */}
             {selectedRecord && (
-                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl text-slate-100 space-y-6">
+                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-fade-in">
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl max-w-2xl w-full p-4 sm:p-6 md:p-8 shadow-2xl text-slate-100 space-y-5 sm:space-y-6 max-h-[90vh] overflow-y-auto">
                         {/* Modal Header */}
                         <div className="flex justify-between items-start border-b border-slate-800/80 pb-5">
                             <div className="space-y-1">
@@ -1243,21 +1246,21 @@ Best regards,`
 
             {/* Connect Gmail Account Modal */}
             {emailConnectModal && (
-                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 md:p-8 shadow-2xl text-slate-100 space-y-5">
+                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-fade-in">
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl max-w-md w-full p-4 sm:p-6 md:p-8 shadow-2xl text-slate-100 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto min-w-0">
                         <div className="flex justify-between items-start">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                                    <Mail size={22} />
+                                <div className="w-10 h-10 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                                    <Mail size={20} />
                                 </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white">Connect Gmail Account</h3>
+                                <div className="min-w-0">
+                                    <h3 className="text-lg sm:text-xl font-bold text-white">Connect Gmail Account</h3>
                                     <p className="text-xs text-slate-400">Send HR outreach & auto-track applications</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setEmailConnectModal(false)}
-                                className="p-1 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                                className="p-1 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
                             >
                                 <X size={20} />
                             </button>
@@ -1371,29 +1374,29 @@ Best regards,`
 
             {/* Custom Delete Confirmation Modal */}
             {deleteModal && (
-                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-                    <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl text-slate-100 space-y-4">
+                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-fade-in">
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl text-slate-100 space-y-4 min-w-0">
                         <div className="flex items-center gap-3 text-rose-500">
-                            <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
-                                <AlertTriangle size={22} />
+                            <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center shrink-0">
+                                <AlertTriangle size={20} />
                             </div>
-                            <h3 className="text-lg font-bold text-white">Confirm Deletion</h3>
+                            <h3 className="text-base sm:text-lg font-bold text-white">Confirm Deletion</h3>
                         </div>
 
-                        <p className="text-sm text-slate-400">
+                        <p className="text-xs sm:text-sm text-slate-400 break-words">
                             Are you sure you want to delete <strong className="text-slate-200">{deleteModal.title}</strong>? This action cannot be undone.
                         </p>
 
                         <div className="flex justify-end gap-3 pt-2">
                             <button
                                 onClick={() => setDeleteModal(null)}
-                                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition-colors"
+                                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={confirmDeleteRecord}
-                                className="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-rose-600/20 transition-all"
+                                className="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
                             >
                                 Delete Permanently
                             </button>

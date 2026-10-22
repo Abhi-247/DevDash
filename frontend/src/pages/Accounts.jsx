@@ -253,11 +253,11 @@ const Accounts = () => {
                     </p>
                 </div>
 
-                <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                     <button
                         onClick={handleSyncLiveStats}
                         disabled={syncing}
-                        className="flex-1 sm:flex-none px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap"
                         title="Sync live metrics across all connected APIs"
                     >
                         <RefreshCw size={14} className={syncing ? 'animate-spin text-blue-600 dark:text-blue-400' : ''} />
@@ -269,7 +269,7 @@ const Accounts = () => {
                             setShowConnectModal(true);
                             setConnectError('');
                         }}
-                        className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer whitespace-nowrap"
                     >
                         <Plus size={15} />
                         <span>Connect New Account</span>
@@ -383,42 +383,42 @@ const Accounts = () => {
                 </div>
 
                 {/* ================= RIGHT COLUMN: Selected Account Live Analytics ================= */}
-                <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs">
+                <div className="lg:col-span-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-7 shadow-xs">
                     {activeAccount ? (
                         <div className="space-y-6">
                             
                             {/* Profile Header & Quick Actions */}
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800">
-                                <div className="flex items-center gap-3.5">
-                                    <div className={`p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 ${activeAccount.color} flex items-center justify-center shadow-xs`}>
+                                <div className="flex items-start sm:items-center gap-3 sm:gap-3.5">
+                                    <div className={`p-2.5 sm:p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 ${activeAccount.color} flex items-center justify-center shadow-xs shrink-0 mt-0.5 sm:mt-0`}>
                                         {activeAccount.svg}
                                     </div>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                                    <div className="min-w-0">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                                                 {activeAccount.name}
                                             </h2>
-                                            <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">
+                                            <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40 whitespace-nowrap shrink-0">
                                                 <CheckCircle2 size={11} /> Connected
                                             </span>
                                         </div>
-                                        <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-500 dark:text-slate-400 mt-1">
                                             <span className="font-mono text-slate-700 dark:text-slate-300 font-semibold">
                                                 @{activeAccount.data?.username}
                                             </span>
                                             <span>•</span>
-                                            <span>{activeAccount.category}</span>
+                                            <span className="whitespace-nowrap">{activeAccount.category}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* External profile and disconnect buttons */}
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 w-full sm:w-auto">
                                     <a
                                         href={activeAccount.profileUrl(activeAccount.data?.username)}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                                        className="flex-1 sm:flex-none justify-center px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors whitespace-nowrap"
                                     >
                                         <ExternalLink size={13} />
                                         <span>View Public Profile</span>
@@ -426,7 +426,7 @@ const Accounts = () => {
 
                                     <button
                                         onClick={() => handleDisconnect(activeAccount.key)}
-                                        className="p-2 rounded-xl border border-rose-200 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-xs font-semibold transition-colors cursor-pointer"
+                                        className="p-2 rounded-xl border border-rose-200 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-xs font-semibold transition-colors cursor-pointer shrink-0"
                                         title="Disconnect this account"
                                     >
                                         <Trash2 size={15} />

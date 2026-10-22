@@ -55,7 +55,7 @@ const PublicFooter = () => {
     ];
 
     return (
-        <footer className="relative bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/80 pt-20 pb-10 transition-colors duration-300">
+        <footer className="relative bg-slate-50 dark:bg-slate-950 border-t border-slate-200/60 dark:border-slate-800/80 pt-20 pb-10 transition-colors duration-300 overflow-hidden">
             {/* Top decorative gradient blur */}
             <div className="absolute top-0 left-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute top-0 right-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -167,15 +167,25 @@ const PublicFooter = () => {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="pt-8 border-t border-slate-200/50 dark:border-slate-800/60 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400 dark:text-slate-500">
-                    <div className="flex items-center gap-2">
+                <div className="pt-8 border-t border-slate-200/50 dark:border-slate-800/60 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-400 dark:text-slate-500 text-center sm:text-left">
+                    <div className="flex items-center justify-center gap-2">
                         <span>© 2026 DevDash. All rights reserved.</span>
                     </div>
-                    <div className="flex items-center gap-6">
-                        <button onClick={() => navigate('/privacy')} className="hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-xs font-bold text-slate-400 dark:text-slate-500">Privacy Policy</button>
-                        <button onClick={() => navigate('/terms')} className="hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-xs font-bold text-slate-400 dark:text-slate-500">Terms of Service</button>
-                        <span className="flex items-center gap-1.5 select-none">
-                            Made with 💙 for developers
+                    <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
+                        <button 
+                            onClick={() => navigate('/privacy')} 
+                            className="hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-xs font-bold text-slate-400 dark:text-slate-500 whitespace-nowrap"
+                        >
+                            Privacy Policy
+                        </button>
+                        <button 
+                            onClick={() => navigate('/terms')} 
+                            className="hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-xs font-bold text-slate-400 dark:text-slate-500 whitespace-nowrap"
+                        >
+                            Terms of Service
+                        </button>
+                        <span className="flex items-center gap-1.5 select-none whitespace-nowrap text-slate-500 dark:text-slate-400">
+                            Made with 💙 by <span className="font-extrabold text-slate-700 dark:text-slate-200">Abhishek</span>
                         </span>
                     </div>
                 </div>

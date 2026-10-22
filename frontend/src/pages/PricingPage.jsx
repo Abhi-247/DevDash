@@ -105,7 +105,7 @@ const PricingPage = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-600 selection:text-white transition-colors duration-300">
+        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-600 selection:text-white overflow-x-hidden w-full transition-colors duration-300">
             <PublicNavbar onOpenAuth={setAuthModal} />
 
             {/* Header */}
@@ -144,10 +144,10 @@ const PricingPage = () => {
                     </motion.p>
 
                     {/* Annual Billing Toggle */}
-                    <div className="inline-flex items-center gap-3 p-1.5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
+                    <div className="inline-flex items-center gap-1 sm:gap-2 p-1.5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-full">
                         <button
                             onClick={() => setAnnual(false)}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                                 !annual ? 'bg-white dark:bg-indigo-600 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                             }`}
                         >
@@ -155,12 +155,12 @@ const PricingPage = () => {
                         </button>
                         <button
                             onClick={() => setAnnual(true)}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer shrink-0 ${
                                 annual ? 'bg-white dark:bg-indigo-600 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                             }`}
                         >
-                            <span>Annual Billing</span>
-                            <span className="px-2 py-0.5 text-[10px] font-black rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400">
+                            <span className="whitespace-nowrap">Annual Billing</span>
+                            <span className="px-1.5 sm:px-2 py-0.5 text-[10px] font-black rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 whitespace-nowrap shrink-0">
                                 Save 25%
                             </span>
                         </button>

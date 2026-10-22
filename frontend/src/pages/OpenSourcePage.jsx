@@ -60,7 +60,7 @@ const OpenSourcePage = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-600 selection:text-white transition-colors duration-300">
+        <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 selection:bg-indigo-600 selection:text-white overflow-x-hidden w-full transition-colors duration-300">
             <PublicNavbar onOpenAuth={setAuthModal} />
 
             {/* Hero */}

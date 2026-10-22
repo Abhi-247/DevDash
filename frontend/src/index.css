@@ -49,11 +49,28 @@
 @layer base {
   * {
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
   }
 
   body {
     @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50;
     font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  #root {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -242,4 +259,13 @@
 /* Code block font */
 .font-mono-code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

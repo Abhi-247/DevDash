@@ -175,13 +175,13 @@ const Dashboard = () => {
     const strokeDashoffset = circumference * (1 - gaugePercent);
 
     return (
-        <div className="relative min-h-screen bg-[#F4F7FD] dark:bg-slate-950 p-4 sm:p-7 lg:p-9 text-slate-800 dark:text-slate-100 font-poppins antialiased overflow-x-hidden selection:bg-blue-100 selection:text-blue-700">
+        <div className="relative min-h-screen bg-[#F4F7FD] dark:bg-slate-950 p-3.5 sm:p-7 lg:p-9 text-slate-800 dark:text-slate-100 font-poppins antialiased overflow-x-hidden selection:bg-blue-100 selection:text-blue-700">
             
             {/* Top Navigation / Breadcrumbs Sub-bar */}
-            <div className="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="max-w-7xl mx-auto mb-4 sm:mb-6 flex items-center justify-between gap-3">
                 {/* Left Heading */}
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-[800] tracking-tight text-slate-900 dark:text-white">
+                    <h1 className="text-xl sm:text-3xl font-[800] tracking-tight text-slate-900 dark:text-white">
                         Analytics Overview
                     </h1>
                 </div>
@@ -216,7 +216,7 @@ const Dashboard = () => {
                     </div>
 
                     {isRecruiterMode && (
-                        <span className="px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/60">
+                        <span className="hidden sm:inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/60 whitespace-nowrap">
                             ⚡ Recruiter Mode
                         </span>
                     )}
@@ -226,77 +226,77 @@ const Dashboard = () => {
             {/* ========================================================= */}
             {/* 1. ROW OF 4 KPI STAT CARDS (COMPACT IMAGE 1 REPLICA)      */}
             {/* ========================================================= */}
-            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-4.5 mb-6">
+            <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-4.5 mb-6">
                 
                 {/* ── CARD 1: Total Followers / DevScore ───────────── */}
-                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-4 sm:p-4.5 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.3)] relative group hover:shadow-md transition-all">
-                    <div className="flex items-center justify-between mb-2">
+                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl sm:rounded-2xl p-2.5 sm:p-4.5 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.03)] sm:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.3)] relative group hover:shadow-md transition-all flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1 sm:mb-2">
                         <span className="text-slate-300 dark:text-slate-600 hover:text-slate-500 cursor-pointer">
-                            <HelpCircle size={13} />
+                            <HelpCircle size={11} className="sm:w-[13px] sm:h-[13px]" />
                         </span>
                     </div>
 
                     <div className="text-center">
                         {/* Circular Icon Container */}
-                        <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-500 flex items-center justify-center mx-auto mb-2.5">
-                            <Users size={15} />
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-500 flex items-center justify-center mx-auto mb-1 sm:mb-2">
+                            <Users size={12} className="sm:w-[15px] sm:h-[15px]" />
                         </div>
                         {/* Metric Value */}
-                        <div className="text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5">
+                        <div className="text-lg sm:text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5 leading-tight">
                             {devScore > 1000 ? `${(devScore / 100).toFixed(1)}k` : devScore}
                         </div>
                         {/* Subtitle */}
-                        <div className="text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-2.5">
+                        <div className="text-[10px] sm:text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-1 sm:mb-2 leading-tight truncate px-0.5">
                             Total DevScore™
                         </div>
                         {/* Growth percentage */}
-                        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-500">
+                        <div className="inline-flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[11px] font-bold text-emerald-500 leading-none">
                             <span>▲</span> 14.85%
                         </div>
                     </div>
                 </div>
 
                 {/* ── CARD 2: Impressions / DSA Solved (ELEVATED HERO CARD) ── */}
-                <div className="bg-white dark:bg-slate-900 border border-blue-100 dark:border-blue-900/40 rounded-2xl p-4 sm:p-4.5 shadow-[0_16px_36px_-10px_rgba(0,102,255,0.14)] dark:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.6)] -translate-y-1 relative group transition-all">
+                <div className="bg-white dark:bg-slate-900 border border-blue-100 dark:border-blue-900/40 rounded-xl sm:rounded-2xl p-2.5 sm:p-4.5 shadow-[0_8px_20px_-6px_rgba(0,102,255,0.08)] sm:shadow-[0_16px_36px_-10px_rgba(0,102,255,0.14)] dark:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.5)] sm:-translate-y-1 relative group transition-all flex flex-col justify-between">
                     {/* Top right circular blue + badge just like Image 1 */}
                     <button 
                         onClick={() => navigate('/accounts')}
                         title="Add or sync account"
-                        className="absolute -top-2.5 right-4 w-5 h-5 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-md cursor-pointer transition-transform hover:scale-110"
+                        className="hidden sm:flex absolute -top-2.5 right-4 w-5 h-5 rounded-full bg-blue-600 hover:bg-blue-700 text-white items-center justify-center shadow-md cursor-pointer transition-transform hover:scale-110"
                     >
                         <Plus size={11} strokeWidth={3} />
                     </button>
 
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-1 sm:mb-2">
                         <span className="text-slate-300 dark:text-slate-600 hover:text-slate-500 cursor-pointer">
-                            <HelpCircle size={13} />
+                            <HelpCircle size={11} className="sm:w-[13px] sm:h-[13px]" />
                         </span>
                     </div>
 
                     <div className="text-center">
                         {/* Purple Circular Icon Container */}
-                        <div className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-500 flex items-center justify-center mx-auto mb-2.5">
-                            <MousePointerClick size={15} />
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-500 flex items-center justify-center mx-auto mb-1 sm:mb-2">
+                            <MousePointerClick size={12} className="sm:w-[15px] sm:h-[15px]" />
                         </div>
                         {/* Metric Value */}
-                        <div className="text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5">
+                        <div className="text-lg sm:text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5 leading-tight">
                             {dsaSolvedCount > 1000 ? `${(dsaSolvedCount / 1000).toFixed(1)}k` : dsaSolvedCount}
                         </div>
                         {/* Subtitle */}
-                        <div className="text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-2.5">
+                        <div className="text-[10px] sm:text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-1 sm:mb-2 leading-tight truncate px-0.5">
                             DSA Problems Solved
                         </div>
                         {/* Growth percentage */}
-                        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-500">
+                        <div className="inline-flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[11px] font-bold text-emerald-500 leading-none">
                             <span>▲</span> 112.71%
                         </div>
                     </div>
                 </div>
 
                 {/* ── CARD 3: Reach / Git Repos & Commits ─────────── */}
-                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-4 sm:p-4.5 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.3)] relative group hover:shadow-md transition-all">
+                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl sm:rounded-2xl p-2.5 sm:p-4.5 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.03)] sm:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.3)] relative group hover:shadow-md transition-all flex flex-col justify-between">
                     {/* Small avatar notification badge on top right just like Image 1 */}
-                    <div className="absolute -top-2.5 right-4 flex items-center">
+                    <div className="hidden sm:flex absolute -top-2.5 right-4 items-center">
                         <div className="relative">
                             <img 
                                 src={boyHeroImg} 
@@ -309,55 +309,55 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-1 sm:mb-2">
                         <span className="text-slate-300 dark:text-slate-600 hover:text-slate-500 cursor-pointer">
-                            <HelpCircle size={13} />
+                            <HelpCircle size={11} className="sm:w-[13px] sm:h-[13px]" />
                         </span>
                     </div>
 
                     <div className="text-center">
                         {/* Yellow / Amber Circular Icon Container */}
-                        <div className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-500 flex items-center justify-center mx-auto mb-2.5">
-                            <GitBranch size={15} />
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-500 flex items-center justify-center mx-auto mb-1 sm:mb-2">
+                            <GitBranch size={12} className="sm:w-[15px] sm:h-[15px]" />
                         </div>
                         {/* Metric Value */}
-                        <div className="text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5">
+                        <div className="text-lg sm:text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5 leading-tight">
                             {gitCommitsCount}
                         </div>
                         {/* Subtitle */}
-                        <div className="text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-2.5">
+                        <div className="text-[10px] sm:text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-1 sm:mb-2 leading-tight truncate px-0.5">
                             Git Velocity & Repos
                         </div>
                         {/* Negative or red growth indicator matching Image 1 */}
-                        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-500">
+                        <div className="inline-flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[11px] font-bold text-rose-500 leading-none">
                             <span>▼</span> 24.2%
                         </div>
                     </div>
                 </div>
 
                 {/* ── CARD 4: Engagement Rate / Acceptance Rate ──── */}
-                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-4 sm:p-4.5 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.3)] relative group hover:shadow-md transition-all">
-                    <div className="flex items-center justify-between mb-2">
+                <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl sm:rounded-2xl p-2.5 sm:p-4.5 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.03)] sm:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.3)] relative group hover:shadow-md transition-all flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1 sm:mb-2">
                         <span className="text-slate-300 dark:text-slate-600 hover:text-slate-500 cursor-pointer">
-                            <HelpCircle size={13} />
+                            <HelpCircle size={11} className="sm:w-[13px] sm:h-[13px]" />
                         </span>
                     </div>
 
                     <div className="text-center">
                         {/* Green Circular Icon Container */}
-                        <div className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-500 flex items-center justify-center mx-auto mb-2.5">
-                            <CheckCircle2 size={15} />
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-500 flex items-center justify-center mx-auto mb-1 sm:mb-2">
+                            <CheckCircle2 size={12} className="sm:w-[15px] sm:h-[15px]" />
                         </div>
                         {/* Metric Value */}
-                        <div className="text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5">
+                        <div className="text-lg sm:text-2xl font-[800] tracking-tight text-slate-900 dark:text-white mb-0.5 leading-tight">
                             {acceptanceRate}
                         </div>
                         {/* Subtitle */}
-                        <div className="text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-2.5">
+                        <div className="text-[10px] sm:text-[11px] font-medium text-slate-400 dark:text-slate-400 mb-1 sm:mb-2 leading-tight truncate px-0.5">
                             Acceptance Rate
                         </div>
                         {/* Growth percentage */}
-                        <div className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-500">
+                        <div className="inline-flex items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[11px] font-bold text-emerald-500 leading-none">
                             <span>▲</span> 112.71%
                         </div>
                     </div>
@@ -367,13 +367,13 @@ const Dashboard = () => {
             {/* ========================================================= */}
             {/* 2. SUB-NAVIGATION & FILTER ACTIONS ROW (IMAGE 1 STYLE)    */}
             {/* ========================================================= */}
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                {/* Left: Tab with bold blue underline indicator */}
-                <div className="flex items-center gap-6">
-                    <div className="relative pb-2 cursor-pointer group" onClick={() => setActiveTab('recent')}>
-                        <div className="flex items-center gap-1.5 text-base font-bold text-slate-900 dark:text-white">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6">
+                {/* Left: Tab with bold blue underline indicator - horizontally scrollable on mobile */}
+                <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-1 border-b border-slate-100 sm:border-none dark:border-slate-800/60">
+                    <div className="relative pb-2 cursor-pointer group shrink-0 whitespace-nowrap" onClick={() => setActiveTab('recent')}>
+                        <div className="flex items-center gap-1.5 text-sm sm:text-base font-bold text-slate-900 dark:text-white">
                             <span>Most Recent Activity</span>
-                            <ChevronDown size={15} className="text-slate-400" />
+                            <ChevronDown size={14} className="text-slate-400 shrink-0" />
                         </div>
                         {/* Signature blue line under active tab */}
                         {activeTab === 'recent' && (
@@ -381,8 +381,8 @@ const Dashboard = () => {
                         )}
                     </div>
 
-                    <div className="relative pb-2 cursor-pointer group" onClick={() => setActiveTab('platforms')}>
-                        <div className={`flex items-center gap-1.5 text-base font-semibold transition-colors ${activeTab === 'platforms' ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}>
+                    <div className="relative pb-2 cursor-pointer group shrink-0 whitespace-nowrap" onClick={() => setActiveTab('platforms')}>
+                        <div className={`flex items-center gap-1.5 text-sm sm:text-base font-semibold transition-colors ${activeTab === 'platforms' ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}>
                             <span>Platform Telemetry</span>
                         </div>
                         {activeTab === 'platforms' && (
@@ -390,8 +390,8 @@ const Dashboard = () => {
                         )}
                     </div>
 
-                    <div className="relative pb-2 cursor-pointer group" onClick={() => setActiveTab('projects')}>
-                        <div className={`flex items-center gap-1.5 text-base font-semibold transition-colors ${activeTab === 'projects' ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}>
+                    <div className="relative pb-2 cursor-pointer group shrink-0 whitespace-nowrap" onClick={() => setActiveTab('projects')}>
+                        <div className={`flex items-center gap-1.5 text-sm sm:text-base font-semibold transition-colors ${activeTab === 'projects' ? 'text-slate-900 dark:text-white font-bold' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`}>
                             <span>Featured Projects</span>
                         </div>
                         {activeTab === 'projects' && (
@@ -401,7 +401,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Right: Dropdown filter & Cloud download button */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
                     <div className="relative">
                         <button
                             onClick={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}
@@ -514,32 +514,32 @@ const Dashboard = () => {
                 <div className="lg:col-span-7 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)] flex flex-col justify-between relative font-poppins">
                     
                     {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-xl bg-slate-900 dark:bg-slate-800 text-white flex items-center justify-center shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div className="flex items-start sm:items-center gap-2.5">
+                            <div className="w-8 h-8 rounded-xl bg-slate-900 dark:bg-slate-800 text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5 sm:mt-0">
                                 <Github size={16} />
                             </div>
-                            <div>
-                                <div className="flex items-center gap-2">
+                            <div className="min-w-0">
+                                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                                     <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                                         GitHub Daily Streak & Activity
                                     </h3>
-                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 flex items-center gap-1">
+                                    <span className="whitespace-nowrap px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 flex items-center gap-1 shrink-0">
                                         <Flame size={10} className="fill-emerald-500 text-emerald-500" /> 24 Days Streak
                                     </span>
                                 </div>
-                                <p className="text-[11px] text-slate-400">
+                                <p className="text-[11px] text-slate-400 truncate">
                                     {gh.username ? `@${gh.username}` : '@Abhi-247'} • Daily contribution cadence
                                 </p>
                             </div>
                         </div>
 
                         {/* Top quick metrics chips */}
-                        <div className="flex items-center gap-2 text-xs">
-                            <span className="px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 font-semibold text-[11px]">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+                            <span className="whitespace-nowrap px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 font-semibold text-[11px]">
                                 ⚡ Longest: <strong>56 Days</strong>
                             </span>
-                            <span className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200/60 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 font-semibold text-[11px]">
+                            <span className="whitespace-nowrap px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200/60 dark:border-blue-800/40 text-blue-700 dark:text-blue-300 font-semibold text-[11px]">
                                 📦 <strong>{gitCommitsCount}</strong> Commits
                             </span>
                         </div>
@@ -637,18 +637,18 @@ const Dashboard = () => {
                 
                 {/* ── Verified Platform Telemetry Section ── */}
                 <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-6 sm:p-7 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]">
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 mb-6">
                         <div>
                             <h3 className="text-base font-bold text-slate-900 dark:text-white">
                                 Verified Platform Telemetry
                             </h3>
-                            <p className="text-xs text-slate-400 dark:text-slate-500">
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
                                 Real-time synchronized metrics from external algorithmic and version control platforms
                             </p>
                         </div>
                         <button
                             onClick={() => navigate('/accounts')}
-                            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 whitespace-nowrap self-start sm:self-auto shrink-0"
                         >
                             Manage Accounts <ArrowRight size={13} />
                         </button>
@@ -806,18 +806,18 @@ const Dashboard = () => {
 
                 {/* ── Featured Projects Grid ── */}
                 <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-6 sm:p-7 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.03)] dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]">
-                    <div className="flex items-center justify-between mb-5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 mb-5">
                         <div>
                             <h3 className="text-base font-bold text-slate-900 dark:text-white">
                                 Featured Systems & Deployments
                             </h3>
-                            <p className="text-xs text-slate-400 dark:text-slate-500">
+                            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
                                 Production architectures and live GitHub repositories
                             </p>
                         </div>
                         <button
                             onClick={() => navigate('/projects')}
-                            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 whitespace-nowrap self-start sm:self-auto shrink-0"
                         >
                             View All Projects <ArrowRight size={13} />
                         </button>

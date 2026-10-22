@@ -104,27 +104,29 @@ const Analytics = () => {
                 </button>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* Stats Cards - 2x2 on mobile */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 mb-8">
                 {stats.map((stat) => {
                     const Icon = stat.icon;
                     return (
                         <div
                             key={stat.label}
-                            className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6"
+                            className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-3.5 sm:p-6 flex flex-col justify-between"
                         >
-                            <div className="flex items-start justify-between mb-4">
-                                <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center text-white`}>
-                                    <Icon size={24} />
+                            <div className="flex items-start justify-between mb-2 sm:mb-4">
+                                <div className={`w-8 h-8 sm:w-12 sm:h-12 ${stat.color} rounded-lg sm:rounded-xl flex items-center justify-center text-white shrink-0`}>
+                                    <Icon size={16} className="sm:w-6 sm:h-6" />
                                 </div>
-                                <span className="text-green-600 dark:text-green-400 text-sm font-medium">
+                                <span className="text-green-600 dark:text-green-400 text-xs sm:text-sm font-bold">
                                     {stat.change}
                                 </span>
                             </div>
-                            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-1">
-                                {stat.value}
-                            </h3>
-                            <p className="text-slate-600 dark:text-slate-400 text-sm">{stat.label}</p>
+                            <div>
+                                <h3 className="text-lg sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-0.5 sm:mb-1 leading-tight">
+                                    {stat.value}
+                                </h3>
+                                <p className="text-slate-600 dark:text-slate-400 text-[11px] sm:text-sm font-medium truncate">{stat.label}</p>
+                            </div>
                         </div>
                     );
                 })}

@@ -100,6 +100,196 @@ const ScrollStrip = ({ platforms, direction = 'left', speed = 35 }) => {
     );
 };
 
+/* ─── Interactive Chrome Extension Popup Mockup ─── */
+const ExtensionPopupMockup = () => {
+    const [company, setCompany] = useState('Stripe');
+    const [position, setPosition] = useState('Senior Full Stack Engineer');
+    const [email, setEmail] = useState('recruiter.talent@stripe.com');
+    const [subject, setSubject] = useState('Application for Senior Full Stack Engineer — Alex Developer');
+    const [body, setBody] = useState(
+        'Hi Talent Team, I noticed the Senior Full Stack opening at Stripe and would love to apply. With 4+ years building high-concurrency systems, verified LeetCode stats (1850 rating), and open-source contributions, I believe I can deliver immediate value.'
+    );
+    const [isScanning, setIsScanning] = useState(false);
+    const [sendState, setSendState] = useState('idle');
+
+    const handleRescan = () => {
+        setIsScanning(true);
+        setTimeout(() => {
+            const presets = [
+                { c: 'Vercel', p: 'Staff Frontend Engineer', e: 'careers@vercel.com' },
+                { c: 'Linear', p: 'Systems & Product Engineer', e: 'hiring@linear.app' },
+                { c: 'Stripe', p: 'Senior Full Stack Engineer', e: 'recruiter.talent@stripe.com' }
+            ];
+            const next = presets[Math.floor(Math.random() * presets.length)];
+            setCompany(next.c);
+            setPosition(next.p);
+            setEmail(next.e);
+            setSubject(`Application for ${next.p} — Alex Developer`);
+            setIsScanning(false);
+        }, 500);
+    };
+
+    const handleSend = () => {
+        if (sendState !== 'idle') return;
+        setSendState('sending');
+        setTimeout(() => {
+            setSendState('sent');
+            setTimeout(() => setSendState('idle'), 2500);
+        }, 800);
+    };
+
+    return (
+        <div className="w-full max-w-[360px] bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200/90 dark:border-slate-800 overflow-hidden text-left font-sans text-xs select-none">
+            {/* Top Chrome Extension App Header */}
+            <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/80">
+                <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-black text-[11px] flex items-center justify-center shadow-xs">
+                        ‹/›
+                    </span>
+                    <span className="font-extrabold text-sm text-slate-900 dark:text-white tracking-tight">
+                        Dev<span className="text-purple-600 dark:text-purple-400">Dash</span>
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-600 dark:bg-purple-950/80 dark:text-purple-300">
+                        v1.2
+                    </span>
+                </div>
+                <div className="flex items-center gap-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                    <span className="text-xs">⚙️</span>
+                </div>
+            </div>
+
+            <div className="p-3.5 space-y-3 bg-white dark:bg-slate-900">
+                {/* Section 1: Detected Job Details */}
+                <div className="bg-slate-50/90 dark:bg-slate-950/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-800/80 space-y-2">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>JOB DETAILS</span>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleRescan}
+                            className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
+                        >
+                            <RefreshCw size={10} className={isScanning ? 'animate-spin' : ''} />
+                            <span>{isScanning ? 'Scanning...' : 'Re-scan Page'}</span>
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                        <div>
+                            <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Company *</label>
+                            <input
+                                type="text"
+                                value={company}
+                                onChange={(e) => setCompany(e.target.value)}
+                                className="w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-[11px] font-medium focus:outline-none focus:ring-1 focus:ring-purple-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Position *</label>
+                            <input
+                                type="text"
+                                value={position}
+                                onChange={(e) => setPosition(e.target.value)}
+                                className="w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-[11px] font-medium focus:outline-none focus:ring-1 focus:ring-purple-500"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="flex items-center justify-between mb-1">
+                            <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">HR / Recruiter Email *</label>
+                            <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.2 rounded">✓ Auto-detected</span>
+                        </div>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-[11px] font-medium focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        />
+                    </div>
+                </div>
+
+                {/* Section 2: Email Composer Details */}
+                <div className="bg-slate-50/90 dark:bg-slate-950/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-800/80 space-y-2">
+                    <div>
+                        <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Subject Line *</label>
+                        <input
+                            type="text"
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-[11px] font-medium focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Message Body *</label>
+                        <textarea
+                            rows={3}
+                            value={body}
+                            onChange={(e) => setBody(e.target.value)}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-[11px] font-medium leading-relaxed resize-none focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        />
+                    </div>
+
+                    {/* Resume Picker */}
+                    <div>
+                        <div className="flex items-center justify-between mb-1">
+                            <label className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Attach Resume from DevDash</label>
+                            <span className="text-[9px] font-bold text-purple-600 dark:text-purple-400">DevDash Vault</span>
+                        </div>
+                        <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-700 dark:text-slate-300">
+                            <div className="flex items-center gap-1.5 truncate">
+                                <Paperclip size={12} className="text-purple-500 shrink-0" />
+                                <span className="font-medium truncate">Alex_Resume_2025.pdf (142 KB)</span>
+                            </div>
+                            <span className="text-emerald-500 shrink-0 text-[10px] font-bold">✓ Verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Send Action */}
+                <div className="pt-1 space-y-2">
+                    <button
+                        type="button"
+                        onClick={handleSend}
+                        className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs text-white shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                            sendState === 'sent'
+                                ? 'bg-emerald-600 shadow-emerald-600/25'
+                                : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-purple-600/25 active:scale-98'
+                        }`}
+                    >
+                        {sendState === 'sending' ? (
+                            <>
+                                <RefreshCw size={13} className="animate-spin" />
+                                <span>Sending via Gmail SMTP...</span>
+                            </>
+                        ) : sendState === 'sent' ? (
+                            <>
+                                <Check size={14} className="stroke-[3]" />
+                                <span>Sent! Auto-Logged to CRM ✓</span>
+                            </>
+                        ) : (
+                            <>
+                                <Send size={13} />
+                                <span>1-Click Send Application</span>
+                            </>
+                        )}
+                    </button>
+
+                    <div className="text-center pt-0.5">
+                        <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors inline-flex items-center gap-1 cursor-pointer">
+                            <span>Open DevDash HR Outreach CRM</span>
+                            <span>→</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const LandingPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -636,8 +826,8 @@ const LandingPage = () => {
                     </div>
 
                     {/* Tab Selection Bar */}
-                    <div className="flex justify-center mb-10 overflow-x-auto pb-2 scrollbar-none">
-                        <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <div className="w-full max-w-full overflow-x-auto pb-3 mb-10 no-scrollbar">
+                        <div className="flex w-max mx-auto bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 gap-1 sm:gap-1.5">
                             {[
                                 { id: 'sync', label: '🔄 Live Profile Sync' },
                                 { id: 'extension', label: '⚡ Chrome Extension' },
@@ -648,9 +838,9 @@ const LandingPage = () => {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveFeatureTab(tab.id)}
-                                    className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 whitespace-nowrap cursor-pointer ${activeFeatureTab === tab.id
-                                        ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-md'
-                                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+                                    className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 whitespace-nowrap cursor-pointer shrink-0 ${activeFeatureTab === tab.id
+                                        ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-purple-400 shadow-md ring-1 ring-slate-200/60 dark:ring-slate-700/60'
+                                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-white/40 dark:hover:bg-slate-800/40'
                                         }`}
                                 >
                                     {tab.label}
@@ -754,23 +944,17 @@ const LandingPage = () => {
                                     </div>
                                 </div>
                                 <div className="lg:col-span-6 flex justify-center">
-                                    <div className="relative group max-w-sm sm:max-w-md w-full">
-                                        <div className="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-md opacity-30 group-hover:opacity-60 transition duration-500"></div>
-                                        <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-2.5 sm:p-4 border border-slate-200/80 dark:border-slate-800 shadow-2xl">
-                                            <div className="flex items-center justify-between pb-3 px-2 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                                    <span>DevDash Extension Active on LinkedIn</span>
+                                    <div className="relative group max-w-sm sm:max-w-md w-full flex justify-center">
+                                        <div className="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-md opacity-30 group-hover:opacity-50 transition duration-500"></div>
+                                        <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 border border-slate-200/80 dark:border-slate-800 shadow-2xl w-full flex flex-col items-center">
+                                            <div className="flex items-center justify-between pb-3 px-1 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 w-full mb-3">
+                                                <div className="flex items-center gap-2 truncate">
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                                                    <span className="truncate">DevDash Extension Active on LinkedIn</span>
                                                 </div>
-                                                <span className="text-[11px] bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-md font-bold">1-Click Fast Apply</span>
+                                                <span className="text-[11px] bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-md font-bold shrink-0">1-Click Fast Apply</span>
                                             </div>
-                                            <div className="pt-3 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-950 flex items-center justify-center">
-                                                <img
-                                                    src="/extension-popup.png"
-                                                    alt="DevDash Chrome Extension Popup"
-                                                    className="w-full max-w-[320px] sm:max-w-[340px] h-auto object-contain rounded-2xl shadow-lg transform hover:scale-[1.02] transition-transform duration-300"
-                                                />
-                                            </div>
+                                            <ExtensionPopupMockup />
                                         </div>
                                     </div>
                                 </div>
@@ -1012,14 +1196,14 @@ const LandingPage = () => {
                             <div className="relative group">
                                 <div className="absolute -inset-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur-lg opacity-25 group-hover:opacity-50 transition duration-500" />
                                 <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-2xl bg-white dark:bg-slate-900">
-                                    <div className="bg-slate-100 dark:bg-slate-800 px-4 py-2.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700">
-                                        <div className="flex items-center gap-2">
-                                            <span className="w-3 h-3 rounded-full bg-rose-500 inline-block" />
-                                            <span className="w-3 h-3 rounded-full bg-amber-500 inline-block" />
-                                            <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
-                                            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 ml-2">linkedin.com/jobs</span>
+                                    <div className="bg-slate-100 dark:bg-slate-800 px-3.5 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between border-b border-slate-200 dark:border-slate-700 gap-2">
+                                        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                                            <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500 inline-block shrink-0" />
+                                            <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500 inline-block shrink-0" />
+                                            <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500 inline-block shrink-0" />
+                                            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 dark:text-slate-400 ml-1 sm:ml-2 truncate">linkedin.com/jobs</span>
                                         </div>
-                                        <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/70 px-2 py-0.5 rounded">⚡ DevDash Live Extension</span>
+                                        <span className="text-[10px] sm:text-[11px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/70 px-2 py-0.5 rounded whitespace-nowrap shrink-0">⚡ DevDash Live Extension</span>
                                     </div>
                                     <img
                                         src="/extension-linkedin-demo.png"
@@ -1055,13 +1239,17 @@ const LandingPage = () => {
                                         desc: 'Dispatches cleanly via your Gmail SMTP and automatically adds the application to your DevDash HR Outreach CRM pipeline.'
                                     }
                                 ].map((item, idx) => (
-                                    <div key={idx} className="flex items-start gap-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
-                                        <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 font-extrabold flex items-center justify-center shrink-0 text-sm">
+                                    <div key={idx} className="flex items-start gap-3 sm:gap-4 p-3 sm:p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+                                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-200/60 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 font-extrabold flex items-center justify-center shrink-0 text-xs sm:text-sm mt-0.5">
                                             {item.step}
                                         </div>
-                                        <div>
-                                            <h4 className="font-bold text-slate-900 dark:text-white text-sm">{item.title}</h4>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mt-0.5">{item.desc}</p>
+                                        <div className="min-w-0 flex-1">
+                                            <h4 className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm whitespace-nowrap tracking-tight sm:tracking-normal overflow-hidden text-ellipsis">
+                                                {item.title}
+                                            </h4>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mt-0.5">
+                                                {item.desc}
+                                            </p>
                                         </div>
                                     </div>
                                 ))}
@@ -1070,11 +1258,11 @@ const LandingPage = () => {
                             <div className="pt-2">
                                 <button
                                     onClick={() => setShowExtensionModal(true)}
-                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-7 py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-purple-600/25 active:scale-95 cursor-pointer"
+                                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-4 sm:px-7 py-3 sm:py-3.5 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all shadow-lg shadow-purple-600/25 active:scale-95 cursor-pointer"
                                 >
-                                    <Zap size={16} />
-                                    <span>How to Install Chrome Extension</span>
-                                    <ArrowRight size={16} />
+                                    <Zap size={15} className="shrink-0" />
+                                    <span className="whitespace-nowrap">How to Install Chrome Extension</span>
+                                    <ArrowRight size={15} className="shrink-0" />
                                 </button>
                             </div>
                         </div>
@@ -1091,7 +1279,7 @@ const LandingPage = () => {
                             Track your growth with <span className="text-indigo-600 dark:text-indigo-400">real data</span>
                         </h2>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+                    <div className="grid grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4 lg:gap-5">
                         {[
                             { icon: Code2, label: "Problems Solved", value: "1,247", color: "text-[#FFA116]" },
                             { icon: Star, label: "GitHub Stars", value: "386", color: "text-[#FFDC40]" },
@@ -1106,13 +1294,13 @@ const LandingPage = () => {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.06 }}
-                                className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-default"
+                                className="bg-white dark:bg-slate-900 p-2.5 sm:p-5 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-default flex flex-col items-center justify-center"
                             >
-                                <div className={`mx-auto mb-3 ${color} group-hover:scale-110 transition-transform`}>
-                                    <Icon size={26} strokeWidth={2} />
+                                <div className={`mx-auto mb-2 sm:mb-3 ${color} group-hover:scale-110 transition-transform`}>
+                                    <Icon className="w-5 h-5 sm:w-[26px] sm:h-[26px]" strokeWidth={2} />
                                 </div>
-                                <p className={`text-3xl md:text-4xl font-[800] ${color} mb-1`}>{value}</p>
-                                <p className="text-[11px] uppercase tracking-widest font-black text-slate-400 dark:text-slate-500">{label}</p>
+                                <p className={`text-lg sm:text-3xl md:text-4xl font-[800] ${color} mb-0.5 sm:mb-1 tracking-tight`}>{value}</p>
+                                <p className="text-[9px] sm:text-[11px] uppercase tracking-tight sm:tracking-widest font-bold sm:font-black text-slate-400 dark:text-slate-500 leading-tight">{label}</p>
                             </motion.div>
                         ))}
                     </div>

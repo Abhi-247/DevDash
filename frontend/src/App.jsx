@@ -53,11 +53,11 @@ const ProtectedLayout = () => {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex bg-[#F4F7FD] dark:bg-slate-950 min-h-screen font-poppins text-slate-900 dark:text-slate-50">
+    <div className="flex bg-[#F4F7FD] dark:bg-slate-950 min-h-screen font-poppins text-slate-900 dark:text-slate-50 overflow-x-hidden max-w-full">
       <Sidebar />
-      <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
+      <div className="flex-1 md:ml-64 flex flex-col min-h-screen min-w-0 max-w-full overflow-x-hidden">
         <Navbar />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto w-full">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto w-full min-w-0 max-w-full">
           <Outlet />
         </main>
       </div>

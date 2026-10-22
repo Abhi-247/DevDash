@@ -79,12 +79,12 @@ const Settings = () => {
                 <div className="p-6 border-b border-rose-100 dark:border-rose-900/30 bg-rose-50/50 dark:bg-rose-900/10">
                     <h2 className="text-lg font-bold text-rose-700 dark:text-rose-500">Danger Zone</h2>
                 </div>
-                <div className="p-6 flex items-center justify-between">
+                <div className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                     <div>
                         <p className="font-medium text-slate-800 dark:text-white">Delete Account</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Once you delete your account, there is no going back. Please be certain.</p>
+                        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">Once you delete your account, there is no going back. Please be certain.</p>
                     </div>
-                    <button className="px-4 py-2 border border-rose-200 dark:border-rose-900/50 text-rose-600 dark:text-rose-500 font-medium rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors flex items-center gap-2">
+                    <button className="px-4 py-2 border border-rose-200 dark:border-rose-900/50 text-rose-600 dark:text-rose-500 font-medium rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors flex items-center justify-center gap-2 whitespace-nowrap self-start sm:self-auto shrink-0 cursor-pointer">
                         <Trash2 size={16} />
                         Delete Account
                     </button>

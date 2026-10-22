@@ -572,7 +572,12 @@ router.post('/gmail/sync', verifyToken, async (req, res) => {
                             user: targetEmail,
                             pass: cleanPass
                         },
-                        logger: false
+                        logger: false,
+                        clientTimeout: 10000
+                    });
+
+                    client.on('error', (err) => {
+                        console.error("IMAP Client Socket Event:", err.message);
                     });
 
                     await client.connect();
@@ -686,7 +691,9 @@ router.post('/gmail/sync', verifyToken, async (req, res) => {
                         }
                     }
 
-                    await client.logout();
+                    try {
+                        await client.logout();
+                    } catch (_) {}
                 } catch (imapErr) {
                     console.error("IMAP Gmail fetch error:", imapErr.message);
                 }

@@ -118,33 +118,33 @@ const Navbar = ({ toggleSidebar, isSidebarExpanded }) => {
     return (
         <>
             {/* ===== NAVBAR — matching Image 1 layout ===== */}
-            <header className="navbar-header flex items-center justify-between px-4 sm:px-6 h-16 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/80 sticky top-0 z-30 transition-colors font-poppins">
+            <header className="navbar-header flex items-center justify-between px-3 sm:px-6 h-16 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800/80 sticky top-0 z-30 transition-colors font-poppins min-w-0 max-w-full">
                 {/* ---------- LEFT: Hamburger & Search Input ---------- */}
-                <div className="flex items-center gap-3 md:gap-4 flex-1">
+                <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 mr-2 sm:mr-4">
                     {/* Mobile hamburger (hidden on desktop where sidebar is always open) */}
                     <button 
                         onClick={() => setIsMobileMenuOpen(true)}
-                        className="md:hidden navbar-mobile-toggle text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
+                        className="md:hidden navbar-mobile-toggle text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white shrink-0"
                         title="Open Navigation Menu"
                     >
                         <Menu size={20} />
                     </button>
 
                     {/* Search Bar matching Image 1 */}
-                    <div className="relative w-full max-w-xs sm:max-w-sm">
-                        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                    <div className="relative w-full max-w-xs min-w-0">
+                        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                         <input
                             type="text"
-                            placeholder="Search telemetry, repos, skills..."
+                            placeholder="Search telemetry, repos..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-9 pr-4 py-1.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 rounded-full text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                            className="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/60 rounded-full text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all truncate"
                         />
                     </div>
                 </div>
 
                 {/* ---------- RIGHT: Image 1 Actions (Badge, Avatar, + Button, Settings) ---------- */}
-                <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                     {/* Theme Toggle */}
                     <button 
                         onClick={toggleTheme}
@@ -152,15 +152,6 @@ const Navbar = ({ toggleSidebar, isSidebarExpanded }) => {
                         title={theme === 'dark' ? "Light mode" : "Dark mode"}
                     >
                         {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-                    </button>
-
-                    {/* Red Platform / Channel Badge matching Image 1 */}
-                    <button
-                        onClick={() => navigate('/accounts')}
-                        title="Connected Accounts"
-                        className="w-7 h-7 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center text-[10px] font-bold shadow-sm transition-transform hover:scale-105 cursor-pointer"
-                    >
-                        ⚡
                     </button>
 
                     {/* Profile Avatar + Dropdown with active indicator */}
@@ -209,15 +200,6 @@ const Navbar = ({ toggleSidebar, isSidebarExpanded }) => {
                             )}
                         </AnimatePresence>
                     </div>
-
-                    {/* Cyan / Light-Blue + Button matching Image 1 */}
-                    <button
-                        onClick={() => navigate('/projects')}
-                        title="Add Project"
-                        className="w-7 h-7 rounded-full bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-950/60 dark:hover:bg-cyan-900/60 text-cyan-600 dark:text-cyan-300 flex items-center justify-center shadow-sm transition-transform hover:scale-105 cursor-pointer"
-                    >
-                        <Plus size={14} strokeWidth={2.5} />
-                    </button>
 
                     {/* Settings Gear Button matching Image 1 */}
                     <button

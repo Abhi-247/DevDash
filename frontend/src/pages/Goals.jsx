@@ -153,48 +153,50 @@ const Goals = () => {
 
     return (
         <div className="p-4 sm:p-6 lg:p-7 max-w-7xl mx-auto space-y-6 font-poppins">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between gap-3 mb-6 sm:mb-8">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Goals</h1>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Track your learning and development goals</p>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1">Track your learning and development goals</p>
                 </div>
                 <button
                     onClick={() => setShowModal(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+                    className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium text-xs sm:text-sm whitespace-nowrap shrink-0 shadow-sm cursor-pointer"
                 >
-                    <Plus size={20} />
-                    Add Goal
+                    <Plus size={16} className="shrink-0" />
+                    <span>Add Goal</span>
                 </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center">
-                            <AlertCircle size={20} className="text-yellow-600 dark:text-yellow-400" />
+            {/* Stats - All in one row on mobile (grid-cols-3) */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-6 mb-6 sm:mb-8">
+                <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-2.5 sm:p-6 flex flex-col justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 mb-1 sm:mb-2">
+                        <div className="w-7 h-7 sm:w-10 sm:h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                            <AlertCircle size={15} className="sm:w-5 sm:h-5 text-yellow-600 dark:text-yellow-400" />
                         </div>
-                        <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{pendingGoals.length}</span>
+                        <span className="text-base sm:text-2xl font-bold text-slate-900 dark:text-slate-100 leading-none">{pendingGoals.length}</span>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">Pending Goals</p>
+                    <p className="text-slate-600 dark:text-slate-400 text-[10px] sm:text-sm font-medium leading-tight truncate">Pending Goals</p>
                 </div>
-                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                            <Clock size={20} className="text-blue-600 dark:text-blue-400" />
+
+                <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-2.5 sm:p-6 flex flex-col justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 mb-1 sm:mb-2">
+                        <div className="w-7 h-7 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                            <Clock size={15} className="sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
                         </div>
-                        <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{inProgressGoals.length}</span>
+                        <span className="text-base sm:text-2xl font-bold text-slate-900 dark:text-slate-100 leading-none">{inProgressGoals.length}</span>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">In Progress</p>
+                    <p className="text-slate-600 dark:text-slate-400 text-[10px] sm:text-sm font-medium leading-tight truncate">In Progress</p>
                 </div>
-                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-6">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
-                            <CheckCircle2 size={20} className="text-green-600 dark:text-green-400" />
+
+                <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 p-2.5 sm:p-6 flex flex-col justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 mb-1 sm:mb-2">
+                        <div className="w-7 h-7 sm:w-10 sm:h-10 bg-green-100 dark:bg-green-900/30 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+                            <CheckCircle2 size={15} className="sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
                         </div>
-                        <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{completedGoals.length}</span>
+                        <span className="text-base sm:text-2xl font-bold text-slate-900 dark:text-slate-100 leading-none">{completedGoals.length}</span>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">Completed</p>
+                    <p className="text-slate-600 dark:text-slate-400 text-[10px] sm:text-sm font-medium leading-tight truncate">Completed</p>
                 </div>
             </div>
 
